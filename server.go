@@ -9,6 +9,7 @@ import (
 
 	"csbackend/api"
 	"csbackend/db"
+	"csbackend/util"
 
 	"github.com/gin-gonic/gin"
 	"github.com/mattn/go-tty"
@@ -23,15 +24,22 @@ func main() {
 	log.Println("Connecting to database...")
 	db.Connect()
 
-	log.Println("Migrating database...")
-	db.Migrate()
+	doMigration := util.IsFlagPassed("migrate")
+
+	if doMigration {
+		log.Println("Migrating database...")
+		db.Migrate()
+	}
 
 	database, err := db.DB.DB()
 	if err != nil {
 		panic("failed to connect database")
 	}
 
-	db.DB.Raw("SELECT 1").Scan(&database)
+	var owner db.Owner
+	db.DB.First(&owner)
+
+	println(owner.Email)
 
 	defer database.Close()
 
