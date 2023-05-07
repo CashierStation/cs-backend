@@ -46,7 +46,10 @@ func main() {
 	r := gin.Default()
 	docs.SwaggerInfo.BasePath = "/"
 
-	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerfiles.Handler))
+	r.GET("/doc/*any", ginSwagger.WrapHandler(swaggerfiles.Handler))
+	r.GET("/", func(c *gin.Context) {
+		c.Redirect(302, "/doc/index.html")
+	})
 
 	api.AttachRoutes(r)
 
