@@ -47,7 +47,7 @@ func (a *Auth) Logout(c *gin.Context) {
 		scheme = "https"
 	}
 
-	returnTo, err := url.Parse(scheme + "://" + c.Request.Host + "/user")
+	returnTo, err := url.Parse(scheme + "://" + c.Request.Host)
 	if err != nil {
 		c.String(http.StatusInternalServerError, err.Error())
 		return

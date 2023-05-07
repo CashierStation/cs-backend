@@ -62,7 +62,7 @@ func (a *Auth) Callback(c *gin.Context) {
 	}
 
 	// Redirect to logged in page.
-	c.Redirect(http.StatusTemporaryRedirect, "/user")
+	c.Redirect(http.StatusTemporaryRedirect, "/")
 
 	c.JSON(200, response{})
 }
