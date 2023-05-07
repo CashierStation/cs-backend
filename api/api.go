@@ -30,5 +30,8 @@ func AttachRoutes(r *gin.Engine) error {
 	user := User{}
 	g.GET("/user", user.GET)
 
+	example := Example{}
+	g.GET("/example", example.GET)
+
 	return nil
 }
