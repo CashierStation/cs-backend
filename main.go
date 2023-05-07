@@ -41,21 +41,14 @@ func main() {
 		panic("failed to connect database")
 	}
 
-	var owner db.Owner
-	db.DB.First(&owner)
-
-	println(owner.Email)
-
 	defer database.Close()
 
 	r := gin.Default()
-	docs.SwaggerInfo.BasePath = "/api/"
-	apiGroup := r.Group("/api/")
-	{
-		apiGroup.GET("/ping", api.HelloWorld)
-	}
+	docs.SwaggerInfo.BasePath = "/"
 
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerfiles.Handler))
+
+	api.AttachRoutes(r)
 
 	mode := os.Getenv("GIN_MODE")
 	if mode != "release" {

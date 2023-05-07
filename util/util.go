@@ -1,6 +1,9 @@
 package util
 
-import "flag"
+import (
+	"flag"
+	"os"
+)
 
 func IsFlagPassed(name string) bool {
 	found := false
@@ -10,4 +13,8 @@ func IsFlagPassed(name string) bool {
 		}
 	})
 	return found
+}
+
+func IsProduction() bool {
+	return os.Getenv("GIN_MODE") == "release"
 }

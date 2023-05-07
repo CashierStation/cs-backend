@@ -1,19 +1,76 @@
+definitions:
+  api.Example:
+    type: object
+  api.User:
+    type: object
+  auth.Callback.response:
+    type: object
 info:
   contact: {}
 paths:
-  /ping:
+  /auth/callback:
     get:
       consumes:
-      - application/json
-      description: do ping
+      - application/x-www-form-urlencoded
+      description: Callback
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            type: string
-      summary: ping example
+            $ref: '#/definitions/auth.Callback.response'
+      summary: Endpoint the user is redirected to after logging in.
+      tags:
+      - auth
+  /auth/login:
+    get:
+      consumes:
+      - application/x-www-form-urlencoded
+      description: Login
+      produces:
+      - application/json
+      responses: {}
+      summary: Redirect user to third party login
+      tags:
+      - auth
+  /auth/logout:
+    get:
+      consumes:
+      - application/x-www-form-urlencoded
+      description: Logout
+      produces:
+      - application/json
+      responses: {}
+      summary: Log user out
+      tags:
+      - auth
+  /example:
+    get:
+      consumes:
+      - application/x-www-form-urlencoded
+      description: Example
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/api.Example'
       tags:
       - example
+  /user:
+    get:
+      consumes:
+      - application/x-www-form-urlencoded
+      description: User
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/api.User'
+      tags:
+      - user
 swagger: "2.0"

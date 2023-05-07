@@ -16,11 +16,66 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
-        "/ping": {
+        "/auth/callback": {
             "get": {
-                "description": "do ping",
+                "description": "Callback",
                 "consumes": [
+                    "application/x-www-form-urlencoded"
+                ],
+                "produces": [
                     "application/json"
+                ],
+                "tags": [
+                    "auth"
+                ],
+                "summary": "Endpoint the user is redirected to after logging in.",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/auth.Callback.response"
+                        }
+                    }
+                }
+            }
+        },
+        "/auth/login": {
+            "get": {
+                "description": "Login",
+                "consumes": [
+                    "application/x-www-form-urlencoded"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "auth"
+                ],
+                "summary": "Redirect user to third party login",
+                "responses": {}
+            }
+        },
+        "/auth/logout": {
+            "get": {
+                "description": "Logout",
+                "consumes": [
+                    "application/x-www-form-urlencoded"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "auth"
+                ],
+                "summary": "Log user out",
+                "responses": {}
+            }
+        },
+        "/example": {
+            "get": {
+                "description": "Example",
+                "consumes": [
+                    "application/x-www-form-urlencoded"
                 ],
                 "produces": [
                     "application/json"
@@ -28,16 +83,48 @@ const docTemplate = `{
                 "tags": [
                     "example"
                 ],
-                "summary": "ping example",
                 "responses": {
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "type": "string"
+                            "$ref": "#/definitions/api.Example"
                         }
                     }
                 }
             }
+        },
+        "/user": {
+            "get": {
+                "description": "User",
+                "consumes": [
+                    "application/x-www-form-urlencoded"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "user"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/api.User"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "api.Example": {
+            "type": "object"
+        },
+        "api.User": {
+            "type": "object"
+        },
+        "auth.Callback.response": {
+            "type": "object"
         }
     }
 }`
