@@ -38,7 +38,10 @@ func main() {
 	r := gin.Default()
 	r.GET("/ping", api.HelloWorld)
 
-	go check_termination()
+	mode := os.Getenv("GIN_MODE")
+	if mode != "release" {
+		go check_termination()
+	}
 
 	r.Run()
 }
