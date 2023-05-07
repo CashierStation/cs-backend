@@ -13,6 +13,11 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/mattn/go-tty"
+
+	docs "csbackend/docs"
+
+	swaggerfiles "github.com/swaggo/files"     // swagger embed files
+	ginSwagger "github.com/swaggo/gin-swagger" // gin-swagger middleware
 )
 
 func main() {
@@ -44,7 +49,9 @@ func main() {
 	defer database.Close()
 
 	r := gin.Default()
+	docs.SwaggerInfo.BasePath = "/api/v1"
 	r.GET("/ping", api.HelloWorld)
+	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerfiles.Handler))
 
 	mode := os.Getenv("GIN_MODE")
 	if mode != "release" {
