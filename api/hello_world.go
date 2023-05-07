@@ -12,7 +12,7 @@ import "github.com/gin-gonic/gin"
 // @Accept json
 // @Produce json
 // @Success 200 {string} Helloworld
-// @Router /ping [get]
+// @Router /api/ping [get]
 func HelloWorld(c *gin.Context) {
 	c.JSON(200, gin.H{
 		"message": "Hello World",

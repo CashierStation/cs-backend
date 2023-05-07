@@ -49,8 +49,12 @@ func main() {
 	defer database.Close()
 
 	r := gin.Default()
-	docs.SwaggerInfo.BasePath = "/api/v1"
-	r.GET("/ping", api.HelloWorld)
+	docs.SwaggerInfo.BasePath = "/api/"
+	apiGroup := r.Group("/api/")
+	{
+		apiGroup.GET("/ping", api.HelloWorld)
+	}
+
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerfiles.Handler))
 
 	mode := os.Getenv("GIN_MODE")
