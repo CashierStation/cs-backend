@@ -25,9 +25,6 @@ func Connect() {
 		postgres.New(postgres.Config{
 			DSN: dsn,
 		}),
-		&gorm.Config{
-			DisableForeignKeyConstraintWhenMigrating: true,
-		},
 	)
 
 	if err != nil {
