@@ -13,7 +13,8 @@ import (
 // @securityDefinitions.basic BasicAuth
 // @Summary Redirect user to third party login
 // @Schemes
-// @Description Login
+// @Description dev: http://localhost:8080/auth/login
+// @Description prod: https://cs-backend-production.up.railway.app/auth/login
 // @Tags auth
 // @Accept x-www-form-urlencoded
 // @Produce json

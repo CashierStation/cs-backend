@@ -41,7 +41,7 @@ const docTemplate = `{
         },
         "/auth/login": {
             "get": {
-                "description": "Login",
+                "description": "dev: http://localhost:8080/auth/login\nprod: https://cs-backend-production.up.railway.app/auth/login",
                 "consumes": [
                     "application/x-www-form-urlencoded"
                 ],
@@ -57,7 +57,7 @@ const docTemplate = `{
         },
         "/auth/logout": {
             "get": {
-                "description": "Logout",
+                "description": "dev: http://localhost:8080/auth/logout\nprod: https://cs-backend-production.up.railway.app/auth/logout",
                 "consumes": [
                     "application/x-www-form-urlencoded"
                 ],
