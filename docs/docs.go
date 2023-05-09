@@ -29,14 +29,7 @@ const docTemplate = `{
                     "auth"
                 ],
                 "summary": "Endpoint the user is redirected to after logging in.",
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/auth.Callback.response"
-                        }
-                    }
-                }
+                "responses": {}
             }
         },
         "/auth/login": {
@@ -83,14 +76,7 @@ const docTemplate = `{
                 "tags": [
                     "example"
                 ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/api.Example"
-                        }
-                    }
-                }
+                "responses": {}
             }
         },
         "/user": {
@@ -109,7 +95,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/api.User"
+                            "$ref": "#/definitions/user.GET.response"
                         }
                     }
                 }
@@ -117,14 +103,55 @@ const docTemplate = `{
         }
     },
     "definitions": {
-        "api.Example": {
-            "type": "object"
-        },
-        "api.User": {
-            "type": "object"
-        },
-        "auth.Callback.response": {
-            "type": "object"
+        "user.GET.response": {
+            "type": "object",
+            "properties": {
+                "aud": {
+                    "type": "string"
+                },
+                "email": {
+                    "type": "string"
+                },
+                "email_verified": {
+                    "type": "boolean"
+                },
+                "exp": {
+                    "type": "integer"
+                },
+                "family_name": {
+                    "type": "string"
+                },
+                "given_name": {
+                    "type": "string"
+                },
+                "iat": {
+                    "type": "integer"
+                },
+                "iss": {
+                    "type": "string"
+                },
+                "locale": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "nickname": {
+                    "type": "string"
+                },
+                "picture": {
+                    "type": "string"
+                },
+                "sid": {
+                    "type": "string"
+                },
+                "sub": {
+                    "type": "string"
+                },
+                "updated_at": {
+                    "type": "string"
+                }
+            }
         }
     }
 }`

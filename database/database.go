@@ -6,12 +6,12 @@ import (
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 
+	"csbackend/models"
+
 	"os"
 )
 
-var DB *gorm.DB
-
-func Connect() {
+func New() (*gorm.DB, error) {
 	host := os.Getenv("PGHOST")
 	user := os.Getenv("PGUSER")
 	password := os.Getenv("PGPASSWORD")
@@ -28,28 +28,28 @@ func Connect() {
 	)
 
 	if err != nil {
-		panic("Failed to connect database")
+		return nil, err
 	}
 
-	DB = database
+	return database, nil
 }
 
-func Migrate() error {
+func Migrate(db *gorm.DB) error {
 	var models = []interface{}{
-		&Owner{},
-		&Rental{},
-		&Role{},
-		&Access{},
-		&Employee{},
-		&Unit{},
-		&Booking{},
-		&Transaction{},
-		&Snack{},
-		&SnackRestock{},
+		&models.Owner{},
+		&models.Rental{},
+		&models.Role{},
+		&models.Access{},
+		&models.Employee{},
+		&models.Unit{},
+		&models.Booking{},
+		&models.Transaction{},
+		&models.Snack{},
+		&models.SnackRestock{},
 	}
 
 	for _, model := range models {
-		err := DB.AutoMigrate(model)
+		err := db.AutoMigrate(model)
 		if err != nil {
 			return err
 		}
