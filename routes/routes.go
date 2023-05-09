@@ -5,6 +5,7 @@ import (
 
 	"csbackend/routes/auth"
 	"csbackend/routes/example"
+	m "csbackend/routes/metrics"
 	"csbackend/routes/user"
 )
 
@@ -16,4 +17,5 @@ func SetupRoutes(app *fiber.App) {
 	app.Get("/user", user.GET)
 
 	auth.Routes(app)
+	m.Routes(app)
 }

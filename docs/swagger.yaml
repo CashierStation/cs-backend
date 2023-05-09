@@ -82,6 +82,18 @@ paths:
       responses: {}
       tags:
       - example
+  /metrics:
+    get:
+      consumes:
+      - application/x-www-form-urlencoded
+      description: |-
+        dev: http://localhost:8080/metrics
+        prod: https://cs-backend-production.up.railway.app/metrics
+      produces:
+      - application/json
+      responses: {}
+      tags:
+      - metrics
   /user:
     get:
       consumes:

@@ -79,6 +79,21 @@ const docTemplate = `{
                 "responses": {}
             }
         },
+        "/metrics": {
+            "get": {
+                "description": "dev: http://localhost:8080/metrics\nprod: https://cs-backend-production.up.railway.app/metrics",
+                "consumes": [
+                    "application/x-www-form-urlencoded"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "metrics"
+                ],
+                "responses": {}
+            }
+        },
         "/user": {
             "get": {
                 "description": "User",
