@@ -9,7 +9,7 @@ import (
 // @Summary
 // @Schemes
 // @Description dev: http://localhost:8080/metrics
-// @Description prod: https://cs-backend-production.up.railway.app/metrics
+// @Description prod: https://csbackend.fly.dev/metrics
 // @Tags metrics
 // @Accept x-www-form-urlencoded
 // @Produce json

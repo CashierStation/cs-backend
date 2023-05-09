@@ -13,7 +13,7 @@ import (
 // @Summary Redirect user to third party login
 // @Schemes
 // @Description dev: http://localhost:8080/auth/login
-// @Description prod: https://cs-backend-production.up.railway.app/auth/login
+// @Description prod: https://csbackend.fly.dev/auth/login
 // @Tags auth
 // @Accept x-www-form-urlencoded
 // @Produce json

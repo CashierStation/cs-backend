@@ -52,7 +52,7 @@ paths:
       - application/x-www-form-urlencoded
       description: |-
         dev: http://localhost:8080/auth/login
-        prod: https://cs-backend-production.up.railway.app/auth/login
+        prod: https://csbackend.fly.dev/auth/login
       produces:
       - application/json
       responses: {}
@@ -65,7 +65,7 @@ paths:
       - application/x-www-form-urlencoded
       description: |-
         dev: http://localhost:8080/auth/logout
-        prod: https://cs-backend-production.up.railway.app/auth/logout
+        prod: https://csbackend.fly.dev/auth/logout
       produces:
       - application/json
       responses: {}
@@ -88,7 +88,7 @@ paths:
       - application/x-www-form-urlencoded
       description: |-
         dev: http://localhost:8080/metrics
-        prod: https://cs-backend-production.up.railway.app/metrics
+        prod: https://csbackend.fly.dev/metrics
       produces:
       - application/json
       responses: {}

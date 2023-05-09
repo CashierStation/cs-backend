@@ -34,7 +34,7 @@ const docTemplate = `{
         },
         "/auth/login": {
             "get": {
-                "description": "dev: http://localhost:8080/auth/login\nprod: https://cs-backend-production.up.railway.app/auth/login",
+                "description": "dev: http://localhost:8080/auth/login\nprod: https://csbackend.fly.dev/auth/login",
                 "consumes": [
                     "application/x-www-form-urlencoded"
                 ],
@@ -50,7 +50,7 @@ const docTemplate = `{
         },
         "/auth/logout": {
             "get": {
-                "description": "dev: http://localhost:8080/auth/logout\nprod: https://cs-backend-production.up.railway.app/auth/logout",
+                "description": "dev: http://localhost:8080/auth/logout\nprod: https://csbackend.fly.dev/auth/logout",
                 "consumes": [
                     "application/x-www-form-urlencoded"
                 ],
@@ -81,7 +81,7 @@ const docTemplate = `{
         },
         "/metrics": {
             "get": {
-                "description": "dev: http://localhost:8080/metrics\nprod: https://cs-backend-production.up.railway.app/metrics",
+                "description": "dev: http://localhost:8080/metrics\nprod: https://csbackend.fly.dev/metrics",
                 "consumes": [
                     "application/x-www-form-urlencoded"
                 ],

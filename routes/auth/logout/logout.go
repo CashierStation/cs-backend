@@ -15,7 +15,7 @@ import (
 // @Summary Log user out
 // @Schemes
 // @Description dev: http://localhost:8080/auth/logout
-// @Description prod: https://cs-backend-production.up.railway.app/auth/logout
+// @Description prod: https://csbackend.fly.dev/auth/logout
 // @Tags auth
 // @Accept x-www-form-urlencoded
 // @Produce json
