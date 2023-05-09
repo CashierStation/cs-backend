@@ -1,12 +1,13 @@
-package auth
+package logout
 
 import (
+	"csbackend/global"
 	"net/http"
 	"net/url"
+
 	"os"
 
-	"github.com/gin-contrib/sessions"
-	"github.com/gin-gonic/gin"
+	"github.com/gofiber/fiber/v2"
 )
 
 // Logout godoc
@@ -18,39 +19,29 @@ import (
 // @Tags auth
 // @Accept x-www-form-urlencoded
 // @Produce json
-// @Param request query auth.Logout.request true "query params"
 // @Router /auth/logout [get]
-func (a *Auth) Logout(c *gin.Context) {
-	type request struct{}
-
-	//type response struct{}
-
-	var req request
-
-	if err := c.ShouldBind(&req); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-		return
+func GET(c *fiber.Ctx) error {
+	session, err := global.Session.Get(c)
+	if err != nil {
+		return err
 	}
 
-	session := sessions.Default(c)
-	session.Clear()
+	session.Destroy()
 	session.Save()
 
 	logoutUrl, err := url.Parse("https://" + os.Getenv("AUTH0_DOMAIN") + "/v2/logout")
 	if err != nil {
-		c.String(http.StatusInternalServerError, err.Error())
-		return
+		return c.SendStatus(fiber.StatusInternalServerError)
 	}
 
 	scheme := "http"
-	if c.Request.TLS != nil {
+	if c.Secure() {
 		scheme = "https"
 	}
 
-	returnTo, err := url.Parse(scheme + "://" + c.Request.Host)
+	returnTo, err := url.Parse(scheme + "://" + c.Hostname())
 	if err != nil {
-		c.String(http.StatusInternalServerError, err.Error())
-		return
+		return c.SendStatus(fiber.StatusInternalServerError)
 	}
 
 	params := url.Values{}
@@ -58,5 +49,5 @@ func (a *Auth) Logout(c *gin.Context) {
 	params.Add("client_id", os.Getenv("AUTH0_CLIENT_ID"))
 	logoutUrl.RawQuery = params.Encode()
 
-	c.Redirect(http.StatusTemporaryRedirect, logoutUrl.String())
+	return c.Redirect(logoutUrl.String(), http.StatusTemporaryRedirect)
 }

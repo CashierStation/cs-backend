@@ -1,9 +1,7 @@
 definitions:
-  api.Example:
-    type: object
-  api.User:
-    type: object
-  auth.Callback.response:
+  user.GET.response:
+    properties:
+      profile: {}
     type: object
 info:
   contact: {}
@@ -15,11 +13,7 @@ paths:
       description: Callback
       produces:
       - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/auth.Callback.response'
+      responses: {}
       summary: Endpoint the user is redirected to after logging in.
       tags:
       - auth
@@ -56,11 +50,7 @@ paths:
       description: Example
       produces:
       - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/api.Example'
+      responses: {}
       tags:
       - example
   /user:
@@ -74,7 +64,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/api.User'
+            $ref: '#/definitions/user.GET.response'
       tags:
       - user
 swagger: "2.0"
