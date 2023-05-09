@@ -11,7 +11,7 @@ import (
 	"github.com/joho/godotenv"
 
 	"csbackend/authenticator"
-	"csbackend/db"
+	db "csbackend/database"
 	g "csbackend/global"
 	"csbackend/routes"
 	"csbackend/util"
@@ -29,21 +29,24 @@ func main() {
 	}
 
 	log.Println("Connecting to database...")
-	db.Connect()
+
+	database, err := db.New()
+	if err != nil {
+		panic("failed to connect database")
+	}
 
 	doMigration := util.IsFlagPassed("migrate")
 
 	if doMigration {
 		log.Println("Migrating database...")
-		db.Migrate()
+		db.Migrate(database)
 	}
 
-	database, err := db.DB.DB()
+	sqlDb, err := database.DB()
 	if err != nil {
-		panic("failed to connect database")
+		panic("failed to get database")
 	}
-
-	defer database.Close()
+	defer sqlDb.Close()
 
 	auth, err := authenticator.New()
 	if err != nil {
@@ -51,7 +54,7 @@ func main() {
 	}
 
 	g.Session = session.New()
-	g.DB = db.DB
+	g.DB = database
 	g.Authenticator = auth
 
 	app := fiber.New()
