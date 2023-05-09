@@ -27,5 +27,5 @@ func IsFlagPassed(name string) bool {
 }
 
 func IsProduction() bool {
-	return os.Getenv("GIN_MODE") == "release"
+	return os.Getenv("MODE") == "release"
 }

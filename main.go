@@ -76,7 +76,7 @@ func main() {
 
 	app.Use(logger.New())
 
-	mode := os.Getenv("GIN_MODE")
+	mode := os.Getenv("MODE")
 	if mode != "release" {
 		go check_termination()
 	}
