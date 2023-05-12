@@ -3,10 +3,11 @@ package routes
 import (
 	"github.com/gofiber/fiber/v2"
 
+	"csbackend/routes/api/user"
 	"csbackend/routes/auth"
 	"csbackend/routes/example"
 	m "csbackend/routes/metrics"
-	"csbackend/routes/user"
+	"csbackend/routes/oauth"
 )
 
 func SetupRoutes(app *fiber.App) {
@@ -14,8 +15,11 @@ func SetupRoutes(app *fiber.App) {
 		return c.Redirect("/swagger/index.html", fiber.StatusTemporaryRedirect)
 	})
 	app.Get("/example", example.GET)
-	app.Get("/user", user.GET)
 
+	apiGroup := app.Group("/api")
+	apiGroup.Get("/user", user.GET)
+
+	oauth.Routes(app)
 	auth.Routes(app)
 	m.Routes(app)
 }

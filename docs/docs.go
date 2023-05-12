@@ -16,9 +16,14 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
-        "/auth/callback": {
+        "/api/user": {
             "get": {
-                "description": "Callback",
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "User",
                 "consumes": [
                     "application/x-www-form-urlencoded"
                 ],
@@ -26,15 +31,30 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "auth"
+                    "user"
                 ],
-                "summary": "Endpoint the user is redirected to after logging in.",
-                "responses": {}
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "ID Token",
+                        "name": "id_token",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/user.GET.response"
+                        }
+                    }
+                }
             }
         },
-        "/auth/login": {
-            "get": {
-                "description": "dev: http://localhost:8080/auth/login\nprod: https://csbackend.fly.dev/auth/login",
+        "/auth/register": {
+            "post": {
+                "description": "dev: http://localhost:8080/auth/register\nprod: https://csbackend.fly.dev/auth/register",
                 "consumes": [
                     "application/x-www-form-urlencoded"
                 ],
@@ -44,23 +64,37 @@ const docTemplate = `{
                 "tags": [
                     "auth"
                 ],
-                "summary": "Redirect user to third party login",
-                "responses": {}
-            }
-        },
-        "/auth/logout": {
-            "get": {
-                "description": "dev: http://localhost:8080/auth/logout\nprod: https://csbackend.fly.dev/auth/logout",
-                "consumes": [
-                    "application/x-www-form-urlencoded"
+                "summary": "Redirect user to third party register",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Access token",
+                        "name": "access_token",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Username",
+                        "name": "username",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Password",
+                        "name": "password",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Role",
+                        "name": "role",
+                        "in": "query",
+                        "required": true
+                    }
                 ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "auth"
-                ],
-                "summary": "Log user out",
                 "responses": {}
             }
         },
@@ -94,9 +128,9 @@ const docTemplate = `{
                 "responses": {}
             }
         },
-        "/user": {
+        "/oauth/callback": {
             "get": {
-                "description": "User",
+                "description": "Callback",
                 "consumes": [
                     "application/x-www-form-urlencoded"
                 ],
@@ -104,16 +138,42 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "user"
+                    "oauth"
                 ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/user.GET.response"
-                        }
-                    }
-                }
+                "summary": "Endpoint the user is redirected to after logging in.",
+                "responses": {}
+            }
+        },
+        "/oauth/login": {
+            "get": {
+                "description": "dev: http://localhost:8080/oauth/login\nprod: https://csbackend.fly.dev/oauth/login",
+                "consumes": [
+                    "application/x-www-form-urlencoded"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "oauth"
+                ],
+                "summary": "Redirect user to third party login",
+                "responses": {}
+            }
+        },
+        "/oauth/logout": {
+            "get": {
+                "description": "dev: http://localhost:8080/oauth/logout\nprod: https://csbackend.fly.dev/oauth/logout",
+                "consumes": [
+                    "application/x-www-form-urlencoded"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "oauth"
+                ],
+                "summary": "Log user out",
+                "responses": {}
             }
         }
     },
@@ -168,16 +228,23 @@ const docTemplate = `{
                 }
             }
         }
+    },
+    "securityDefinitions": {
+        "ApiKeyAuth": {
+            "type": "apiKey",
+            "name": "Authorization",
+            "in": "header"
+        }
     }
 }`
 
 // SwaggerInfo holds exported Swagger Info so clients can modify it
 var SwaggerInfo = &swag.Spec{
-	Version:          "",
+	Version:          "1.0",
 	Host:             "",
 	BasePath:         "",
 	Schemes:          []string{},
-	Title:            "",
+	Title:            "CashierStation Backend Server API",
 	Description:      "",
 	InfoInstanceName: "swagger",
 	SwaggerTemplate:  docTemplate,

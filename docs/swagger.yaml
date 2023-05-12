@@ -34,42 +34,63 @@ definitions:
     type: object
 info:
   contact: {}
+  title: CashierStation Backend Server API
+  version: "1.0"
 paths:
-  /auth/callback:
+  /api/user:
     get:
       consumes:
       - application/x-www-form-urlencoded
-      description: Callback
+      description: User
+      parameters:
+      - description: ID Token
+        in: query
+        name: id_token
+        required: true
+        type: string
       produces:
       - application/json
-      responses: {}
-      summary: Endpoint the user is redirected to after logging in.
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/user.GET.response'
+      security:
+      - ApiKeyAuth: []
       tags:
-      - auth
-  /auth/login:
-    get:
+      - user
+  /auth/register:
+    post:
       consumes:
       - application/x-www-form-urlencoded
       description: |-
-        dev: http://localhost:8080/auth/login
-        prod: https://csbackend.fly.dev/auth/login
+        dev: http://localhost:8080/auth/register
+        prod: https://csbackend.fly.dev/auth/register
+      parameters:
+      - description: Access token
+        in: query
+        name: access_token
+        required: true
+        type: string
+      - description: Username
+        in: query
+        name: username
+        required: true
+        type: string
+      - description: Password
+        in: query
+        name: password
+        required: true
+        type: string
+      - description: Role
+        in: query
+        name: role
+        required: true
+        type: string
       produces:
       - application/json
       responses: {}
-      summary: Redirect user to third party login
-      tags:
-      - auth
-  /auth/logout:
-    get:
-      consumes:
-      - application/x-www-form-urlencoded
-      description: |-
-        dev: http://localhost:8080/auth/logout
-        prod: https://csbackend.fly.dev/auth/logout
-      produces:
-      - application/json
-      responses: {}
-      summary: Log user out
+      summary: Redirect user to third party register
       tags:
       - auth
   /example:
@@ -94,18 +115,46 @@ paths:
       responses: {}
       tags:
       - metrics
-  /user:
+  /oauth/callback:
     get:
       consumes:
       - application/x-www-form-urlencoded
-      description: User
+      description: Callback
       produces:
       - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/user.GET.response'
+      responses: {}
+      summary: Endpoint the user is redirected to after logging in.
       tags:
-      - user
+      - oauth
+  /oauth/login:
+    get:
+      consumes:
+      - application/x-www-form-urlencoded
+      description: |-
+        dev: http://localhost:8080/oauth/login
+        prod: https://csbackend.fly.dev/oauth/login
+      produces:
+      - application/json
+      responses: {}
+      summary: Redirect user to third party login
+      tags:
+      - oauth
+  /oauth/logout:
+    get:
+      consumes:
+      - application/x-www-form-urlencoded
+      description: |-
+        dev: http://localhost:8080/oauth/logout
+        prod: https://csbackend.fly.dev/oauth/logout
+      produces:
+      - application/json
+      responses: {}
+      summary: Log user out
+      tags:
+      - oauth
+securityDefinitions:
+  ApiKeyAuth:
+    in: header
+    name: Authorization
+    type: apiKey
 swagger: "2.0"

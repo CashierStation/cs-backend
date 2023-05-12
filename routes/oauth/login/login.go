@@ -12,12 +12,12 @@ import (
 // @securityDefinitions.basic BasicAuth
 // @Summary Redirect user to third party login
 // @Schemes
-// @Description dev: http://localhost:8080/auth/login
-// @Description prod: https://csbackend.fly.dev/auth/login
-// @Tags auth
+// @Description dev: http://localhost:8080/oauth/login
+// @Description prod: https://csbackend.fly.dev/oauth/login
+// @Tags oauth
 // @Accept x-www-form-urlencoded
 // @Produce json
-// @Router /auth/login [get]
+// @Router /oauth/login [get]
 func GET(c *fiber.Ctx) error {
 	state, err := generateRandomState()
 

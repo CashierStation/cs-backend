@@ -10,10 +10,10 @@ import (
 // @Summary Endpoint the user is redirected to after logging in.
 // @Schemes
 // @Description Callback
-// @Tags auth
+// @Tags oauth
 // @Accept x-www-form-urlencoded
 // @Produce json
-// @Router /auth/callback [get]
+// @Router /oauth/callback [get]
 func GET(c *fiber.Ctx) error {
 	session, err := global.Session.Get(c)
 	if err != nil {
@@ -30,6 +30,9 @@ func GET(c *fiber.Ctx) error {
 		return c.SendString("Failed to exchange token: " + err.Error())
 	}
 
+	println("access token" + token.AccessToken)
+	println("id token" + token.Extra("id_token").(string))
+
 	idToken, err := global.Authenticator.VerifyIDToken(c.Context(), token)
 	if err != nil {
 		return c.SendString("Failed to verify ID token: " + err.Error())
@@ -45,5 +48,5 @@ func GET(c *fiber.Ctx) error {
 		return c.SendStatus(fiber.StatusInternalServerError)
 	}
 
-	return c.Redirect("/", fiber.StatusTemporaryRedirect)
+	return c.SendString("Bearer " + token.AccessToken)
 }

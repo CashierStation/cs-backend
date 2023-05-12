@@ -14,12 +14,12 @@ import (
 // @securityDefinitions.basic BasicAuth
 // @Summary Log user out
 // @Schemes
-// @Description dev: http://localhost:8080/auth/logout
-// @Description prod: https://csbackend.fly.dev/auth/logout
-// @Tags auth
+// @Description dev: http://localhost:8080/oauth/logout
+// @Description prod: https://csbackend.fly.dev/oauth/logout
+// @Tags oauth
 // @Accept x-www-form-urlencoded
 // @Produce json
-// @Router /auth/logout [get]
+// @Router /oauth/logout [get]
 func GET(c *fiber.Ctx) error {
 	session, err := global.Session.Get(c)
 	if err != nil {

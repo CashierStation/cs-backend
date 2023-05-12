@@ -6,6 +6,7 @@ import (
 	"github.com/gofiber/fiber/v2"
 )
 
+// @Security ApiKeyAuth
 // User godoc
 // @Summary
 // @Schemes
@@ -13,8 +14,9 @@ import (
 // @Tags user
 // @Accept x-www-form-urlencoded
 // @Produce json
+// @Param id_token query string true "ID Token"
 // @Success 200 {object} user.GET.response
-// @Router /user [get]
+// @Router /api/user [get]
 func GET(c *fiber.Ctx) error {
 	type response struct {
 		Aud            string `json:"aud"`
@@ -34,12 +36,26 @@ func GET(c *fiber.Ctx) error {
 		Updated_at     string `json:"updated_at"`
 	}
 
-	sess, err := global.Session.Get(c)
+	id_token := c.Query("id_token")
+	oidc_thing, err := global.Authenticator.VerifyRawIDToken(c.Context(), id_token)
+
+	if err != nil {
+		return c.SendString("Failed to verify ID token: " + err.Error())
+	}
+
+	var profile response
+	if err := oidc_thing.Claims(&profile); err != nil {
+		return c.SendString("Failed to parse ID token claims: " + err.Error())
+	}
+
+	return c.JSON(profile)
+
+	/* sess, err := global.Session.Get(c)
 	if err != nil {
 		return err
 	}
 
 	profile := sess.Get("profile")
 
-	return c.JSON(profile)
+	return c.JSON(profile) */
 }

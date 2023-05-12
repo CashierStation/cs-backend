@@ -27,6 +27,11 @@ func init() {
 	flag.Bool("migrate", false, "migrate database")
 }
 
+// @title           CashierStation Backend Server API
+// @version         1.0
+// @securityDefinitions.apikey  ApiKeyAuth
+// @in header
+// @name Authorization
 func main() {
 	flag.Parse()
 

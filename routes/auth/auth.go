@@ -1,16 +1,12 @@
 package auth
 
 import (
-	"csbackend/routes/auth/callback"
-	"csbackend/routes/auth/login"
-	"csbackend/routes/auth/logout"
+	"csbackend/routes/auth/register"
 
 	"github.com/gofiber/fiber/v2"
 )
 
 func Routes(app *fiber.App) {
 	auth := app.Group("/auth")
-	auth.Get("/login", login.GET)
-	auth.Get("/callback", callback.GET)
-	auth.Get("/logout", logout.GET)
+	auth.Post("/register", register.POST)
 }
