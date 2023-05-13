@@ -82,10 +82,10 @@ func POST(c *fiber.Ctx) error {
 	}
 
 	// Check if user already exists
-	_, err = models.GetEmployeeByUsername(tx, rawReqQuery.Username)
+	_, err = models.GetEmployeeInRental(tx, rentalId, rawReqQuery.Username)
 	if err == nil {
 		tx.Rollback()
-		return c.Status(fiber.StatusBadRequest).SendString("User already exists")
+		return c.Status(fiber.StatusBadRequest).SendString("User already exists in that rental")
 	}
 
 	if !errors.Is(err, gorm.ErrRecordNotFound) {
