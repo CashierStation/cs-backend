@@ -4,8 +4,9 @@ import (
 	"gorm.io/gorm"
 )
 
-func CreateEmployee(tx *gorm.DB, username string, passwordHash string, roleID uint, rentalID string) (Employee, error) {
+func CreateEmployee(tx *gorm.DB, id string, username string, passwordHash string, roleID uint, rentalID string) (Employee, error) {
 	employee := &Employee{
+		ID:           id,
 		Username:     username,
 		PasswordHash: passwordHash,
 		RoleID:       roleID,

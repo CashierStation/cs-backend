@@ -12,6 +12,7 @@ import (
 	"gorm.io/gorm"
 
 	"github.com/gofiber/fiber/v2"
+	"github.com/google/uuid"
 )
 
 type RegisterPostRequest struct {
@@ -24,6 +25,7 @@ type RegisterPostRequest struct {
 var registerPostValidator = lib.CreateValidator[RegisterPostRequest]
 
 type RegisterPostResponse struct {
+	UserID       string `json:"user_id"`
 	Username     string `json:"username"`
 	Role         string `json:"role"`
 	SessionToken string `json:"session_token"`
@@ -111,7 +113,9 @@ func POST(c *fiber.Ctx) error {
 	}
 
 	// Create user
-	employee, err := models.CreateEmployee(tx, rawReqQuery.Username, string(hashedPasswordByte), role.ID, rental.ID)
+	uuid := uuid.New()
+	println(uuid.String())
+	employee, err := models.CreateEmployee(tx, uuid.String(), rawReqQuery.Username, string(hashedPasswordByte), role.ID, rental.ID)
 	if err != nil {
 		tx.Rollback()
 		return c.Status(fiber.StatusBadRequest).JSON(err.Error())
@@ -128,6 +132,7 @@ func POST(c *fiber.Ctx) error {
 
 	// Return response
 	res := RegisterPostResponse{
+		UserID:       employee.ID,
 		Username:     employee.Username,
 		Role:         role.Name,
 		SessionToken: sessionToken,

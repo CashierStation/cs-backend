@@ -1,6 +1,10 @@
 package models
 
-import "gorm.io/gorm"
+import (
+	"time"
+
+	"gorm.io/gorm"
+)
 
 type Rental struct {
 	Address string
@@ -20,52 +24,70 @@ type Access struct {
 }
 
 type Employee struct {
-	gorm.Model
+	ID           string `gorm:"primaryKey"`
 	RentalID     string
 	RoleID       uint
 	Username     string
 	PasswordHash string
 	Rental       Rental `gorm:"foreignKey:RentalID"`
 	Role         Role   `gorm:"foreignKey:RoleID"`
+	CreatedAt    time.Time
+	UpdatedAt    time.Time
+	DeletedAt    gorm.DeletedAt `gorm:"index"`
 }
 
 type Unit struct {
-	gorm.Model
+	ID          uint `gorm:"primaryKey"`
 	RentalID    string
 	Name        string
 	HourlyPrice int
 	Rental      Rental `gorm:"foreignKey:RentalID"`
+	CreatedAt   time.Time
+	UpdatedAt   time.Time
+	DeletedAt   gorm.DeletedAt `gorm:"index"`
 }
 
 type Booking struct {
-	gorm.Model
-	UnitID uint
-	Time   string
-	Status int
-	Unit   Unit `gorm:"foreignKey:UnitID"`
+	ID        uint `gorm:"primaryKey"`
+	UnitID    uint
+	Time      string
+	Status    int
+	Unit      Unit `gorm:"foreignKey:UnitID"`
+	CreatedAt time.Time
+	UpdatedAt time.Time
+	DeletedAt gorm.DeletedAt `gorm:"index"`
 }
 
 type Transaction struct {
-	gorm.Model
+	ID         uint `gorm:"primaryKey"`
 	UnitID     uint
 	StartTime  string
 	FinishTime string
 	Unit       Unit    `gorm:"foreignKey:UnitID"`
 	Snacks     []Snack `gorm:"many2many:snack_transactions;"`
+	CreatedAt  time.Time
+	UpdatedAt  time.Time
+	DeletedAt  gorm.DeletedAt `gorm:"index"`
 }
 
 type Snack struct {
-	gorm.Model
-	RentalID string
-	Name     string
-	Price    int
-	Rental   Rental `gorm:"foreignKey:RentalID"`
+	ID        uint `gorm:"primaryKey"`
+	RentalID  string
+	Name      string
+	Price     int
+	Rental    Rental `gorm:"foreignKey:RentalID"`
+	CreatedAt time.Time
+	UpdatedAt time.Time
+	DeletedAt gorm.DeletedAt `gorm:"index"`
 }
 
 type SnackRestock struct {
-	gorm.Model
-	SnackID  uint
-	Quantity int
-	Total    int
-	Snack    Snack `gorm:"foreignKey:SnackID"`
+	ID        uint `gorm:"primaryKey"`
+	SnackID   uint
+	Quantity  int
+	Total     int
+	Snack     Snack `gorm:"foreignKey:SnackID"`
+	CreatedAt time.Time
+	UpdatedAt time.Time
+	DeletedAt gorm.DeletedAt `gorm:"index"`
 }
