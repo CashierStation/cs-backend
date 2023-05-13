@@ -114,7 +114,6 @@ func POST(c *fiber.Ctx) error {
 
 	// Create user
 	uuid := uuid.New()
-	println(uuid.String())
 	employee, err := models.CreateEmployee(tx, uuid.String(), rawReqQuery.Username, string(hashedPasswordByte), role.ID, rental.ID)
 	if err != nil {
 		tx.Rollback()
