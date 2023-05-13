@@ -77,14 +77,14 @@ func POST(c *fiber.Ctx) error {
 
 	// Check if user already exists
 	employee, err := models.GetEmployeeInRental(tx, rentalId, rawReqQuery.Username)
-	if err != nil && !errors.Is(err, gorm.ErrRecordNotFound) {
+	if errors.Is(err, gorm.ErrRecordNotFound) {
 		tx.Rollback()
-		return c.Status(fiber.StatusBadRequest).JSON(err.Error())
+		return c.Status(fiber.StatusBadRequest).SendString("User does not exist")
 	}
 
 	if err != nil {
 		tx.Rollback()
-		return c.Status(fiber.StatusBadRequest).SendString("User already exists")
+		return c.Status(fiber.StatusBadRequest).JSON(err.Error())
 	}
 
 	// Match password hash
