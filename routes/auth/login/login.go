@@ -101,6 +101,13 @@ func POST(c *fiber.Ctx) error {
 		return c.Status(fiber.StatusBadRequest).JSON(err.Error())
 	}
 
+	// Upsert session
+	_, err = models.UpsertSession(tx, sessionToken, employee.ID)
+	if err != nil {
+		tx.Rollback()
+		return c.Status(fiber.StatusBadRequest).JSON(err.Error())
+	}
+
 	tx.Commit()
 
 	// Return response

@@ -31,6 +31,7 @@ type Employee struct {
 	PasswordHash string
 	Rental       Rental `gorm:"foreignKey:RentalID"`
 	Role         Role   `gorm:"foreignKey:RoleID"`
+	Session      Session
 	CreatedAt    time.Time
 	UpdatedAt    time.Time
 	DeletedAt    gorm.DeletedAt `gorm:"index"`
@@ -90,4 +91,12 @@ type SnackRestock struct {
 	CreatedAt time.Time
 	UpdatedAt time.Time
 	DeletedAt gorm.DeletedAt `gorm:"index"`
+}
+
+type Session struct {
+	Token      string `gorm:"primaryKey"`
+	EmployeeID string `gorm:"unique"`
+	CreatedAt  time.Time
+	UpdatedAt  time.Time
+	DeletedAt  gorm.DeletedAt `gorm:"index"`
 }
