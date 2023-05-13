@@ -1,7 +1,6 @@
 package db
 
 import (
-	"fmt"
 	"log"
 	"time"
 
@@ -15,20 +14,20 @@ import (
 )
 
 func New() (*gorm.DB, error) {
-	host := os.Getenv("PGHOST")
-	user := os.Getenv("PGUSER")
-	password := os.Getenv("PGPASSWORD")
-	dbname := os.Getenv("PGDATABASE")
-	port := os.Getenv("PGPORT")
+	//host := os.Getenv("PGHOST")
+	//user := os.Getenv("PGUSER")
+	//password := os.Getenv("PGPASSWORD")
+	//dbname := os.Getenv("PGDATABASE")
+	//port := os.Getenv("PGPORT")
 
-	//dsn := os.Getenv("DSN")
-	dsn := fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=%s sslmode=disable TimeZone=Asia/Jakarta", host, user, password, dbname, port)
+	dsn := os.Getenv("DSN")
+	//dsn := fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=%s sslmode=disable TimeZone=Asia/Jakarta", host, user, password, dbname, port)
 
 	newLogger := logger.New(
 		log.New(os.Stdout, "\r\n", log.LstdFlags), // io writer
 		logger.Config{
-			SlowThreshold:             time.Second, // Slow SQL threshold
-			IgnoreRecordNotFoundError: true,        // Ignore ErrRecordNotFound error for logger
+			SlowThreshold:             time.Millisecond * 500, // Slow SQL threshold
+			IgnoreRecordNotFoundError: true,                   // Ignore ErrRecordNotFound error for logger
 		},
 	)
 
