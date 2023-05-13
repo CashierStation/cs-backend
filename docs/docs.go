@@ -16,42 +16,6 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
-        "/api/user": {
-            "get": {
-                "security": [
-                    {
-                        "ApiKeyAuth": []
-                    }
-                ],
-                "description": "User",
-                "consumes": [
-                    "application/x-www-form-urlencoded"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "user"
-                ],
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "ID Token",
-                        "name": "id_token",
-                        "in": "query",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/user.GET.response"
-                        }
-                    }
-                }
-            }
-        },
         "/auth/register": {
             "post": {
                 "description": "dev: http://localhost:8080/auth/register\nprod: https://csbackend.fly.dev/auth/register",
@@ -203,56 +167,6 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "username": {
-                    "type": "string"
-                }
-            }
-        },
-        "user.GET.response": {
-            "type": "object",
-            "properties": {
-                "aud": {
-                    "type": "string"
-                },
-                "email": {
-                    "type": "string"
-                },
-                "email_verified": {
-                    "type": "boolean"
-                },
-                "exp": {
-                    "type": "integer"
-                },
-                "family_name": {
-                    "type": "string"
-                },
-                "given_name": {
-                    "type": "string"
-                },
-                "iat": {
-                    "type": "integer"
-                },
-                "iss": {
-                    "type": "string"
-                },
-                "locale": {
-                    "type": "string"
-                },
-                "name": {
-                    "type": "string"
-                },
-                "nickname": {
-                    "type": "string"
-                },
-                "picture": {
-                    "type": "string"
-                },
-                "sid": {
-                    "type": "string"
-                },
-                "sub": {
-                    "type": "string"
-                },
-                "updated_at": {
                     "type": "string"
                 }
             }

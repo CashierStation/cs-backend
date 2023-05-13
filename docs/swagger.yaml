@@ -8,66 +8,11 @@ definitions:
       username:
         type: string
     type: object
-  user.GET.response:
-    properties:
-      aud:
-        type: string
-      email:
-        type: string
-      email_verified:
-        type: boolean
-      exp:
-        type: integer
-      family_name:
-        type: string
-      given_name:
-        type: string
-      iat:
-        type: integer
-      iss:
-        type: string
-      locale:
-        type: string
-      name:
-        type: string
-      nickname:
-        type: string
-      picture:
-        type: string
-      sid:
-        type: string
-      sub:
-        type: string
-      updated_at:
-        type: string
-    type: object
 info:
   contact: {}
   title: CashierStation Backend Server API
   version: "1.0"
 paths:
-  /api/user:
-    get:
-      consumes:
-      - application/x-www-form-urlencoded
-      description: User
-      parameters:
-      - description: ID Token
-        in: query
-        name: id_token
-        required: true
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/user.GET.response'
-      security:
-      - ApiKeyAuth: []
-      tags:
-      - user
   /auth/register:
     post:
       consumes:

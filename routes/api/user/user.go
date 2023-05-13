@@ -6,17 +6,6 @@ import (
 	"github.com/gofiber/fiber/v2"
 )
 
-// @Security ApiKeyAuth
-// User godoc
-// @Summary
-// @Schemes
-// @Description User
-// @Tags user
-// @Accept x-www-form-urlencoded
-// @Produce json
-// @Param id_token query string true "ID Token"
-// @Success 200 {object} user.GET.response
-// @Router /api/user [get]
 func GET(c *fiber.Ctx) error {
 	type response struct {
 		Aud            string `json:"aud"`
