@@ -7,6 +7,7 @@ import (
 	"net/http"
 
 	"github.com/coreos/go-oidc/v3/oidc"
+	"github.com/golang-jwt/jwt/v5"
 	"golang.org/x/oauth2"
 
 	"os"
@@ -100,3 +101,24 @@ func (a *Authenticator) GetUserinfo(access_token string) (string, error) {
 
 	return string(body), nil
 }
+
+// Different flow than the one for oauth/auth
+func (a *Authenticator) IssueSessionToken(rentalId string, username string, roleId uint) (string, error) {
+	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
+		"rentalId": rentalId,
+		"username": username,
+		"roleId":   roleId,
+	})
+
+	// Sign and get the complete encoded token as a string using the secret
+	secret := os.Getenv("SESSION_SECRET")
+	hmacSampleSecret := []byte(secret)
+	tokenString, err := token.SignedString(hmacSampleSecret)
+	if err != nil {
+		return "", err
+	}
+
+	return tokenString, nil
+}
+
+// TODO: Implement refresh token

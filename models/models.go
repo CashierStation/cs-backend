@@ -2,16 +2,10 @@ package models
 
 import "gorm.io/gorm"
 
-type Owner struct {
-	ID    string `gorm:"primaryKey"`
-	Email string `gorm:"unique"`
-}
-
 type Rental struct {
-	gorm.Model
 	Address string
-	OwnerID string
-	Owner   Owner
+	ID      string `gorm:"primaryKey"`
+	Email   string `gorm:"unique"`
 }
 
 type Role struct {
@@ -27,9 +21,9 @@ type Access struct {
 
 type Employee struct {
 	gorm.Model
-	RentalID     uint
+	RentalID     string
 	RoleID       uint
-	Name         string
+	Username     string
 	PasswordHash string
 	Rental       Rental `gorm:"foreignKey:RentalID"`
 	Role         Role   `gorm:"foreignKey:RoleID"`
@@ -37,7 +31,7 @@ type Employee struct {
 
 type Unit struct {
 	gorm.Model
-	RentalID    uint
+	RentalID    string
 	Name        string
 	HourlyPrice int
 	Rental      Rental `gorm:"foreignKey:RentalID"`
@@ -62,7 +56,7 @@ type Transaction struct {
 
 type Snack struct {
 	gorm.Model
-	RentalID uint
+	RentalID string
 	Name     string
 	Price    int
 	Rental   Rental `gorm:"foreignKey:RentalID"`

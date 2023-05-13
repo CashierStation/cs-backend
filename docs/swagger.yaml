@@ -1,4 +1,13 @@
 definitions:
+  register.RegisterPostResponse:
+    properties:
+      role:
+        type: string
+      session_token:
+        type: string
+      username:
+        type: string
+    type: object
   user.GET.response:
     properties:
       aud:
@@ -67,30 +76,41 @@ paths:
         dev: http://localhost:8080/auth/register
         prod: https://csbackend.fly.dev/auth/register
       parameters:
-      - description: Access token
+      - description: Access token from Auth0
         in: query
         name: access_token
         required: true
         type: string
       - description: Username
         in: query
+        maxLength: 32
+        minLength: 3
         name: username
         required: true
         type: string
-      - description: Password
+      - description: Password (Numeric)
         in: query
+        maxLength: 32
+        minLength: 6
         name: password
         required: true
         type: string
       - description: Role
+        enum:
+        - owner
+        - karyawan
         in: query
         name: role
         required: true
         type: string
       produces:
       - application/json
-      responses: {}
-      summary: Redirect user to third party register
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/register.RegisterPostResponse'
+      summary: Register a new employee/owner account
       tags:
       - auth
   /example:

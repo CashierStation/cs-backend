@@ -64,16 +64,18 @@ const docTemplate = `{
                 "tags": [
                     "auth"
                 ],
-                "summary": "Redirect user to third party register",
+                "summary": "Register a new employee/owner account",
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "Access token",
+                        "description": "Access token from Auth0",
                         "name": "access_token",
                         "in": "query",
                         "required": true
                     },
                     {
+                        "maxLength": 32,
+                        "minLength": 3,
                         "type": "string",
                         "description": "Username",
                         "name": "username",
@@ -81,13 +83,19 @@ const docTemplate = `{
                         "required": true
                     },
                     {
+                        "maxLength": 32,
+                        "minLength": 6,
                         "type": "string",
-                        "description": "Password",
+                        "description": "Password (Numeric)",
                         "name": "password",
                         "in": "query",
                         "required": true
                     },
                     {
+                        "enum": [
+                            "owner",
+                            "karyawan"
+                        ],
                         "type": "string",
                         "description": "Role",
                         "name": "role",
@@ -95,7 +103,14 @@ const docTemplate = `{
                         "required": true
                     }
                 ],
-                "responses": {}
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/register.RegisterPostResponse"
+                        }
+                    }
+                }
             }
         },
         "/example": {
@@ -178,6 +193,20 @@ const docTemplate = `{
         }
     },
     "definitions": {
+        "register.RegisterPostResponse": {
+            "type": "object",
+            "properties": {
+                "role": {
+                    "type": "string"
+                },
+                "session_token": {
+                    "type": "string"
+                },
+                "username": {
+                    "type": "string"
+                }
+            }
+        },
         "user.GET.response": {
             "type": "object",
             "properties": {

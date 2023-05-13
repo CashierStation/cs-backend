@@ -2,9 +2,12 @@ package db
 
 import (
 	"fmt"
+	"log"
+	"time"
 
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
+	"gorm.io/gorm/logger"
 
 	"csbackend/models"
 
@@ -21,10 +24,21 @@ func New() (*gorm.DB, error) {
 	//dsn := os.Getenv("DSN")
 	dsn := fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=%s sslmode=disable TimeZone=Asia/Jakarta", host, user, password, dbname, port)
 
+	newLogger := logger.New(
+		log.New(os.Stdout, "\r\n", log.LstdFlags), // io writer
+		logger.Config{
+			SlowThreshold:             time.Second, // Slow SQL threshold
+			IgnoreRecordNotFoundError: true,        // Ignore ErrRecordNotFound error for logger
+		},
+	)
+
 	database, err := gorm.Open(
 		postgres.New(postgres.Config{
 			DSN: dsn,
 		}),
+		&gorm.Config{
+			Logger: newLogger,
+		},
 	)
 
 	if err != nil {
@@ -36,7 +50,6 @@ func New() (*gorm.DB, error) {
 
 func Migrate(db *gorm.DB) error {
 	var models = []interface{}{
-		&models.Owner{},
 		&models.Rental{},
 		&models.Role{},
 		&models.Access{},
@@ -53,6 +66,11 @@ func Migrate(db *gorm.DB) error {
 		if err != nil {
 			return err
 		}
+	}
+
+	err := postMigration(db)
+	if err != nil {
+		return err
 	}
 
 	return nil
