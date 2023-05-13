@@ -16,6 +16,56 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
+        "/auth/login": {
+            "post": {
+                "description": "dev: http://localhost:8080/auth/login\nprod: https://csbackend.fly.dev/auth/login",
+                "consumes": [
+                    "application/x-www-form-urlencoded"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "auth"
+                ],
+                "summary": "Login a new employee/owner account",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Access token from Auth0",
+                        "name": "access_token",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "maxLength": 32,
+                        "minLength": 3,
+                        "type": "string",
+                        "description": "Username",
+                        "name": "username",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "maxLength": 32,
+                        "minLength": 6,
+                        "type": "string",
+                        "description": "Password (Numeric)",
+                        "name": "password",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/login.LoginPostResponse"
+                        }
+                    }
+                }
+            }
+        },
         "/auth/register": {
             "post": {
                 "description": "dev: http://localhost:8080/auth/register\nprod: https://csbackend.fly.dev/auth/register",
@@ -75,21 +125,6 @@ const docTemplate = `{
                         }
                     }
                 }
-            }
-        },
-        "/example": {
-            "get": {
-                "description": "Example",
-                "consumes": [
-                    "application/x-www-form-urlencoded"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "example"
-                ],
-                "responses": {}
             }
         },
         "/metrics": {
@@ -157,6 +192,17 @@ const docTemplate = `{
         }
     },
     "definitions": {
+        "login.LoginPostResponse": {
+            "type": "object",
+            "properties": {
+                "session_token": {
+                    "type": "string"
+                },
+                "username": {
+                    "type": "string"
+                }
+            }
+        },
         "register.RegisterPostResponse": {
             "type": "object",
             "properties": {

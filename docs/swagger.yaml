@@ -1,4 +1,11 @@
 definitions:
+  login.LoginPostResponse:
+    properties:
+      session_token:
+        type: string
+      username:
+        type: string
+    type: object
   register.RegisterPostResponse:
     properties:
       role:
@@ -13,6 +20,43 @@ info:
   title: CashierStation Backend Server API
   version: "1.0"
 paths:
+  /auth/login:
+    post:
+      consumes:
+      - application/x-www-form-urlencoded
+      description: |-
+        dev: http://localhost:8080/auth/login
+        prod: https://csbackend.fly.dev/auth/login
+      parameters:
+      - description: Access token from Auth0
+        in: query
+        name: access_token
+        required: true
+        type: string
+      - description: Username
+        in: query
+        maxLength: 32
+        minLength: 3
+        name: username
+        required: true
+        type: string
+      - description: Password (Numeric)
+        in: query
+        maxLength: 32
+        minLength: 6
+        name: password
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/login.LoginPostResponse'
+      summary: Login a new employee/owner account
+      tags:
+      - auth
   /auth/register:
     post:
       consumes:
@@ -58,16 +102,6 @@ paths:
       summary: Register a new employee/owner account
       tags:
       - auth
-  /example:
-    get:
-      consumes:
-      - application/x-www-form-urlencoded
-      description: Example
-      produces:
-      - application/json
-      responses: {}
-      tags:
-      - example
   /metrics:
     get:
       consumes:
