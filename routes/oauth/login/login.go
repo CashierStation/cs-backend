@@ -1,9 +1,7 @@
 package login
 
 import (
-	"crypto/rand"
 	"csbackend/global"
-	"encoding/base64"
 
 	"github.com/gofiber/fiber/v2"
 )
@@ -19,7 +17,7 @@ import (
 // @Produce json
 // @Router /oauth/login [get]
 func GET(c *fiber.Ctx) error {
-	state, err := generateRandomState()
+	state, err := global.Authenticator.GenerateRandomBase64()
 
 	if err != nil {
 		return err
@@ -40,16 +38,4 @@ func GET(c *fiber.Ctx) error {
 
 	// Redirect to auth endpoint
 	return c.Redirect(global.Authenticator.AuthCodeURL(state), fiber.StatusTemporaryRedirect)
-}
-
-func generateRandomState() (string, error) {
-	b := make([]byte, 32)
-	_, err := rand.Read(b)
-	if err != nil {
-		return "", err
-	}
-
-	state := base64.StdEncoding.EncodeToString(b)
-
-	return state, nil
 }

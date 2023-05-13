@@ -95,7 +95,7 @@ func POST(c *fiber.Ctx) error {
 	}
 
 	// Create session token as if the user logged in
-	sessionToken, err := global.Authenticator.IssueSessionToken(rentalId, employee.Username, employee.RoleID)
+	sessionToken, err := global.Authenticator.GenerateRandomHex()
 	if err != nil {
 		tx.Rollback()
 		return c.Status(fiber.StatusBadRequest).JSON(err.Error())

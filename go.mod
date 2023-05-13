@@ -7,7 +7,6 @@ require (
 	github.com/go-playground/validator/v10 v10.13.0
 	github.com/gofiber/fiber/v2 v2.45.0
 	github.com/gofiber/swagger v0.1.11
-	github.com/golang-jwt/jwt/v5 v5.0.0
 	github.com/joho/godotenv v1.5.1
 	github.com/mattn/go-tty v0.0.5
 	github.com/swaggo/swag v1.16.1
