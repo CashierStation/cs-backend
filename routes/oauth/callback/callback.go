@@ -30,9 +30,6 @@ func GET(c *fiber.Ctx) error {
 		return c.SendString("Failed to exchange token: " + err.Error())
 	}
 
-	println("access token" + token.AccessToken)
-	println("id token" + token.Extra("id_token").(string))
-
 	idToken, err := global.Authenticator.VerifyIDToken(c.Context(), token)
 	if err != nil {
 		return c.SendString("Failed to verify ID token: " + err.Error())
@@ -48,5 +45,5 @@ func GET(c *fiber.Ctx) error {
 		return c.SendStatus(fiber.StatusInternalServerError)
 	}
 
-	return c.SendString("Bearer " + token.AccessToken)
+	return c.SendString(token.AccessToken)
 }
