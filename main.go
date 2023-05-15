@@ -29,9 +29,9 @@ func init() {
 
 // @title           CashierStation Backend Server API
 // @version         1.0
-// @securityDefinitions.apikey  ApiKeyAuth
+// @securityDefinitions.apikey  SessionToken
 // @in header
-// @name Authorization
+// @name X-Session
 func main() {
 	flag.Parse()
 
@@ -72,7 +72,7 @@ func main() {
 	app := fiber.New()
 	port := util.GetPort()
 
-	routes.SetupRoutes(app)
+	routes.SetupRoutes(app, database)
 	app.Get("/swagger/*", swagger.New(swagger.Config{ // custom
 		DeepLinking: false,
 		// Expand ("list") or Collapse ("none") tag groups by default

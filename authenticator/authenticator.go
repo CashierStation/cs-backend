@@ -3,6 +3,7 @@ package authenticator
 import (
 	"context"
 	"crypto/rand"
+	"csbackend/models"
 	"encoding/base64"
 	"encoding/hex"
 	"errors"
@@ -10,7 +11,9 @@ import (
 	"net/http"
 
 	"github.com/coreos/go-oidc/v3/oidc"
+	"github.com/gofiber/fiber/v2"
 	"golang.org/x/oauth2"
+	"gorm.io/gorm"
 
 	"os"
 )
@@ -26,6 +29,27 @@ type UserInfo struct {
 	UpdatedAt     string `json:"updated_at"`
 	Email         string `json:"email"`
 	EmailVerified bool   `json:"email_verified"`
+}
+
+func SessionMiddleware(db *gorm.DB) func(c *fiber.Ctx) error {
+	return func(c *fiber.Ctx) error {
+		if c.Request().Header.Peek("X-Session") == nil {
+			return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{
+				"message": "No session token provided",
+			})
+		}
+
+		sessionToken := string(c.Request().Header.Peek("X-Session"))
+		employee, err := models.GetSessionUser(db, sessionToken)
+		if err != nil {
+			return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{
+				"message": "Invalid session token",
+			})
+		}
+
+		c.Locals("user", employee)
+		return c.Next()
+	}
 }
 
 type Authenticator struct {

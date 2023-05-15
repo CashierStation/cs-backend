@@ -16,6 +16,33 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
+        "/api/user": {
+            "get": {
+                "security": [
+                    {
+                        "SessionToken": []
+                    }
+                ],
+                "description": "User",
+                "consumes": [
+                    "application/x-www-form-urlencoded"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "user"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/user.GET.response"
+                        }
+                    }
+                }
+            }
+        },
         "/auth/login": {
             "post": {
                 "description": "dev: http://localhost:8080/auth/login\nprod: https://csbackend.fly.dev/auth/login",
@@ -212,6 +239,29 @@ const docTemplate = `{
                 "session_token": {
                     "type": "string"
                 },
+                "user_id": {
+                    "type": "string"
+                },
+                "username": {
+                    "type": "string"
+                }
+            }
+        },
+        "user.GET.response": {
+            "type": "object",
+            "properties": {
+                "created_at": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "rental_id": {
+                    "type": "string"
+                },
+                "role": {
+                    "type": "string"
+                },
                 "username": {
                     "type": "string"
                 }
@@ -219,9 +269,9 @@ const docTemplate = `{
         }
     },
     "securityDefinitions": {
-        "ApiKeyAuth": {
+        "SessionToken": {
             "type": "apiKey",
-            "name": "Authorization",
+            "name": "X-Session",
             "in": "header"
         }
     }

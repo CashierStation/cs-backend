@@ -12,6 +12,21 @@ definitions:
         type: string
       session_token:
         type: string
+      user_id:
+        type: string
+      username:
+        type: string
+    type: object
+  user.GET.response:
+    properties:
+      created_at:
+        type: string
+      id:
+        type: string
+      rental_id:
+        type: string
+      role:
+        type: string
       username:
         type: string
     type: object
@@ -20,6 +35,22 @@ info:
   title: CashierStation Backend Server API
   version: "1.0"
 paths:
+  /api/user:
+    get:
+      consumes:
+      - application/x-www-form-urlencoded
+      description: User
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/user.GET.response'
+      security:
+      - SessionToken: []
+      tags:
+      - user
   /auth/login:
     post:
       consumes:
@@ -152,8 +183,8 @@ paths:
       tags:
       - oauth
 securityDefinitions:
-  ApiKeyAuth:
+  SessionToken:
     in: header
-    name: Authorization
+    name: X-Session
     type: apiKey
 swagger: "2.0"

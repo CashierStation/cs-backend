@@ -1,50 +1,39 @@
 package user
 
 import (
-	"csbackend/global"
+	"csbackend/models"
 
 	"github.com/gofiber/fiber/v2"
 )
 
+// @Security SessionToken
+// User godoc
+// @Summary
+// @Schemes
+// @Description User
+// @Tags user
+// @Accept x-www-form-urlencoded
+// @Produce json
+// @Success 200 {object} user.GET.response
+// @Router /api/user [get]
 func GET(c *fiber.Ctx) error {
 	type response struct {
-		Aud            string `json:"aud"`
-		Email          string `json:"email"`
-		Email_verified bool   `json:"email_verified"`
-		Exp            int    `json:"exp"`
-		Family_name    string `json:"family_name"`
-		Given_name     string `json:"given_name"`
-		Iat            int    `json:"iat"`
-		Iss            string `json:"iss"`
-		Locale         string `json:"locale"`
-		Name           string `json:"name"`
-		Nickname       string `json:"nickname"`
-		Picture        string `json:"picture"`
-		Sid            string `json:"sid"`
-		Sub            string `json:"sub"`
-		Updated_at     string `json:"updated_at"`
+		ID        string `json:"id"`
+		RentalID  string `json:"rental_id"`
+		Username  string `json:"username"`
+		Role      string `json:"role"`
+		CreatedAt string `json:"created_at"`
 	}
 
-	id_token := c.Query("id_token")
-	oidc_thing, err := global.Authenticator.VerifyRawIDToken(c.Context(), id_token)
+	user := c.Locals("user").(models.Employee)
 
-	if err != nil {
-		return c.SendString("Failed to verify ID token: " + err.Error())
+	resp := response{
+		ID:        user.ID,
+		RentalID:  user.RentalID,
+		Username:  user.Username,
+		Role:      user.Role.Name,
+		CreatedAt: user.CreatedAt.String(),
 	}
 
-	var profile response
-	if err := oidc_thing.Claims(&profile); err != nil {
-		return c.SendString("Failed to parse ID token claims: " + err.Error())
-	}
-
-	return c.JSON(profile)
-
-	/* sess, err := global.Session.Get(c)
-	if err != nil {
-		return err
-	}
-
-	profile := sess.Get("profile")
-
-	return c.JSON(profile) */
+	return c.JSON(resp)
 }
