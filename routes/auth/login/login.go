@@ -45,7 +45,7 @@ func POST(c *fiber.Ctx) error {
 	// convert query to struct
 	err := c.QueryParser(&rawReqQuery)
 	if err != nil {
-		return c.Status(fiber.StatusBadRequest).JSON(err.Error())
+		return c.Status(fiber.StatusBadRequest).SendString("Error parsing request query")
 	}
 
 	// validate query
@@ -56,13 +56,13 @@ func POST(c *fiber.Ctx) error {
 
 	userinfoString, err := global.Authenticator.GetUserinfo(rawReqQuery.AccessToken)
 	if err != nil {
-		return c.Status(fiber.StatusBadRequest).JSON(err.Error())
+		return c.Status(fiber.StatusBadRequest).SendString("Error getting userinfo from access token")
 	}
 
 	var userInfo authenticator.UserInfo
 	err = json.Unmarshal([]byte(userinfoString), &userInfo)
 	if err != nil {
-		return c.Status(fiber.StatusBadRequest).JSON(err.Error())
+		return c.Status(fiber.StatusBadRequest).SendString("Error unmarshalling userinfo")
 	}
 
 	tx := global.DB.Begin()
@@ -72,7 +72,7 @@ func POST(c *fiber.Ctx) error {
 	_, err = models.GetRentalById(tx, rentalId)
 	if err != nil {
 		tx.Rollback()
-		return c.Status(fiber.StatusBadRequest).JSON(err.Error())
+		return c.Status(fiber.StatusBadRequest).SendString("Error getting rental")
 	}
 
 	// Check if user already exists
@@ -84,7 +84,7 @@ func POST(c *fiber.Ctx) error {
 
 	if err != nil {
 		tx.Rollback()
-		return c.Status(fiber.StatusBadRequest).JSON(err.Error())
+		return c.Status(fiber.StatusBadRequest).SendString("Error getting employee")
 	}
 
 	// Match password hash
@@ -98,14 +98,14 @@ func POST(c *fiber.Ctx) error {
 	sessionToken, err := global.Authenticator.GenerateRandomHex()
 	if err != nil {
 		tx.Rollback()
-		return c.Status(fiber.StatusBadRequest).JSON(err.Error())
+		return c.Status(fiber.StatusBadRequest).SendString("Error generating session token")
 	}
 
 	// Upsert session
 	_, err = models.UpsertSession(tx, sessionToken, employee.ID)
 	if err != nil {
 		tx.Rollback()
-		return c.Status(fiber.StatusBadRequest).JSON(err.Error())
+		return c.Status(fiber.StatusBadRequest).SendString("Error upserting session")
 	}
 
 	tx.Commit()

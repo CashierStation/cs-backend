@@ -51,7 +51,7 @@ func POST(c *fiber.Ctx) error {
 	// convert query to struct
 	err := c.QueryParser(&rawReqQuery)
 	if err != nil {
-		return c.Status(fiber.StatusBadRequest).JSON(err.Error())
+		return c.Status(fiber.StatusBadRequest).SendString("Error parsing request query")
 	}
 
 	// validate query
@@ -62,13 +62,13 @@ func POST(c *fiber.Ctx) error {
 
 	userinfoString, err := global.Authenticator.GetUserinfo(rawReqQuery.AccessToken)
 	if err != nil {
-		return c.Status(fiber.StatusBadRequest).JSON(err.Error())
+		return c.Status(fiber.StatusBadRequest).SendString("Error getting userinfo from access token")
 	}
 
 	var userInfo authenticator.UserInfo
 	err = json.Unmarshal([]byte(userinfoString), &userInfo)
 	if err != nil {
-		return c.Status(fiber.StatusBadRequest).JSON(err.Error())
+		return c.Status(fiber.StatusBadRequest).SendString("Error unmarshalling userinfo")
 	}
 
 	tx := global.DB.Begin()
@@ -78,7 +78,7 @@ func POST(c *fiber.Ctx) error {
 	rental, err := models.GetOrCreateRental(tx, rentalId, userInfo.Email)
 	if err != nil {
 		tx.Rollback()
-		return c.Status(fiber.StatusBadRequest).JSON(err.Error())
+		return c.Status(fiber.StatusBadRequest).SendString("Error getting rental")
 	}
 
 	// Check if user already exists
@@ -90,7 +90,7 @@ func POST(c *fiber.Ctx) error {
 
 	if !errors.Is(err, gorm.ErrRecordNotFound) {
 		tx.Rollback()
-		return c.Status(fiber.StatusBadRequest).JSON(err.Error())
+		return c.Status(fiber.StatusBadRequest).SendString("Error getting user")
 	}
 
 	// Hash password
@@ -117,21 +117,21 @@ func POST(c *fiber.Ctx) error {
 	employee, err := models.CreateEmployee(tx, uuid.String(), rawReqQuery.Username, string(hashedPasswordByte), role.ID, rental.ID)
 	if err != nil {
 		tx.Rollback()
-		return c.Status(fiber.StatusBadRequest).JSON(err.Error())
+		return c.Status(fiber.StatusBadRequest).SendString("Error creating user")
 	}
 
 	// Create session token as if the user logged in
 	sessionToken, err := global.Authenticator.GenerateRandomHex()
 	if err != nil {
 		tx.Rollback()
-		return c.Status(fiber.StatusBadRequest).JSON(err.Error())
+		return c.Status(fiber.StatusBadRequest).SendString("Error generating session token")
 	}
 
 	// Upsert session
 	_, err = models.UpsertSession(tx, sessionToken, employee.ID)
 	if err != nil {
 		tx.Rollback()
-		return c.Status(fiber.StatusBadRequest).JSON(err.Error())
+		return c.Status(fiber.StatusBadRequest).SendString("Error upserting session")
 	}
 
 	tx.Commit()
