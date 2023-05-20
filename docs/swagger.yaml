@@ -17,6 +17,39 @@ definitions:
       username:
         type: string
     type: object
+  unit.DeleteUnitResponse:
+    properties:
+      status:
+        type: string
+    type: object
+  unit.GetUnitResponse:
+    properties:
+      units:
+        items:
+          $ref: '#/definitions/unit.UnitResponse'
+        type: array
+    type: object
+  unit.PostUnitResponse:
+    properties:
+      unit:
+        $ref: '#/definitions/unit.UnitResponse'
+    type: object
+  unit.PutUnitResponse:
+    properties:
+      unit:
+        $ref: '#/definitions/unit.UnitResponse'
+    type: object
+  unit.UnitResponse:
+    properties:
+      hourly_price:
+        type: integer
+      id:
+        type: integer
+      name:
+        type: string
+      rental_id:
+        type: string
+    type: object
   user.GET.response:
     properties:
       created_at:
@@ -35,6 +68,99 @@ info:
   title: CashierStation Backend Server API
   version: "1.0"
 paths:
+  /api/unit:
+    get:
+      consumes:
+      - application/x-www-form-urlencoded
+      description: Unit
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/unit.GetUnitResponse'
+      security:
+      - SessionToken: []
+      tags:
+      - unit
+    post:
+      consumes:
+      - application/x-www-form-urlencoded
+      description: Unit
+      parameters:
+      - description: Unit name
+        in: query
+        name: name
+        required: true
+        type: string
+      - description: Unit hourly price
+        in: query
+        name: hourly_price
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/unit.PostUnitResponse'
+      security:
+      - SessionToken: []
+      tags:
+      - unit
+  /api/unit/{id}:
+    delete:
+      consumes:
+      - application/x-www-form-urlencoded
+      description: Unit
+      parameters:
+      - description: Unit ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/unit.DeleteUnitResponse'
+      security:
+      - SessionToken: []
+      tags:
+      - unit
+    put:
+      consumes:
+      - application/x-www-form-urlencoded
+      description: Unit
+      parameters:
+      - description: Unit ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Unit name
+        in: query
+        name: name
+        type: string
+      - description: Unit hourly price
+        in: query
+        name: hourly_price
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/unit.PutUnitResponse'
+      security:
+      - SessionToken: []
+      tags:
+      - unit
   /api/user:
     get:
       consumes:
