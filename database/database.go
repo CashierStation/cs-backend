@@ -9,6 +9,7 @@ import (
 	"gorm.io/gorm/logger"
 
 	"csbackend/models"
+	"csbackend/util"
 
 	"os"
 )
@@ -20,7 +21,10 @@ func New() (*gorm.DB, error) {
 	//dbname := os.Getenv("PGDATABASE")
 	//port := os.Getenv("PGPORT")
 
-	dsn := os.Getenv("DSN")
+	dsn := os.Getenv("DSN_DEV")
+	if util.IsProduction() {
+		dsn = os.Getenv("DSN_PROD")
+	}
 	//dsn := fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=%s sslmode=disable TimeZone=Asia/Jakarta", host, user, password, dbname, port)
 
 	newLogger := logger.New(

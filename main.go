@@ -44,7 +44,7 @@ func main() {
 
 	database, err := db.New()
 	if err != nil {
-		panic("failed to connect database")
+		panic(err)
 	}
 
 	doMigration := util.IsFlagPassed("migrate")
