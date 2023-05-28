@@ -56,6 +56,7 @@ func Migrate(db *gorm.DB) error {
 		&models.Unit{},
 		&models.Booking{},
 		&models.Transaction{},
+		&models.SnackTransaction{},
 		&models.Snack{},
 		&models.SnackRestock{},
 		&models.Session{},

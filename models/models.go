@@ -60,15 +60,27 @@ type Booking struct {
 }
 
 type Transaction struct {
-	ID         uint `gorm:"primaryKey"`
-	UnitID     uint
-	StartTime  string
-	FinishTime string
-	Unit       Unit    `gorm:"foreignKey:UnitID"`
-	Snacks     []Snack `gorm:"many2many:snack_transactions;"`
-	CreatedAt  time.Time
-	UpdatedAt  time.Time
-	DeletedAt  gorm.DeletedAt `gorm:"index"`
+	ID                uint `gorm:"primaryKey"`
+	UnitID            uint
+	StartTime         string
+	FinishTime        string
+	Unit              Unit `gorm:"foreignKey:UnitID"`
+	SnackTransactions []SnackTransaction
+	CreatedAt         time.Time
+	UpdatedAt         time.Time
+	DeletedAt         gorm.DeletedAt `gorm:"index"`
+}
+
+type SnackTransaction struct {
+	ID            uint `gorm:"primaryKey"`
+	TransactionID uint
+	SnackID       uint
+	Quantity      int
+	Total         int   // keep track of total price of this snack as of this transaction
+	Snack         Snack `gorm:"foreignKey:SnackID"`
+	CreatedAt     time.Time
+	UpdatedAt     time.Time
+	DeletedAt     gorm.DeletedAt `gorm:"index"`
 }
 
 type Snack struct {
