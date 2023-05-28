@@ -17,6 +17,39 @@ definitions:
       username:
         type: string
     type: object
+  snack.DeleteSnackResponse:
+    properties:
+      status:
+        type: string
+    type: object
+  snack.GetSnackResponse:
+    properties:
+      snacks:
+        items:
+          $ref: '#/definitions/snack.SnackResponse'
+        type: array
+    type: object
+  snack.PostSnackResponse:
+    properties:
+      snack:
+        $ref: '#/definitions/snack.SnackResponse'
+    type: object
+  snack.PutSnackResponse:
+    properties:
+      snack:
+        $ref: '#/definitions/snack.SnackResponse'
+    type: object
+  snack.SnackResponse:
+    properties:
+      id:
+        type: integer
+      name:
+        type: string
+      price:
+        type: integer
+      rental_id:
+        type: string
+    type: object
   unit.DeleteUnitResponse:
     properties:
       status:
@@ -68,6 +101,99 @@ info:
   title: CashierStation Backend Server API
   version: "1.0"
 paths:
+  /api/snack:
+    get:
+      consumes:
+      - application/x-www-form-urlencoded
+      description: Snack
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/snack.GetSnackResponse'
+      security:
+      - SessionToken: []
+      tags:
+      - snack
+    post:
+      consumes:
+      - application/x-www-form-urlencoded
+      description: Snack
+      parameters:
+      - description: Snack name
+        in: query
+        name: name
+        required: true
+        type: string
+      - description: Snack price
+        in: query
+        name: price
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/snack.PostSnackResponse'
+      security:
+      - SessionToken: []
+      tags:
+      - snack
+  /api/snack/{id}:
+    delete:
+      consumes:
+      - application/x-www-form-urlencoded
+      description: Snack
+      parameters:
+      - description: Snack ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/snack.DeleteSnackResponse'
+      security:
+      - SessionToken: []
+      tags:
+      - snack
+    put:
+      consumes:
+      - application/x-www-form-urlencoded
+      description: Snack
+      parameters:
+      - description: Snack ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Snack name
+        in: query
+        name: name
+        type: string
+      - description: Snack price
+        in: query
+        name: price
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/snack.PutSnackResponse'
+      security:
+      - SessionToken: []
+      tags:
+      - snack
   /api/unit:
     get:
       consumes:

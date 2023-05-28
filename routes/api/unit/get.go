@@ -30,7 +30,7 @@ func GET(c *fiber.Ctx) error {
 		return c.Status(fiber.StatusInternalServerError).SendString("Error getting units")
 	}
 
-	var unitResponses []UnitResponse
+	var unitResponses []UnitResponse = []UnitResponse{}
 	for _, unit := range units {
 		unitResponses = append(unitResponses, UnitResponse{
 			ID:          unit.ID,

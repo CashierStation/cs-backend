@@ -16,6 +16,156 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
+        "/api/snack": {
+            "get": {
+                "security": [
+                    {
+                        "SessionToken": []
+                    }
+                ],
+                "description": "Snack",
+                "consumes": [
+                    "application/x-www-form-urlencoded"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "snack"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/snack.GetSnackResponse"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "security": [
+                    {
+                        "SessionToken": []
+                    }
+                ],
+                "description": "Snack",
+                "consumes": [
+                    "application/x-www-form-urlencoded"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "snack"
+                ],
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Snack name",
+                        "name": "name",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Snack price",
+                        "name": "price",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/snack.PostSnackResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/snack/{id}": {
+            "put": {
+                "security": [
+                    {
+                        "SessionToken": []
+                    }
+                ],
+                "description": "Snack",
+                "consumes": [
+                    "application/x-www-form-urlencoded"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "snack"
+                ],
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Snack ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Snack name",
+                        "name": "name",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Snack price",
+                        "name": "price",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/snack.PutSnackResponse"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "security": [
+                    {
+                        "SessionToken": []
+                    }
+                ],
+                "description": "Snack",
+                "consumes": [
+                    "application/x-www-form-urlencoded"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "snack"
+                ],
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Snack ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/snack.DeleteSnackResponse"
+                        }
+                    }
+                }
+            }
+        },
         "/api/unit": {
             "get": {
                 "security": [
@@ -393,6 +543,58 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "username": {
+                    "type": "string"
+                }
+            }
+        },
+        "snack.DeleteSnackResponse": {
+            "type": "object",
+            "properties": {
+                "status": {
+                    "type": "string"
+                }
+            }
+        },
+        "snack.GetSnackResponse": {
+            "type": "object",
+            "properties": {
+                "snacks": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/snack.SnackResponse"
+                    }
+                }
+            }
+        },
+        "snack.PostSnackResponse": {
+            "type": "object",
+            "properties": {
+                "snack": {
+                    "$ref": "#/definitions/snack.SnackResponse"
+                }
+            }
+        },
+        "snack.PutSnackResponse": {
+            "type": "object",
+            "properties": {
+                "snack": {
+                    "$ref": "#/definitions/snack.SnackResponse"
+                }
+            }
+        },
+        "snack.SnackResponse": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "price": {
+                    "type": "integer"
+                },
+                "rental_id": {
                     "type": "string"
                 }
             }

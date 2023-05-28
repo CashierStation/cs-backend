@@ -5,11 +5,13 @@ import (
 	"gorm.io/gorm"
 
 	"csbackend/authenticator"
-	"csbackend/routes/api/unit"
 	"csbackend/routes/api/user"
 	"csbackend/routes/auth"
 	m "csbackend/routes/metrics"
 	"csbackend/routes/oauth"
+
+	"csbackend/routes/api/snack"
+	"csbackend/routes/api/unit"
 )
 
 func SetupRoutes(app *fiber.App, db *gorm.DB) {
@@ -21,10 +23,16 @@ func SetupRoutes(app *fiber.App, db *gorm.DB) {
 	apiGroup := app.Group("/api")
 	apiGroup.Use(authenticator.SessionMiddleware(db))
 	apiGroup.Get("/user", user.GET)
+
 	apiGroup.Get("/unit", unit.GET)
 	apiGroup.Post("/unit", unit.POST)
 	apiGroup.Put("/unit/:id", unit.PUT)
 	apiGroup.Delete("/unit/:id", unit.DELETE)
+
+	apiGroup.Get("/snack", snack.GET)
+	apiGroup.Post("/snack", snack.POST)
+	apiGroup.Put("/snack/:id", snack.PUT)
+	apiGroup.Delete("/snack/:id", snack.DELETE)
 
 	oauth.Routes(app)
 	auth.Routes(app)
