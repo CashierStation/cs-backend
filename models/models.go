@@ -1,6 +1,7 @@
 package models
 
 import (
+	"database/sql"
 	"time"
 
 	"gorm.io/gorm"
@@ -62,8 +63,8 @@ type Booking struct {
 type UnitSession struct {
 	ID                uint `gorm:"primaryKey"`
 	UnitID            uint
-	StartTime         string
-	FinishTime        string
+	StartTime         sql.NullTime
+	FinishTime        sql.NullTime
 	Tarif             int
 	Unit              Unit `gorm:"foreignKey:UnitID"`
 	SnackTransactions []SnackTransaction

@@ -316,6 +316,152 @@ const docTemplate = `{
                 }
             }
         },
+        "/api/unit_session": {
+            "get": {
+                "security": [
+                    {
+                        "SessionToken": []
+                    }
+                ],
+                "description": "Sesi pemakaian unit",
+                "consumes": [
+                    "application/x-www-form-urlencoded"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "unit_session"
+                ],
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "unit id",
+                        "name": "unit_id",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "default": 0,
+                        "description": "offset",
+                        "name": "offset",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "default": 10,
+                        "description": "limit",
+                        "name": "limit",
+                        "in": "query"
+                    },
+                    {
+                        "enum": [
+                            "asc",
+                            "desc"
+                        ],
+                        "type": "string",
+                        "default": "desc",
+                        "description": "order",
+                        "name": "order",
+                        "in": "query"
+                    },
+                    {
+                        "enum": [
+                            "id",
+                            "unit_id",
+                            "start_time",
+                            "finish_time",
+                            "tarif"
+                        ],
+                        "type": "string",
+                        "default": "start_time",
+                        "description": "sort_by",
+                        "name": "sort_by",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/unitsession.GetUnitSessionsResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/unit_session/start/{unit_id}": {
+            "put": {
+                "security": [
+                    {
+                        "SessionToken": []
+                    }
+                ],
+                "description": "Sesi pemakaian unit",
+                "consumes": [
+                    "application/x-www-form-urlencoded"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "unit_session"
+                ],
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Unit ID",
+                        "name": "unit_id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/unitsession.StartUnitSessionsResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/unit_session/stop/{unit_id}": {
+            "put": {
+                "security": [
+                    {
+                        "SessionToken": []
+                    }
+                ],
+                "description": "Sesi pemakaian unit",
+                "consumes": [
+                    "application/x-www-form-urlencoded"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "unit_session"
+                ],
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Unit ID",
+                        "name": "unit_id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/unitsession.StopUnitSessionsResponse"
+                        }
+                    }
+                }
+            }
+        },
         "/api/user": {
             "get": {
                 "security": [
@@ -519,6 +665,21 @@ const docTemplate = `{
         }
     },
     "definitions": {
+        "enum.UnitStatus": {
+            "type": "string",
+            "enum": [
+                "idle",
+                "in_use",
+                "booked",
+                "booked_while_in_use"
+            ],
+            "x-enum-varnames": [
+                "Idle",
+                "InUse",
+                "Booked",
+                "BookedWhileInUse"
+            ]
+        },
         "login.LoginPostResponse": {
             "type": "object",
             "properties": {
@@ -607,34 +768,7 @@ const docTemplate = `{
                 }
             }
         },
-        "unit.GetUnitResponse": {
-            "type": "object",
-            "properties": {
-                "units": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/unit.UnitResponse"
-                    }
-                }
-            }
-        },
-        "unit.PostUnitResponse": {
-            "type": "object",
-            "properties": {
-                "unit": {
-                    "$ref": "#/definitions/unit.UnitResponse"
-                }
-            }
-        },
-        "unit.PutUnitResponse": {
-            "type": "object",
-            "properties": {
-                "unit": {
-                    "$ref": "#/definitions/unit.UnitResponse"
-                }
-            }
-        },
-        "unit.UnitResponse": {
+        "unit.GetUnit": {
             "type": "object",
             "properties": {
                 "hourly_price": {
@@ -648,6 +782,200 @@ const docTemplate = `{
                 },
                 "rental_id": {
                     "type": "string"
+                },
+                "status": {
+                    "$ref": "#/definitions/unit.GetUnitStatus"
+                }
+            }
+        },
+        "unit.GetUnitResponse": {
+            "type": "object",
+            "properties": {
+                "units": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/unit.GetUnit"
+                    }
+                }
+            }
+        },
+        "unit.GetUnitStatus": {
+            "type": "object",
+            "properties": {
+                "latest_finish_time": {
+                    "type": "string"
+                },
+                "latest_start_time": {
+                    "type": "string"
+                },
+                "status": {
+                    "$ref": "#/definitions/enum.UnitStatus"
+                },
+                "tarif": {
+                    "type": "integer"
+                }
+            }
+        },
+        "unit.PostUnit": {
+            "type": "object",
+            "properties": {
+                "hourly_price": {
+                    "type": "integer"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "rental_id": {
+                    "type": "string"
+                }
+            }
+        },
+        "unit.PostUnitResponse": {
+            "type": "object",
+            "properties": {
+                "unit": {
+                    "$ref": "#/definitions/unit.PostUnit"
+                }
+            }
+        },
+        "unit.PutUnit": {
+            "type": "object",
+            "properties": {
+                "hourly_price": {
+                    "type": "integer"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "rental_id": {
+                    "type": "string"
+                }
+            }
+        },
+        "unit.PutUnitResponse": {
+            "type": "object",
+            "properties": {
+                "unit": {
+                    "$ref": "#/definitions/unit.PutUnit"
+                }
+            }
+        },
+        "unitsession.GetUnitSessionsResponse": {
+            "type": "object",
+            "properties": {
+                "total": {
+                    "type": "integer"
+                },
+                "unit_sessions": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/unitsession.UnitSessionResponse"
+                    }
+                }
+            }
+        },
+        "unitsession.SnackTransactionResponse": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "integer"
+                },
+                "quantity": {
+                    "type": "integer"
+                },
+                "snack_name": {
+                    "type": "string"
+                },
+                "total": {
+                    "type": "integer"
+                }
+            }
+        },
+        "unitsession.StartUnitSessionsResponse": {
+            "type": "object",
+            "properties": {
+                "status": {
+                    "$ref": "#/definitions/unitsession.startUnitSessionsStatus"
+                },
+                "unit_id": {
+                    "type": "integer"
+                },
+                "unit_name": {
+                    "type": "string"
+                }
+            }
+        },
+        "unitsession.StopUnitSessionsResponse": {
+            "type": "object",
+            "properties": {
+                "status": {
+                    "$ref": "#/definitions/unitsession.stopUnitSessionsStatus"
+                },
+                "unit_id": {
+                    "type": "integer"
+                },
+                "unit_name": {
+                    "type": "string"
+                }
+            }
+        },
+        "unitsession.UnitSessionResponse": {
+            "type": "object",
+            "properties": {
+                "finish_time": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "snack_transactions": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/unitsession.SnackTransactionResponse"
+                    }
+                },
+                "start_time": {
+                    "type": "string"
+                },
+                "tarif": {
+                    "type": "integer"
+                },
+                "unit_id": {
+                    "type": "integer"
+                }
+            }
+        },
+        "unitsession.startUnitSessionsStatus": {
+            "type": "object",
+            "properties": {
+                "finish_time": {
+                    "type": "string"
+                },
+                "start_time": {
+                    "type": "string"
+                },
+                "status": {
+                    "$ref": "#/definitions/enum.UnitStatus"
+                }
+            }
+        },
+        "unitsession.stopUnitSessionsStatus": {
+            "type": "object",
+            "properties": {
+                "finish_time": {
+                    "type": "string"
+                },
+                "start_time": {
+                    "type": "string"
+                },
+                "status": {
+                    "$ref": "#/definitions/enum.UnitStatus"
                 }
             }
         },

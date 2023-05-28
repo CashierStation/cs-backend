@@ -18,8 +18,15 @@ type PutUnitRequest struct {
 
 var putUnitValidator = lib.CreateValidator[PutUnitRequest]
 
+type PutUnit struct {
+	ID          uint   `json:"id"`
+	RentalID    string `json:"rental_id"`
+	Name        string `json:"name"`
+	HourlyPrice int    `json:"hourly_price"`
+}
+
 type PutUnitResponse struct {
-	Unit UnitResponse `json:"unit"`
+	Unit PutUnit `json:"unit"`
 }
 
 // @Security SessionToken
@@ -78,7 +85,7 @@ func PUT(c *fiber.Ctx) error {
 	tx.Save(&unit)
 	tx.Commit()
 
-	return c.JSON(&PutUnitResponse{Unit: UnitResponse{
+	return c.JSON(&PutUnitResponse{Unit: PutUnit{
 		ID:          unit.ID,
 		RentalID:    unit.RentalID,
 		Name:        unit.Name,

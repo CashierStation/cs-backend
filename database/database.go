@@ -30,6 +30,7 @@ func New() (*gorm.DB, error) {
 	newLogger := logger.New(
 		log.New(os.Stdout, "\r\n", log.LstdFlags), // io writer
 		logger.Config{
+			LogLevel:                  logger.Error,           // Log level
 			SlowThreshold:             time.Millisecond * 500, // Slow SQL threshold
 			IgnoreRecordNotFoundError: true,                   // Ignore ErrRecordNotFound error for logger
 		},

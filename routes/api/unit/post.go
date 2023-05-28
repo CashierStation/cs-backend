@@ -15,7 +15,7 @@ type PostUnitRequest struct {
 
 var postUnitValidator = lib.CreateValidator[PostUnitRequest]
 
-type UnitResponse struct {
+type PostUnit struct {
 	ID          uint   `json:"id"`
 	RentalID    string `json:"rental_id"`
 	Name        string `json:"name"`
@@ -23,7 +23,7 @@ type UnitResponse struct {
 }
 
 type PostUnitResponse struct {
-	Unit UnitResponse `json:"unit"`
+	Unit PostUnit `json:"unit"`
 }
 
 // @Security SessionToken
@@ -64,7 +64,7 @@ func POST(c *fiber.Ctx) error {
 
 	tx.Commit()
 
-	return c.JSON(&PostUnitResponse{Unit: UnitResponse{
+	return c.JSON(&PostUnitResponse{Unit: PostUnit{
 		ID:          newUnit.ID,
 		RentalID:    newUnit.RentalID,
 		Name:        newUnit.Name,

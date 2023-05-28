@@ -12,6 +12,7 @@ import (
 
 	"csbackend/routes/api/snack"
 	"csbackend/routes/api/unit"
+	"csbackend/routes/api/unitsession"
 )
 
 func SetupRoutes(app *fiber.App, db *gorm.DB) {
@@ -33,6 +34,10 @@ func SetupRoutes(app *fiber.App, db *gorm.DB) {
 	apiGroup.Post("/snack", snack.POST)
 	apiGroup.Put("/snack/:id", snack.PUT)
 	apiGroup.Delete("/snack/:id", snack.DELETE)
+
+	apiGroup.Get("/unit_session", unitsession.GetUnitSessions)
+	apiGroup.Put("/unit_session/start/:unit_id", unitsession.StartUnitSessions)
+	apiGroup.Put("/unit_session/stop/:unit_id", unitsession.StopUnitSessions)
 
 	oauth.Routes(app)
 	auth.Routes(app)

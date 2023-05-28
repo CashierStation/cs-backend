@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/json"
 	"flag"
 	"fmt"
 	"log"
@@ -69,7 +70,9 @@ func main() {
 	g.DB = database
 	g.Authenticator = auth
 
-	app := fiber.New()
+	app := fiber.New(fiber.Config{
+		JSONEncoder: json.Marshal,
+	})
 	port := util.GetPort()
 
 	routes.SetupRoutes(app, database)
