@@ -59,7 +59,7 @@ type Booking struct {
 	DeletedAt gorm.DeletedAt `gorm:"index"`
 }
 
-type Transaction struct {
+type UnitSession struct {
 	ID                uint `gorm:"primaryKey"`
 	UnitID            uint
 	StartTime         string
@@ -73,7 +73,7 @@ type Transaction struct {
 
 type SnackTransaction struct {
 	ID            uint `gorm:"primaryKey"`
-	TransactionID uint
+	UnitSessionID uint
 	SnackID       uint
 	Quantity      int
 	Total         int   // keep track of total price of this snack as of this transaction
