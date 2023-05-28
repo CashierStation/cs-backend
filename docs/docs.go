@@ -615,6 +615,21 @@ const docTemplate = `{
                 "responses": {}
             }
         },
+        "/metrics/db": {
+            "get": {
+                "description": "dev: http://localhost:8080/metrics\nprod: https://csbackend.fly.dev/metrics",
+                "consumes": [
+                    "application/x-www-form-urlencoded"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "metrics"
+                ],
+                "responses": {}
+            }
+        },
         "/oauth/callback": {
             "get": {
                 "description": "Callback",

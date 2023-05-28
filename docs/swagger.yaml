@@ -611,6 +611,18 @@ paths:
       responses: {}
       tags:
       - metrics
+  /metrics/db:
+    get:
+      consumes:
+      - application/x-www-form-urlencoded
+      description: |-
+        dev: http://localhost:8080/metrics
+        prod: https://csbackend.fly.dev/metrics
+      produces:
+      - application/json
+      responses: {}
+      tags:
+      - metrics
   /oauth/callback:
     get:
       consumes:
