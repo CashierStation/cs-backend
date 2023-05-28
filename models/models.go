@@ -64,6 +64,7 @@ type UnitSession struct {
 	UnitID            uint
 	StartTime         string
 	FinishTime        string
+	Tarif             int
 	Unit              Unit `gorm:"foreignKey:UnitID"`
 	SnackTransactions []SnackTransaction
 	CreatedAt         time.Time
