@@ -603,14 +603,6 @@ paths:
         name: password
         required: true
         type: string
-      - description: Role
-        enum:
-        - owner
-        - karyawan
-        in: query
-        name: role
-        required: true
-        type: string
       produces:
       - application/json
       responses:

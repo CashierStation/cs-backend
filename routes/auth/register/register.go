@@ -2,6 +2,7 @@ package register
 
 import (
 	"csbackend/authenticator"
+	"csbackend/enum"
 	"csbackend/global"
 	"csbackend/lib"
 	"csbackend/models"
@@ -18,7 +19,6 @@ import (
 type RegisterPostRequest struct {
 	Username    string `validate:"required,min=3,max=32"`
 	Password    string `validate:"required,number,min=6,max=32"`
-	Role        string `validate:"omitempty"`
 	AccessToken string `validate:"required" query:"access_token"`
 }
 
@@ -41,7 +41,6 @@ type RegisterPostResponse struct {
 // @Param access_token query string true "Access token from Auth0"
 // @Param username query string true "Username" minlength(3) maxlength(32)
 // @Param password query string true "Password (Numeric)" minlength(6) maxlength(32)
-// @Param role query string true "Role" Enums(owner,karyawan)
 // @Success 200 {object} RegisterPostResponse
 // @Produce json
 // @Router /auth/register [post]
@@ -100,13 +99,20 @@ func POST(c *fiber.Ctx) error {
 		return c.Status(fiber.StatusBadRequest).SendString("Error hashing password")
 	}
 
-	// Find role
-	role, err := models.GetRoleByName(tx, rawReqQuery.Role)
-	if errors.Is(err, gorm.ErrRecordNotFound) {
+	// Check if rental already has at least one employee, which can be the owner
+	hasEmployee, err := models.RentalHasEmployee(tx, rentalId)
+	if err != nil {
 		tx.Rollback()
-		return c.Status(fiber.StatusBadRequest).SendString("Role does not exist")
+		return c.Status(fiber.StatusBadRequest).SendString("Error checking if rental has employee")
 	}
 
+	selectedRole := string(enum.Karyawan)
+	if !hasEmployee {
+		selectedRole = string(enum.Owner)
+	}
+
+	// Find role
+	role, err := models.GetRoleByName(tx, selectedRole)
 	if err != nil {
 		tx.Rollback()
 		return c.Status(fiber.StatusBadRequest).JSON("Error finding role")
@@ -140,7 +146,7 @@ func POST(c *fiber.Ctx) error {
 	res := RegisterPostResponse{
 		UserID:       employee.ID,
 		Username:     employee.Username,
-		Role:         role.Name,
+		Role:         selectedRole,
 		SessionToken: sessionToken,
 	}
 

@@ -597,17 +597,6 @@ const docTemplate = `{
                         "name": "password",
                         "in": "query",
                         "required": true
-                    },
-                    {
-                        "enum": [
-                            "owner",
-                            "karyawan"
-                        ],
-                        "type": "string",
-                        "description": "Role",
-                        "name": "role",
-                        "in": "query",
-                        "required": true
                     }
                 ],
                 "responses": {

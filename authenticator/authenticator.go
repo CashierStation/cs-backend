@@ -38,7 +38,7 @@ func SessionMiddleware(db *gorm.DB) func(c *fiber.Ctx) error {
 				"message": "No session token provided",
 			}) */
 
-			employee, err := models.GetAnyEmployee(db, "aan")
+			employee, err := models.GetAnyEmployeeByName(db, "aan")
 			if err != nil {
 				return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
 					"message": "Error mocking empty user",
