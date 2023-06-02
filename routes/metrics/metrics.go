@@ -50,7 +50,18 @@ func DatabasePing(c *fiber.Ctx) error {
 		time.Sleep(100 * time.Millisecond)
 	}
 
+	// get current connection stats
+	db, err := global.DB.DB()
+	if err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+			"error": err.Error(),
+		})
+	}
+
+	s := db.Stats()
+
 	return c.Status(fiber.StatusOK).JSON(fiber.Map{
 		"result": results,
+		"stats":  s,
 	})
 }

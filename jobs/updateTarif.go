@@ -18,9 +18,9 @@ func CreateUpdateTarif() UpdateTarif {
 }
 
 func (e UpdateTarif) Run() {
-	tx := e.db.Begin()
+	db := e.db
 
-	ongoingSessions, err := models.GetOngoingUnitSessions(tx)
+	ongoingSessions, err := models.GetOngoingUnitSessions(db)
 	if err != nil {
 		return
 	}
@@ -35,8 +35,6 @@ func (e UpdateTarif) Run() {
 		hourlyPrice := sess.Unit.HourlyPrice
 		tarif := lib.CalculateTarif(sess.StartTime.Time, time.Now(), hourlyPrice)
 		sess.Tarif = tarif
-		tx.Save(&sess)
+		db.Save(&sess)
 	}
-
-	tx.Commit()
 }
