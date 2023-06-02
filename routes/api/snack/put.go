@@ -12,8 +12,9 @@ import (
 )
 
 type PutSnackRequest struct {
-	Name  string `query:"name"`
-	Price int    `query:"price"`
+	Name     string `query:"name"`
+	Category string `query:"category"`
+	Price    int    `query:"price"`
 }
 
 var putSnackValidator = lib.CreateValidator[PutSnackRequest]
@@ -32,6 +33,7 @@ type PutSnackResponse struct {
 // @Produce json
 // @Param id path int true "Snack ID"
 // @Param name query string false "Snack name"
+// @Param category query string false "Snack category"
 // @Param price query int false "Snack price"
 // @Success 200 {object} snack.PutSnackResponse
 // @Router /api/snack/{id} [put]
@@ -75,6 +77,10 @@ func PUT(c *fiber.Ctx) error {
 		snack.Price = rawReqQuery.Price
 	}
 
+	if rawReqQuery.Category != "" {
+		snack.Category = rawReqQuery.Category
+	}
+
 	tx.Save(&snack)
 	tx.Commit()
 
@@ -82,6 +88,7 @@ func PUT(c *fiber.Ctx) error {
 		ID:       snack.ID,
 		RentalID: snack.RentalID,
 		Name:     snack.Name,
+		Category: snack.Category,
 		Price:    snack.Price,
 	}})
 }

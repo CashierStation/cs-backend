@@ -13,6 +13,7 @@ import (
 
 type PutUnitRequest struct {
 	Name        string `query:"name"`
+	Category    string `query:"category"`
 	HourlyPrice int    `query:"hourly_price"`
 }
 
@@ -22,6 +23,7 @@ type PutUnit struct {
 	ID          uint   `json:"id"`
 	RentalID    string `json:"rental_id"`
 	Name        string `json:"name"`
+	Category    string `json:"category"`
 	HourlyPrice int    `json:"hourly_price"`
 }
 
@@ -82,6 +84,10 @@ func PUT(c *fiber.Ctx) error {
 		unit.HourlyPrice = rawReqQuery.HourlyPrice
 	}
 
+	if rawReqQuery.Category != "" {
+		unit.Category = rawReqQuery.Category
+	}
+
 	tx.Save(&unit)
 	tx.Commit()
 
@@ -89,6 +95,7 @@ func PUT(c *fiber.Ctx) error {
 		ID:          unit.ID,
 		RentalID:    unit.RentalID,
 		Name:        unit.Name,
+		Category:    unit.Category,
 		HourlyPrice: unit.HourlyPrice,
 	}})
 }

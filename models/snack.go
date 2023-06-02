@@ -10,10 +10,11 @@ func GetAllSnacks(tx *gorm.DB, rentalID string) ([]Snack, error) {
 	return snacks, result.Error
 }
 
-func CreateSnack(tx *gorm.DB, rentalID string, name string, price int) (Snack, error) {
+func CreateSnack(tx *gorm.DB, rentalID string, name string, category string, price int) (Snack, error) {
 	snack := &Snack{
 		Name:     name,
 		RentalID: rentalID,
+		Category: category,
 		Price:    price,
 	}
 	result := tx.Create(snack)

@@ -9,8 +9,9 @@ import (
 )
 
 type PostSnackRequest struct {
-	Name  string `validate:"required" query:"name"`
-	Price int    `validate:"required" query:"price"`
+	Name     string `validate:"required" query:"name"`
+	Category string `validate:"required" query:"category"`
+	Price    int    `validate:"required" query:"price"`
 }
 
 var postSnackValidator = lib.CreateValidator[PostSnackRequest]
@@ -19,6 +20,7 @@ type SnackResponse struct {
 	ID       uint   `json:"id"`
 	RentalID string `json:"rental_id"`
 	Name     string `json:"name"`
+	Category string `json:"category"`
 	Price    int    `json:"price"`
 }
 
@@ -36,6 +38,7 @@ type PostSnackResponse struct {
 // @Produce json
 // @Param name query string true "Snack name"
 // @Param price query int true "Snack price"
+// @Param category query string true "Snack category"
 // @Success 200 {object} snack.PostSnackResponse
 // @Router /api/snack [post]
 func POST(c *fiber.Ctx) error {
@@ -56,7 +59,7 @@ func POST(c *fiber.Ctx) error {
 	}
 
 	tx := global.DB.Begin()
-	newSnack, err := models.CreateSnack(tx, user.RentalID, rawReqQuery.Name, rawReqQuery.Price)
+	newSnack, err := models.CreateSnack(tx, user.RentalID, rawReqQuery.Name, rawReqQuery.Category, rawReqQuery.Price)
 	if err != nil {
 		tx.Rollback()
 		return c.Status(fiber.StatusInternalServerError).SendString("Error creating snack")
@@ -68,6 +71,7 @@ func POST(c *fiber.Ctx) error {
 		ID:       newSnack.ID,
 		RentalID: newSnack.RentalID,
 		Name:     newSnack.Name,
+		Category: newSnack.Category,
 		Price:    newSnack.Price,
 	}})
 }

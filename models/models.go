@@ -42,6 +42,7 @@ type Unit struct {
 	ID          uint `gorm:"primaryKey"`
 	RentalID    string
 	Name        string
+	Category    string
 	HourlyPrice int
 	Rental      Rental `gorm:"foreignKey:RentalID"`
 	CreatedAt   time.Time
@@ -89,6 +90,7 @@ type Snack struct {
 	ID        uint `gorm:"primaryKey"`
 	RentalID  string
 	Name      string
+	Category  string
 	Price     int
 	Rental    Rental `gorm:"foreignKey:RentalID"`
 	CreatedAt time.Time

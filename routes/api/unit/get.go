@@ -20,6 +20,7 @@ type GetUnit struct {
 	ID          uint          `json:"id"`
 	RentalID    string        `json:"rental_id"`
 	Name        string        `json:"name"`
+	Category    string        `json:"category"`
 	HourlyPrice int           `json:"hourly_price"`
 	Status      GetUnitStatus `json:"status"`
 }
@@ -55,6 +56,7 @@ func GET(c *fiber.Ctx) error {
 			ID:          unit.ID,
 			RentalID:    unit.RentalID,
 			Name:        unit.Name,
+			Category:    unit.Category,
 			HourlyPrice: unit.HourlyPrice,
 			Status:      GetUnitStatus{},
 		})

@@ -36,6 +36,7 @@ func GET(c *fiber.Ctx) error {
 			ID:       snack.ID,
 			RentalID: snack.RentalID,
 			Name:     snack.Name,
+			Category: snack.Category,
 			Price:    snack.Price,
 		})
 	}

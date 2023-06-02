@@ -10,6 +10,7 @@ import (
 
 type PostUnitRequest struct {
 	Name        string `validate:"required" query:"name"`
+	Category    string `validate:"required" query:"category"`
 	HourlyPrice int    `validate:"required" query:"hourly_price"`
 }
 
@@ -19,6 +20,7 @@ type PostUnit struct {
 	ID          uint   `json:"id"`
 	RentalID    string `json:"rental_id"`
 	Name        string `json:"name"`
+	Category    string `json:"category"`
 	HourlyPrice int    `json:"hourly_price"`
 }
 
@@ -36,6 +38,7 @@ type PostUnitResponse struct {
 // @Produce json
 // @Param name query string true "Unit name"
 // @Param hourly_price query int true "Unit hourly price"
+// @Param category query string true "Unit category"
 // @Success 200 {object} unit.PostUnitResponse
 // @Router /api/unit [post]
 func POST(c *fiber.Ctx) error {
@@ -56,7 +59,7 @@ func POST(c *fiber.Ctx) error {
 	}
 
 	tx := global.DB.Begin()
-	newUnit, err := models.CreateUnit(tx, rawReqQuery.Name, rawReqQuery.HourlyPrice, user.RentalID)
+	newUnit, err := models.CreateUnit(tx, rawReqQuery.Name, rawReqQuery.HourlyPrice, rawReqQuery.Category, user.RentalID)
 	if err != nil {
 		tx.Rollback()
 		return c.Status(fiber.StatusInternalServerError).SendString("Error creating unit")
@@ -68,6 +71,7 @@ func POST(c *fiber.Ctx) error {
 		ID:          newUnit.ID,
 		RentalID:    newUnit.RentalID,
 		Name:        newUnit.Name,
+		Category:    newUnit.Category,
 		HourlyPrice: newUnit.HourlyPrice,
 	}})
 }

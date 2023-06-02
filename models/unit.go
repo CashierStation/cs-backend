@@ -10,10 +10,11 @@ func GetAllUnits(tx *gorm.DB, rentalID string) ([]Unit, error) {
 	return units, result.Error
 }
 
-func CreateUnit(tx *gorm.DB, name string, hourlyPrice int, rentalID string) (Unit, error) {
+func CreateUnit(tx *gorm.DB, name string, hourlyPrice int, category string, rentalID string) (Unit, error) {
 	unit := &Unit{
 		Name:        name,
 		HourlyPrice: hourlyPrice,
+		Category:    category,
 		RentalID:    rentalID,
 	}
 	result := tx.Create(unit)

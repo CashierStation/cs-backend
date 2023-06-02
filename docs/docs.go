@@ -72,6 +72,13 @@ const docTemplate = `{
                         "name": "price",
                         "in": "query",
                         "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Snack category",
+                        "name": "category",
+                        "in": "query",
+                        "required": true
                     }
                 ],
                 "responses": {
@@ -113,6 +120,12 @@ const docTemplate = `{
                         "type": "string",
                         "description": "Snack name",
                         "name": "name",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Snack category",
+                        "name": "category",
                         "in": "query"
                     },
                     {
@@ -220,6 +233,13 @@ const docTemplate = `{
                         "type": "integer",
                         "description": "Unit hourly price",
                         "name": "hourly_price",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Unit category",
+                        "name": "category",
                         "in": "query",
                         "required": true
                     }
@@ -761,6 +781,9 @@ const docTemplate = `{
         "snack.SnackResponse": {
             "type": "object",
             "properties": {
+                "category": {
+                    "type": "string"
+                },
                 "id": {
                     "type": "integer"
                 },
@@ -786,6 +809,9 @@ const docTemplate = `{
         "unit.GetUnit": {
             "type": "object",
             "properties": {
+                "category": {
+                    "type": "string"
+                },
                 "hourly_price": {
                     "type": "integer"
                 },
@@ -834,6 +860,9 @@ const docTemplate = `{
         "unit.PostUnit": {
             "type": "object",
             "properties": {
+                "category": {
+                    "type": "string"
+                },
                 "hourly_price": {
                     "type": "integer"
                 },
@@ -859,6 +888,9 @@ const docTemplate = `{
         "unit.PutUnit": {
             "type": "object",
             "properties": {
+                "category": {
+                    "type": "string"
+                },
                 "hourly_price": {
                     "type": "integer"
                 },
