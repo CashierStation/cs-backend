@@ -17,6 +17,7 @@ type GetUnitSessionsRequest struct {
 	Limit  uint   `validate:"omitempty,number,min=1"`
 	Order  string `validate:"omitempty,oneof=asc desc" query:"order"`
 	SortBy string `validate:"omitempty,oneof=id unit_id start_time finish_time tarif" query:"sort_by"`
+	Latest bool   `validate:"omitempty" query:"latest"`
 }
 
 var getUnitSessionsValidator = lib.CreateValidator[GetUnitSessionsRequest]
@@ -56,6 +57,7 @@ type GetUnitSessionsResponse struct {
 // @Param limit query int false "limit" default(10)
 // @Param order query string false "order" default(desc) Enums(asc,desc)
 // @Param sort_by query string false "sort_by" default(start_time) Enums(id,unit_id,start_time,finish_time,tarif)
+// @Param latest query bool false "select only latest session for each unit" default(false)
 // @Success 200 {object} unitsession.GetUnitSessionsResponse
 // @Router /api/unit_session [get]
 func GetUnitSessions(c *fiber.Ctx) error {
@@ -81,6 +83,7 @@ func GetUnitSessions(c *fiber.Ctx) error {
 	limit := rawReqQuery.Limit
 	order := rawReqQuery.Order
 	sortBy := rawReqQuery.SortBy
+	latest := rawReqQuery.Latest
 
 	// set default values
 	if order == "" {
@@ -89,6 +92,10 @@ func GetUnitSessions(c *fiber.Ctx) error {
 
 	if sortBy == "" {
 		sortBy = "start_time"
+	}
+
+	if limit == 0 {
+		limit = 10
 	}
 
 	var result = GetUnitSessionsResponse{
@@ -111,7 +118,7 @@ func GetUnitSessions(c *fiber.Ctx) error {
 		}
 	}
 
-	unitSessions, err := models.GetUnitSessions(tx, unitID, offset, limit, order, sortBy)
+	unitSessions, err := models.GetUnitSessions(tx, unitID, offset, limit, order, sortBy, latest)
 	if err != nil {
 		tx.Rollback()
 		return c.Status(fiber.StatusInternalServerError).SendString("Error getting unit sessions")

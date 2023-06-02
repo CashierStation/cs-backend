@@ -531,6 +531,11 @@ paths:
         in: query
         name: sort_by
         type: string
+      - default: false
+        description: select only latest session for each unit
+        in: query
+        name: latest
+        type: boolean
       produces:
       - application/json
       responses:

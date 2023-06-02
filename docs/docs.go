@@ -491,6 +491,13 @@ const docTemplate = `{
                         "description": "sort_by",
                         "name": "sort_by",
                         "in": "query"
+                    },
+                    {
+                        "type": "boolean",
+                        "default": false,
+                        "description": "select only latest session for each unit",
+                        "name": "latest",
+                        "in": "query"
                     }
                 ],
                 "responses": {
