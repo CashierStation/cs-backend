@@ -645,6 +645,21 @@ const docTemplate = `{
                 }
             }
         },
+        "/jobs": {
+            "get": {
+                "description": "dev: http://localhost:8080/jobs\nprod: https://csbackend.fly.dev/jobs",
+                "consumes": [
+                    "application/x-www-form-urlencoded"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "jobs"
+                ],
+                "responses": {}
+            }
+        },
         "/metrics": {
             "get": {
                 "description": "dev: http://localhost:8080/metrics\nprod: https://csbackend.fly.dev/metrics",

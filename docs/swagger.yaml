@@ -635,6 +635,18 @@ paths:
       summary: Register a new employee/owner account
       tags:
       - auth
+  /jobs:
+    get:
+      consumes:
+      - application/x-www-form-urlencoded
+      description: |-
+        dev: http://localhost:8080/jobs
+        prod: https://csbackend.fly.dev/jobs
+      produces:
+      - application/json
+      responses: {}
+      tags:
+      - jobs
   /metrics:
     get:
       consumes:

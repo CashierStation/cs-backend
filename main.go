@@ -15,6 +15,7 @@ import (
 	"csbackend/authenticator"
 	db "csbackend/database"
 	g "csbackend/global"
+	"csbackend/jobs"
 	"csbackend/routes"
 	"csbackend/util"
 
@@ -90,6 +91,10 @@ func main() {
 	}))
 
 	app.Use(logger.New())
+
+	jobs.StartJob(jobs.StartJobOptions{
+		App: app,
+	})
 
 	mode := os.Getenv("MODE")
 	if mode != "release" {
