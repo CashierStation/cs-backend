@@ -6,6 +6,42 @@
         "version": "1.0"
     },
     "paths": {
+        "/api/employee/list": {
+            "get": {
+                "security": [
+                    {
+                        "SessionToken": []
+                    }
+                ],
+                "description": "Get list of employees from access token",
+                "consumes": [
+                    "application/x-www-form-urlencoded"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "employee"
+                ],
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Access token from Auth0",
+                        "name": "access_token",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/user.GET.response"
+                        }
+                    }
+                }
+            }
+        },
         "/api/snack": {
             "get": {
                 "security": [
