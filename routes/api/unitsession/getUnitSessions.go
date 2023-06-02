@@ -34,6 +34,7 @@ type UnitSessionResponse struct {
 	StartTime         *time.Time                 `json:"start_time"`
 	FinishTime        *time.Time                 `json:"finish_time"`
 	Tarif             int                        `json:"tarif"`
+	GrandTotal        int                        `json:"grand_total"`
 	SnackTransactions []SnackTransactionResponse `json:"snack_transactions"`
 }
 
@@ -120,6 +121,8 @@ func GetUnitSessions(c *fiber.Ctx) error {
 
 	for _, unitSession := range unitSessions {
 		var snackTransactions []SnackTransactionResponse = []SnackTransactionResponse{}
+		var snackTotal int = 0
+
 		for _, snackTransaction := range unitSession.SnackTransactions {
 			snackTransactions = append(snackTransactions, SnackTransactionResponse{
 				ID:        snackTransaction.ID,
@@ -127,6 +130,8 @@ func GetUnitSessions(c *fiber.Ctx) error {
 				Quantity:  snackTransaction.Quantity,
 				Total:     snackTransaction.Total,
 			})
+
+			snackTotal += snackTransaction.Total
 		}
 
 		var startTime = unitSession.StartTime.Time
@@ -138,6 +143,7 @@ func GetUnitSessions(c *fiber.Ctx) error {
 			StartTime:         &startTime,
 			FinishTime:        &finishTime,
 			Tarif:             unitSession.Tarif,
+			GrandTotal:        unitSession.Tarif + snackTotal,
 			SnackTransactions: snackTransactions,
 		}
 

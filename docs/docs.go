@@ -1078,6 +1078,9 @@ const docTemplate = `{
                 "finish_time": {
                     "type": "string"
                 },
+                "grand_total": {
+                    "type": "integer"
+                },
                 "id": {
                     "type": "integer"
                 },
