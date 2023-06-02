@@ -24,7 +24,7 @@ func StartJob(options StartJobOptions) {
 	log.Println("Starting job scheduler...")
 
 	jobrunner.Start()
-	jobrunner.Schedule("@every 1m", UpdateTarif{})
+	jobrunner.Schedule("@every 30s", CreateUpdateTarif())
 
 	if options.App != nil {
 		app := options.App

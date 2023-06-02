@@ -113,3 +113,9 @@ func StopUnitSession(tx *gorm.DB, unitSessionID uint) (UnitSession, error) {
 	tx.Save(&unitSession)
 	return unitSession, result.Error
 }
+
+func GetOngoingUnitSessions(tx *gorm.DB) ([]UnitSession, error) {
+	var unitSessions []UnitSession
+	result := tx.Joins("Unit").Where("finish_time is null").Find(&unitSessions)
+	return unitSessions, result.Error
+}
