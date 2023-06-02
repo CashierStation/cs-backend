@@ -11,7 +11,7 @@ import (
 // @Summary
 // @Schemes
 // @Description User
-// @Tags user
+// @Tags api/user
 // @Accept x-www-form-urlencoded
 // @Produce json
 // @Success 200 {object} user.GET.response

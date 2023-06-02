@@ -34,7 +34,7 @@ type GetUnitResponse struct {
 // @Summary
 // @Schemes
 // @Description Unit
-// @Tags unit
+// @Tags api/unit
 // @Accept x-www-form-urlencoded
 // @Produce json
 // @Success 200 {object} unit.GetUnitResponse

@@ -47,7 +47,7 @@ type GetUnitSessionsResponse struct {
 // @Summary
 // @Schemes
 // @Description Sesi pemakaian unit
-// @Tags unit_session
+// @Tags api/unit_session
 // @Accept x-www-form-urlencoded
 // @Produce json
 // @Param unit_id query int false "unit id"

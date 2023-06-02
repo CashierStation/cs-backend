@@ -16,7 +16,7 @@ type GetSnackResponse struct {
 // @Summary
 // @Schemes
 // @Description Snack
-// @Tags snack
+// @Tags api/snack
 // @Accept x-www-form-urlencoded
 // @Produce json
 // @Success 200 {object} snack.GetSnackResponse

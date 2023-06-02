@@ -31,7 +31,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "employee"
+                    "api/employee"
                 ],
                 "parameters": [
                     {
@@ -67,7 +67,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "snack"
+                    "api/snack"
                 ],
                 "responses": {
                     "200": {
@@ -92,7 +92,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "snack"
+                    "api/snack"
                 ],
                 "parameters": [
                     {
@@ -142,7 +142,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "snack"
+                    "api/snack"
                 ],
                 "parameters": [
                     {
@@ -194,7 +194,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "snack"
+                    "api/snack"
                 ],
                 "parameters": [
                     {
@@ -230,7 +230,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "unit"
+                    "api/unit"
                 ],
                 "responses": {
                     "200": {
@@ -255,7 +255,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "unit"
+                    "api/unit"
                 ],
                 "parameters": [
                     {
@@ -305,7 +305,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "unit"
+                    "api/unit"
                 ],
                 "parameters": [
                     {
@@ -351,7 +351,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "unit"
+                    "api/unit"
                 ],
                 "parameters": [
                     {
@@ -387,7 +387,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "unit_session"
+                    "api/unit_session"
                 ],
                 "parameters": [
                     {
@@ -461,7 +461,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "unit_session"
+                    "api/unit_session"
                 ],
                 "parameters": [
                     {
@@ -497,7 +497,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "unit_session"
+                    "api/unit_session"
                 ],
                 "parameters": [
                     {
@@ -533,7 +533,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "user"
+                    "api/user"
                 ],
                 "responses": {
                     "200": {

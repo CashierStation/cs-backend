@@ -250,7 +250,7 @@ paths:
       security:
       - SessionToken: []
       tags:
-      - employee
+      - api/employee
   /api/snack:
     get:
       consumes:
@@ -266,7 +266,7 @@ paths:
       security:
       - SessionToken: []
       tags:
-      - snack
+      - api/snack
     post:
       consumes:
       - application/x-www-form-urlencoded
@@ -297,7 +297,7 @@ paths:
       security:
       - SessionToken: []
       tags:
-      - snack
+      - api/snack
   /api/snack/{id}:
     delete:
       consumes:
@@ -319,7 +319,7 @@ paths:
       security:
       - SessionToken: []
       tags:
-      - snack
+      - api/snack
     put:
       consumes:
       - application/x-www-form-urlencoded
@@ -352,7 +352,7 @@ paths:
       security:
       - SessionToken: []
       tags:
-      - snack
+      - api/snack
   /api/unit:
     get:
       consumes:
@@ -368,7 +368,7 @@ paths:
       security:
       - SessionToken: []
       tags:
-      - unit
+      - api/unit
     post:
       consumes:
       - application/x-www-form-urlencoded
@@ -399,7 +399,7 @@ paths:
       security:
       - SessionToken: []
       tags:
-      - unit
+      - api/unit
   /api/unit/{id}:
     delete:
       consumes:
@@ -421,7 +421,7 @@ paths:
       security:
       - SessionToken: []
       tags:
-      - unit
+      - api/unit
     put:
       consumes:
       - application/x-www-form-urlencoded
@@ -450,7 +450,7 @@ paths:
       security:
       - SessionToken: []
       tags:
-      - unit
+      - api/unit
   /api/unit_session:
     get:
       consumes:
@@ -500,7 +500,7 @@ paths:
       security:
       - SessionToken: []
       tags:
-      - unit_session
+      - api/unit_session
   /api/unit_session/start/{unit_id}:
     put:
       consumes:
@@ -522,7 +522,7 @@ paths:
       security:
       - SessionToken: []
       tags:
-      - unit_session
+      - api/unit_session
   /api/unit_session/stop/{unit_id}:
     put:
       consumes:
@@ -544,7 +544,7 @@ paths:
       security:
       - SessionToken: []
       tags:
-      - unit_session
+      - api/unit_session
   /api/user:
     get:
       consumes:
@@ -560,7 +560,7 @@ paths:
       security:
       - SessionToken: []
       tags:
-      - user
+      - api/user
   /auth/login:
     post:
       consumes:

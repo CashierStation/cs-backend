@@ -32,7 +32,7 @@ type GetEmployeeListResponse struct {
 // @Summary
 // @Schemes
 // @Description Get list of employees from access token
-// @Tags employee
+// @Tags api/employee
 // @Accept x-www-form-urlencoded
 // @Produce json
 // @Param access_token query string true "Access token from Auth0"

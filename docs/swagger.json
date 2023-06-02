@@ -21,7 +21,7 @@
                     "application/json"
                 ],
                 "tags": [
-                    "employee"
+                    "api/employee"
                 ],
                 "parameters": [
                     {
@@ -57,7 +57,7 @@
                     "application/json"
                 ],
                 "tags": [
-                    "snack"
+                    "api/snack"
                 ],
                 "responses": {
                     "200": {
@@ -82,7 +82,7 @@
                     "application/json"
                 ],
                 "tags": [
-                    "snack"
+                    "api/snack"
                 ],
                 "parameters": [
                     {
@@ -132,7 +132,7 @@
                     "application/json"
                 ],
                 "tags": [
-                    "snack"
+                    "api/snack"
                 ],
                 "parameters": [
                     {
@@ -184,7 +184,7 @@
                     "application/json"
                 ],
                 "tags": [
-                    "snack"
+                    "api/snack"
                 ],
                 "parameters": [
                     {
@@ -220,7 +220,7 @@
                     "application/json"
                 ],
                 "tags": [
-                    "unit"
+                    "api/unit"
                 ],
                 "responses": {
                     "200": {
@@ -245,7 +245,7 @@
                     "application/json"
                 ],
                 "tags": [
-                    "unit"
+                    "api/unit"
                 ],
                 "parameters": [
                     {
@@ -295,7 +295,7 @@
                     "application/json"
                 ],
                 "tags": [
-                    "unit"
+                    "api/unit"
                 ],
                 "parameters": [
                     {
@@ -341,7 +341,7 @@
                     "application/json"
                 ],
                 "tags": [
-                    "unit"
+                    "api/unit"
                 ],
                 "parameters": [
                     {
@@ -377,7 +377,7 @@
                     "application/json"
                 ],
                 "tags": [
-                    "unit_session"
+                    "api/unit_session"
                 ],
                 "parameters": [
                     {
@@ -451,7 +451,7 @@
                     "application/json"
                 ],
                 "tags": [
-                    "unit_session"
+                    "api/unit_session"
                 ],
                 "parameters": [
                     {
@@ -487,7 +487,7 @@
                     "application/json"
                 ],
                 "tags": [
-                    "unit_session"
+                    "api/unit_session"
                 ],
                 "parameters": [
                     {
@@ -523,7 +523,7 @@
                     "application/json"
                 ],
                 "tags": [
-                    "user"
+                    "api/user"
                 ],
                 "responses": {
                     "200": {

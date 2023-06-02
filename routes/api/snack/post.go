@@ -33,7 +33,7 @@ type PostSnackResponse struct {
 // @Summary
 // @Schemes
 // @Description Snack
-// @Tags snack
+// @Tags api/snack
 // @Accept x-www-form-urlencoded
 // @Produce json
 // @Param name query string true "Snack name"

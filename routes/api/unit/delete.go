@@ -19,7 +19,7 @@ type DeleteUnitResponse struct {
 // @Summary
 // @Schemes
 // @Description Unit
-// @Tags unit
+// @Tags api/unit
 // @Accept x-www-form-urlencoded
 // @Produce json
 // @Param id path int true "Unit ID"

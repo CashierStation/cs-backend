@@ -28,7 +28,7 @@ type PutSnackResponse struct {
 // @Summary
 // @Schemes
 // @Description Snack
-// @Tags snack
+// @Tags api/snack
 // @Accept x-www-form-urlencoded
 // @Produce json
 // @Param id path int true "Snack ID"

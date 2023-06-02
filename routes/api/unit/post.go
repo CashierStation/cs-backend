@@ -33,7 +33,7 @@ type PostUnitResponse struct {
 // @Summary
 // @Schemes
 // @Description Unit
-// @Tags unit
+// @Tags api/unit
 // @Accept x-www-form-urlencoded
 // @Produce json
 // @Param name query string true "Unit name"
