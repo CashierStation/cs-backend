@@ -73,7 +73,7 @@ func GET(c *fiber.Ctx) error {
 
 	for _, unitStatus := range unitStatuses {
 		for i, unitResponse := range unitResponses {
-			if unitResponse.ID == unitStatus.UnitID {
+			if unitResponse.ID != unitStatus.UnitID {
 				continue
 			}
 
