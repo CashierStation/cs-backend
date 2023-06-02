@@ -63,6 +63,8 @@ definitions:
         type: integer
       rental_id:
         type: string
+      stock:
+        type: integer
     type: object
   unit.DeleteUnitResponse:
     properties:
@@ -287,6 +289,11 @@ paths:
         name: category
         required: true
         type: string
+      - default: 0
+        description: Snack stock
+        in: query
+        name: stock
+        type: integer
       produces:
       - application/json
       responses:
@@ -349,6 +356,38 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/snack.PutSnackResponse'
+      security:
+      - SessionToken: []
+      tags:
+      - api/snack
+  /api/snack/transaction:
+    post:
+      consumes:
+      - application/x-www-form-urlencoded
+      description: Snack
+      parameters:
+      - description: Unit ID
+        in: query
+        name: unit_id
+        required: true
+        type: integer
+      - description: Snack ID
+        in: query
+        name: snack_id
+        required: true
+        type: integer
+      - description: Quantity
+        in: query
+        name: quantity
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/snack.PostSnackResponse'
       security:
       - SessionToken: []
       tags:

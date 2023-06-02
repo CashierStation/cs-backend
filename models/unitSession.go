@@ -38,7 +38,7 @@ func GetUnitSessions(tx *gorm.DB, unitID uint, offset uint, limit uint, order st
 
 	query = query.Order(sortBy + " " + order)
 
-	result := query.Limit(int(limit)).Find(&unitSessions)
+	result := query.Preload("SnackTransactions").Limit(int(limit)).Find(&unitSessions)
 	return unitSessions, result.Error
 }
 

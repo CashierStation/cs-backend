@@ -92,6 +92,7 @@ type Snack struct {
 	Name      string
 	Category  string
 	Price     int
+	Stock     int
 	Rental    Rental `gorm:"foreignKey:RentalID"`
 	CreatedAt time.Time
 	UpdatedAt time.Time

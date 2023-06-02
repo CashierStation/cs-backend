@@ -1,6 +1,8 @@
 package models
 
 import (
+	"errors"
+
 	"gorm.io/gorm"
 )
 
@@ -15,6 +17,7 @@ func CreateSnack(tx *gorm.DB, rentalID string, name string, category string, pri
 		Name:     name,
 		RentalID: rentalID,
 		Category: category,
+		Stock:    0,
 		Price:    price,
 	}
 	result := tx.Create(snack)
@@ -25,4 +28,32 @@ func GetSnack(tx *gorm.DB, rentalID string, snackID uint) (Snack, error) {
 	var snack Snack
 	result := tx.Where("id = ? AND rental_id = ?", snackID, rentalID).First(&snack)
 	return snack, result.Error
+}
+
+func CreateSnackTransaction(tx *gorm.DB, unitSessionID uint, snackID uint, quantity int) (SnackTransaction, error) {
+	var snack Snack
+	result := tx.Where("id = ?", snackID).First(&snack)
+
+	if result.Error != nil {
+		return SnackTransaction{}, result.Error
+	}
+
+	if snack.Stock < quantity {
+		return SnackTransaction{}, errors.New("not enough stock")
+	}
+
+	snack.Stock -= quantity
+	tx.Save(&snack)
+
+	totalPrice := snack.Price * quantity
+
+	snackTransaction := &SnackTransaction{
+		UnitSessionID: unitSessionID,
+		SnackID:       snackID,
+		Quantity:      quantity,
+		Total:         totalPrice,
+	}
+
+	result = tx.Create(snackTransaction)
+	return *snackTransaction, result.Error
 }

@@ -11,6 +11,7 @@ import (
 type PostSnackRequest struct {
 	Name     string `validate:"required" query:"name"`
 	Category string `validate:"required" query:"category"`
+	Stock    int    `query:"stock"`
 	Price    int    `validate:"required" query:"price"`
 }
 
@@ -21,6 +22,7 @@ type SnackResponse struct {
 	RentalID string `json:"rental_id"`
 	Name     string `json:"name"`
 	Category string `json:"category"`
+	Stock    int    `json:"stock"`
 	Price    int    `json:"price"`
 }
 
@@ -39,6 +41,7 @@ type PostSnackResponse struct {
 // @Param name query string true "Snack name"
 // @Param price query int true "Snack price"
 // @Param category query string true "Snack category"
+// @Param stock query int false "Snack stock" default(0)
 // @Success 200 {object} snack.PostSnackResponse
 // @Router /api/snack [post]
 func POST(c *fiber.Ctx) error {
@@ -72,6 +75,7 @@ func POST(c *fiber.Ctx) error {
 		RentalID: newSnack.RentalID,
 		Name:     newSnack.Name,
 		Category: newSnack.Category,
+		Stock:    newSnack.Stock,
 		Price:    newSnack.Price,
 	}})
 }

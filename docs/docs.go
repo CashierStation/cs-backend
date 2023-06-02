@@ -115,6 +115,63 @@ const docTemplate = `{
                         "name": "category",
                         "in": "query",
                         "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "default": 0,
+                        "description": "Snack stock",
+                        "name": "stock",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/snack.PostSnackResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/snack/transaction": {
+            "post": {
+                "security": [
+                    {
+                        "SessionToken": []
+                    }
+                ],
+                "description": "Snack",
+                "consumes": [
+                    "application/x-www-form-urlencoded"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "api/snack"
+                ],
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Unit ID",
+                        "name": "unit_id",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Snack ID",
+                        "name": "snack_id",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Quantity",
+                        "name": "quantity",
+                        "in": "query",
+                        "required": true
                     }
                 ],
                 "responses": {
@@ -835,6 +892,9 @@ const docTemplate = `{
                 },
                 "rental_id": {
                     "type": "string"
+                },
+                "stock": {
+                    "type": "integer"
                 }
             }
         },

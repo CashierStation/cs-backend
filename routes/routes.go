@@ -37,6 +37,7 @@ func SetupRoutes(app *fiber.App, db *gorm.DB) {
 	apiGroup.Post("/snack", snack.POST)
 	apiGroup.Put("/snack/:id", snack.PUT)
 	apiGroup.Delete("/snack/:id", snack.DELETE)
+	apiGroup.Post("/snack/transaction", snack.CreateSnackTransaction)
 
 	apiGroup.Get("/unit_session", unitsession.GetUnitSessions)
 	apiGroup.Put("/unit_session/start/:unit_id", unitsession.StartUnitSessions)
