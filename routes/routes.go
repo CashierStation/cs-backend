@@ -49,6 +49,7 @@ func SetupRoutes(app *fiber.App, db *gorm.DB) {
 
 	apiGroup.Get("/booking", booking.GetBookingList)
 	apiGroup.Post("/booking", booking.CreateBooking)
+	apiGroup.Put("/booking/:id", booking.UpdateBooking)
 
 	oauth.Routes(app)
 	auth.Routes(app)

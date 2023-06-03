@@ -36,7 +36,7 @@ type GetBookingListResponse struct {
 // Booking godoc
 // @Summary
 // @Schemes
-// @Description Submit new booking
+// @Description Get booking list
 // @Tags api/booking
 // @Accept x-www-form-urlencoded
 // @Produce json
@@ -77,7 +77,7 @@ func GetBookingList(c *fiber.Ctx) error {
 	}
 
 	// get booking
-	booking, err := models.GetBookingList(tx, rawReqQuery.CustomerName, rawReqQuery.UnitID, rawReqQuery.Status, rawReqQuery.UnitInUse, int(rawReqQuery.Offset), int(rawReqQuery.Limit))
+	booking, err := models.GetBookingList(tx, user.RentalID, rawReqQuery.CustomerName, rawReqQuery.UnitID, rawReqQuery.Status, rawReqQuery.UnitInUse, int(rawReqQuery.Offset), int(rawReqQuery.Limit))
 	if err != nil {
 		tx.Rollback()
 		return c.Status(fiber.StatusInternalServerError).SendString("Error creating booking")

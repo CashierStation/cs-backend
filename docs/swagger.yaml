@@ -32,6 +32,19 @@ definitions:
       unit_id:
         type: integer
     type: object
+  booking.UpdateBookingResponse:
+    properties:
+      customer_name:
+        type: string
+      id:
+        type: integer
+      status:
+        type: string
+      time:
+        type: string
+      unit_id:
+        type: integer
+    type: object
   enum.UnitStatus:
     enum:
     - idle
@@ -268,7 +281,7 @@ paths:
     get:
       consumes:
       - application/x-www-form-urlencoded
-      description: Submit new booking
+      description: Get booking list
       parameters:
       - description: Search by customer name
         in: query
@@ -338,6 +351,48 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/booking.CreateBookingResponse'
+      security:
+      - Booking: []
+      tags:
+      - api/booking
+  /api/booking/{id}:
+    put:
+      consumes:
+      - application/x-www-form-urlencoded
+      description: Submit new booking
+      parameters:
+      - description: Booking ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Customer name
+        in: query
+        name: customer_name
+        type: string
+      - description: Unit ID
+        in: query
+        name: unit_id
+        type: integer
+      - description: 'Booking time in RFC3339 format (ex: 2023-06-01T08:00:00Z)'
+        in: query
+        name: time
+        type: string
+      - description: Booking status
+        enum:
+        - waiting
+        - accepted
+        - rejected
+        in: query
+        name: status
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/booking.UpdateBookingResponse'
       security:
       - Booking: []
       tags:

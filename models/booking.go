@@ -24,10 +24,10 @@ func CreateBooking(tx *gorm.DB, customerName string, unitID uint, time time.Time
 	return booking, nil
 }
 
-func GetBookingList(tx *gorm.DB, customerName string, unitID uint, status string, unitInUse *bool, offset int, limit int) ([]Booking, error) {
+func GetBookingList(tx *gorm.DB, rentalID string, customerName string, unitID uint, status string, unitInUse *bool, offset int, limit int) ([]Booking, error) {
 	var bookings []Booking
 
-	query := tx.Model(&Booking{})
+	query := tx.Model(&Booking{}).Where("rental_id = ?", rentalID)
 
 	if customerName != "" {
 		query = query.Where("customer_name LIKE ?", "%"+customerName+"%")
@@ -61,10 +61,60 @@ func GetBookingList(tx *gorm.DB, customerName string, unitID uint, status string
 		}
 	}
 
-	err := query.Offset(offset).Limit(limit).Find(&bookings).Order("time DESC").Error
+	err := query.Joins("Unit").Offset(offset).Limit(limit).Find(&bookings).Order("time DESC").Error
 	if err != nil {
 		return []Booking{}, err
 	}
 
 	return bookings, nil
+}
+
+func GetBookingWithRentalID(tx *gorm.DB, rentalID string, bookingID uint) (Booking, error) {
+	var booking Booking
+	err := tx.Joins("JOIN units ON bookings.unit_id = units.id").Where("bookings.id = ? AND units.rental_id = ?", bookingID, rentalID).First(&booking).Error
+	if err != nil {
+		return Booking{}, err
+	}
+
+	return booking, nil
+}
+
+func GetBooking(tx *gorm.DB, bookingID uint) (Booking, error) {
+	var booking Booking
+	err := tx.First(&booking, bookingID).Error
+	if err != nil {
+		return Booking{}, err
+	}
+
+	return booking, nil
+}
+
+func UpdateBooking(tx *gorm.DB, bookingID uint, unitID uint, customerName string, status string, time *time.Time) (Booking, error) {
+	booking, err := GetBooking(tx, bookingID)
+	if err != nil {
+		return Booking{}, err
+	}
+
+	if unitID != 0 {
+		booking.UnitID = unitID
+	}
+
+	if customerName != "" {
+		booking.CustomerName = customerName
+	}
+
+	if status != "" {
+		booking.Status = status
+	}
+
+	if time != nil {
+		booking.Time = *time
+	}
+
+	err = tx.Save(&booking).Error
+	if err != nil {
+		return Booking{}, err
+	}
+
+	return booking, nil
 }
