@@ -362,6 +362,38 @@ paths:
       - SessionToken: []
       tags:
       - api/snack
+  /api/snack/restock:
+    post:
+      consumes:
+      - application/x-www-form-urlencoded
+      description: Snack
+      parameters:
+      - description: Snack ID
+        in: query
+        name: snack_id
+        required: true
+        type: integer
+      - description: Quantity
+        in: query
+        name: quantity
+        required: true
+        type: integer
+      - description: Total price
+        in: query
+        name: price
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/snack.PostSnackResponse'
+      security:
+      - SessionToken: []
+      tags:
+      - api/snack
   /api/snack/transaction:
     post:
       consumes:

@@ -134,6 +134,56 @@ const docTemplate = `{
                 }
             }
         },
+        "/api/snack/restock": {
+            "post": {
+                "security": [
+                    {
+                        "SessionToken": []
+                    }
+                ],
+                "description": "Snack",
+                "consumes": [
+                    "application/x-www-form-urlencoded"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "api/snack"
+                ],
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Snack ID",
+                        "name": "snack_id",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Quantity",
+                        "name": "quantity",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Total price",
+                        "name": "price",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/snack.PostSnackResponse"
+                        }
+                    }
+                }
+            }
+        },
         "/api/snack/transaction": {
             "post": {
                 "security": [

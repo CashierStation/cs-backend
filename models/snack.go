@@ -57,3 +57,24 @@ func CreateSnackTransaction(tx *gorm.DB, unitSessionID uint, snackID uint, quant
 	result = tx.Create(snackTransaction)
 	return *snackTransaction, result.Error
 }
+
+func CreateSnackRestock(tx *gorm.DB, rentalID string, snackID uint, quantity int, totalPrice int) (SnackRestock, error) {
+	var snack Snack
+	result := tx.Where("id = ?", snackID).First(&snack)
+
+	if result.Error != nil {
+		return SnackRestock{}, result.Error
+	}
+
+	snack.Stock += quantity
+	tx.Save(&snack)
+
+	snackRestock := &SnackRestock{
+		SnackID:  snackID,
+		Quantity: quantity,
+		Total:    totalPrice,
+	}
+
+	result = tx.Create(snackRestock)
+	return *snackRestock, result.Error
+}
