@@ -11,6 +11,7 @@ import (
 	m "csbackend/routes/metrics"
 	"csbackend/routes/oauth"
 
+	"csbackend/routes/api/booking"
 	"csbackend/routes/api/snack"
 	"csbackend/routes/api/unit"
 	"csbackend/routes/api/unitsession"
@@ -45,6 +46,9 @@ func SetupRoutes(app *fiber.App, db *gorm.DB) {
 	apiGroup.Get("/unit_session", unitsession.GetUnitSessions)
 	apiGroup.Put("/unit_session/start/:unit_id", unitsession.StartUnitSessions)
 	apiGroup.Put("/unit_session/stop/:unit_id", unitsession.StopUnitSessions)
+
+	apiGroup.Get("/booking", booking.GetBookingList)
+	apiGroup.Post("/booking", booking.CreateBooking)
 
 	oauth.Routes(app)
 	auth.Routes(app)

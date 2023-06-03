@@ -10,10 +10,10 @@ const (
 func (e KaryawanRole) String() string {
 	switch e {
 	case Owner:
-		return "Owner"
+		return "owner"
 	case Karyawan:
-		return "Karyawan"
+		return "karyawan"
 	default:
-		return "Unknown"
+		return "unknown"
 	}
 }

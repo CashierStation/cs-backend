@@ -51,14 +51,15 @@ type Unit struct {
 }
 
 type Booking struct {
-	ID        uint `gorm:"primaryKey"`
-	UnitID    uint
-	Time      string
-	Status    int
-	Unit      Unit `gorm:"foreignKey:UnitID"`
-	CreatedAt time.Time
-	UpdatedAt time.Time
-	DeletedAt gorm.DeletedAt `gorm:"index"`
+	ID           uint `gorm:"primaryKey"`
+	CustomerName string
+	UnitID       uint
+	Time         time.Time
+	Status       string
+	Unit         Unit `gorm:"foreignKey:UnitID"`
+	CreatedAt    time.Time
+	UpdatedAt    time.Time
+	DeletedAt    gorm.DeletedAt `gorm:"index"`
 }
 
 type UnitSession struct {

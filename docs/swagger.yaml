@@ -1,4 +1,37 @@
 definitions:
+  booking.CreateBookingResponse:
+    properties:
+      customer_name:
+        type: string
+      id:
+        type: integer
+      status:
+        type: string
+      time:
+        type: string
+      unit_id:
+        type: integer
+    type: object
+  booking.GetBookingListResponse:
+    properties:
+      bookings:
+        items:
+          $ref: '#/definitions/booking.GetBookingListResponse_01'
+        type: array
+    type: object
+  booking.GetBookingListResponse_01:
+    properties:
+      customer_name:
+        type: string
+      id:
+        type: integer
+      status:
+        type: string
+      time:
+        type: string
+      unit_id:
+        type: integer
+    type: object
   enum.UnitStatus:
     enum:
     - idle
@@ -233,6 +266,84 @@ info:
   title: CashierStation Backend Server API
   version: "1.0"
 paths:
+  /api/booking:
+    get:
+      consumes:
+      - application/x-www-form-urlencoded
+      description: Submit new booking
+      parameters:
+      - description: Search by customer name
+        in: query
+        name: customer_name
+        type: string
+      - description: Select by Unit ID
+        in: query
+        name: unit_id
+        type: integer
+      - description: Select by status
+        enum:
+        - waiting
+        - accepted
+        - rejected
+        in: query
+        name: status
+        type: string
+      - description: Select by unit in use
+        in: query
+        name: unit_in_use
+        type: boolean
+      - default: 10
+        description: Limit number of results
+        in: query
+        name: limit
+        type: integer
+      - default: 0
+        description: Offset results
+        in: query
+        name: offset
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/booking.GetBookingListResponse'
+      security:
+      - Booking: []
+      tags:
+      - api/booking
+    post:
+      consumes:
+      - application/x-www-form-urlencoded
+      description: Submit new booking
+      parameters:
+      - description: Customer name
+        in: query
+        name: customer_name
+        required: true
+        type: string
+      - description: Unit ID
+        in: query
+        name: unit_id
+        required: true
+        type: integer
+      - description: 'Booking time in RFC3339 format (ex: 2023-06-01T08:00:00Z)'
+        in: query
+        name: time
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/booking.CreateBookingResponse'
+      security:
+      - Booking: []
+      tags:
+      - api/booking
   /api/employee/list:
     get:
       consumes:

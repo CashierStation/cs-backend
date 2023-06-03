@@ -16,6 +16,126 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
+        "/api/booking": {
+            "get": {
+                "security": [
+                    {
+                        "Booking": []
+                    }
+                ],
+                "description": "Submit new booking",
+                "consumes": [
+                    "application/x-www-form-urlencoded"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "api/booking"
+                ],
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Search by customer name",
+                        "name": "customer_name",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Select by Unit ID",
+                        "name": "unit_id",
+                        "in": "query"
+                    },
+                    {
+                        "enum": [
+                            "waiting",
+                            "accepted",
+                            "rejected"
+                        ],
+                        "type": "string",
+                        "description": "Select by status",
+                        "name": "status",
+                        "in": "query"
+                    },
+                    {
+                        "type": "boolean",
+                        "description": "Select by unit in use",
+                        "name": "unit_in_use",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "default": 10,
+                        "description": "Limit number of results",
+                        "name": "limit",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "default": 0,
+                        "description": "Offset results",
+                        "name": "offset",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/booking.GetBookingListResponse"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "security": [
+                    {
+                        "Booking": []
+                    }
+                ],
+                "description": "Submit new booking",
+                "consumes": [
+                    "application/x-www-form-urlencoded"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "api/booking"
+                ],
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Customer name",
+                        "name": "customer_name",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Unit ID",
+                        "name": "unit_id",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Booking time in RFC3339 format (ex: 2023-06-01T08:00:00Z)",
+                        "name": "time",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/booking.CreateBookingResponse"
+                        }
+                    }
+                }
+            }
+        },
         "/api/employee/list": {
             "get": {
                 "security": [
@@ -854,6 +974,57 @@ const docTemplate = `{
         }
     },
     "definitions": {
+        "booking.CreateBookingResponse": {
+            "type": "object",
+            "properties": {
+                "customer_name": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "status": {
+                    "type": "string"
+                },
+                "time": {
+                    "type": "string"
+                },
+                "unit_id": {
+                    "type": "integer"
+                }
+            }
+        },
+        "booking.GetBookingListResponse": {
+            "type": "object",
+            "properties": {
+                "bookings": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/booking.GetBookingListResponse_01"
+                    }
+                }
+            }
+        },
+        "booking.GetBookingListResponse_01": {
+            "type": "object",
+            "properties": {
+                "customer_name": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "status": {
+                    "type": "string"
+                },
+                "time": {
+                    "type": "string"
+                },
+                "unit_id": {
+                    "type": "integer"
+                }
+            }
+        },
         "enum.UnitStatus": {
             "type": "string",
             "enum": [
