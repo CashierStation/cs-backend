@@ -1029,15 +1029,11 @@ const docTemplate = `{
             "type": "string",
             "enum": [
                 "idle",
-                "in_use",
-                "booked",
-                "booked_while_in_use"
+                "in_use"
             ],
             "x-enum-varnames": [
                 "Idle",
-                "InUse",
-                "Booked",
-                "BookedWhileInUse"
+                "InUse"
             ]
         },
         "login.LoginPostResponse": {
@@ -1171,6 +1167,9 @@ const docTemplate = `{
         "unit.GetUnitStatus": {
             "type": "object",
             "properties": {
+                "booked": {
+                    "type": "boolean"
+                },
                 "latest_finish_time": {
                     "type": "string"
                 },

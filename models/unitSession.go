@@ -56,6 +56,7 @@ func GetLastUnitSession(tx *gorm.DB, unitID uint) (UnitSession, error) {
 type unitStatus struct {
 	UnitID     uint            `json:"unit_id"`
 	Status     enum.UnitStatus `json:"status"`
+	Booked     bool            `json:"booked"`
 	StartTime  *time.Time      `json:"latest_start_time"`
 	FinishTime *time.Time      `json:"latest_finish_time"`
 	Tarif      int             `json:"tarif"`
@@ -71,17 +72,26 @@ func GetLastUnitStatuses(tx *gorm.DB, unitIDs []uint) ([]unitStatus, error) {
 				us.*
 			from unit_sessions us
 			where unit_id in ?
+		), booking_status as (
+			select
+				b.unit_id,
+				count(b.status) > 0 as booked 
+			from bookings b 
+			where status = 'waiting' and unit_id in ?
+			group by 1
 		) select 
 			u.id, 
-			case when start_time is not null and finish_time is null then 'in_use' else 'idle' end as status, -- TODO: adjust for booking
-			coalesce(tarif, 0),
+			case when start_time is not null and finish_time is null then 'in_use' else 'idle' end as status,
+			coalesce(bs.booked, false) as booked,
+			coalesce(tarif, 0) as tarif,
 			start_time, 
 			finish_time
 		from units u
 		left join latest_time lt on u.id = lt.unit_id
+		left join booking_status bs on u.id = bs.unit_id
 		where (lt.max is null or lt.max = 1) and u.id in ?
-		order by unit_id 
-	`, unitIDs, unitIDs).Rows()
+		order by u.id 
+	`, unitIDs, unitIDs, unitIDs).Rows()
 
 	if err != nil {
 		return unitSessions, err
@@ -91,7 +101,7 @@ func GetLastUnitStatuses(tx *gorm.DB, unitIDs []uint) ([]unitStatus, error) {
 
 	for rows.Next() {
 		var unitSession unitStatus
-		err := rows.Scan(&unitSession.UnitID, &unitSession.Status, &unitSession.Tarif, &unitSession.StartTime, &unitSession.FinishTime)
+		err := rows.Scan(&unitSession.UnitID, &unitSession.Status, &unitSession.Booked, &unitSession.Tarif, &unitSession.StartTime, &unitSession.FinishTime)
 		if err != nil {
 			return unitSessions, err
 		}

@@ -11,6 +11,7 @@ import (
 
 type GetUnitStatus struct {
 	Status     enum.UnitStatus `json:"status"`
+	Booked     bool            `json:"booked"`
 	StartTime  *time.Time      `json:"latest_start_time"`
 	FinishTime *time.Time      `json:"latest_finish_time"`
 	Tarif      int             `json:"tarif"`
@@ -79,6 +80,7 @@ func GET(c *fiber.Ctx) error {
 
 			unitResponses[i].Status = GetUnitStatus{
 				Status:     unitStatus.Status,
+				Booked:     unitStatus.Booked,
 				StartTime:  unitStatus.StartTime,
 				FinishTime: unitStatus.FinishTime,
 			}

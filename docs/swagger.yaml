@@ -36,14 +36,10 @@ definitions:
     enum:
     - idle
     - in_use
-    - booked
-    - booked_while_in_use
     type: string
     x-enum-varnames:
     - Idle
     - InUse
-    - Booked
-    - BookedWhileInUse
   login.LoginPostResponse:
     properties:
       session_token:
@@ -128,6 +124,8 @@ definitions:
     type: object
   unit.GetUnitStatus:
     properties:
+      booked:
+        type: boolean
       latest_finish_time:
         type: string
       latest_start_time:
