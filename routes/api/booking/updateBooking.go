@@ -32,7 +32,7 @@ type UpdateBookingResponse struct {
 // Booking godoc
 // @Summary
 // @Schemes
-// @Description Submit new booking
+// @Description Update info booking, bisa dipakai untuk accept/reject booking juga
 // @Tags api/booking
 // @Accept x-www-form-urlencoded
 // @Produce json

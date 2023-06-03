@@ -143,7 +143,7 @@ const docTemplate = `{
                         "Booking": []
                     }
                 ],
-                "description": "Submit new booking",
+                "description": "Update info booking, bisa dipakai untuk accept/reject booking juga",
                 "consumes": [
                     "application/x-www-form-urlencoded"
                 ],
