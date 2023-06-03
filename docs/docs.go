@@ -353,7 +353,7 @@ const docTemplate = `{
                     },
                     {
                         "type": "integer",
-                        "description": "Total price",
+                        "description": "Total harga kulakan",
                         "name": "price",
                         "in": "query",
                         "required": true

@@ -542,7 +542,7 @@ paths:
         name: quantity
         required: true
         type: integer
-      - description: Total price
+      - description: Total harga kulakan
         in: query
         name: price
         required: true

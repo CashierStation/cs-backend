@@ -34,7 +34,7 @@ type CreateSnackRestockResponse struct {
 // @Produce json
 // @Param snack_id query int true "Snack ID"
 // @Param quantity query int true "Quantity"
-// @Param price query int true "Total price"
+// @Param price query int true "Total harga kulakan"
 // @Success 200 {object} snack.PostSnackResponse
 // @Router /api/snack/restock [post]
 func CreateSnackRestock(c *fiber.Ctx) error {
