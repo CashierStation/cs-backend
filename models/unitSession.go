@@ -43,7 +43,7 @@ func GetUnitSessions(tx *gorm.DB, unitID uint, offset uint, limit uint, order st
 		query = query.Where("(unit_id, start_time) in (?)", subQuery)
 	}
 
-	result := query.Preload("SnackTransactions").Limit(int(limit)).Find(&unitSessions)
+	result := query.Preload("SnackTransactions.Snack").Limit(int(limit)).Find(&unitSessions)
 	return unitSessions, result.Error
 }
 
