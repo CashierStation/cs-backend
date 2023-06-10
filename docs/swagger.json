@@ -6,6 +6,53 @@
         "version": "1.0"
     },
     "paths": {
+        "/api/analytic/unit/revenue": {
+            "get": {
+                "security": [
+                    {
+                        "Analytic": []
+                    }
+                ],
+                "description": "Get unit revenue analytic",
+                "consumes": [
+                    "application/x-www-form-urlencoded"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "api/analytic"
+                ],
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Aggregation",
+                        "name": "aggregation",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Start Time in RFC3339 format (ex: 2023-06-01T08:00:00Z)",
+                        "name": "start_time",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "End Time in RFC3339 format (ex: 2023-06-01T08:00:00Z)",
+                        "name": "end_time",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/analytic.GetRevenueResponse"
+                        }
+                    }
+                }
+            }
+        },
         "/api/booking": {
             "get": {
                 "security": [
@@ -1029,6 +1076,26 @@
         }
     },
     "definitions": {
+        "analytic.GetRevenueResponse": {
+            "type": "object",
+            "properties": {
+                "avg": {
+                    "type": "number"
+                },
+                "history": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.UnitHistoricalRevenueValue"
+                    }
+                },
+                "max": {
+                    "type": "number"
+                },
+                "min": {
+                    "type": "number"
+                }
+            }
+        },
         "booking.CreateBookingResponse": {
             "type": "object",
             "properties": {
@@ -1118,6 +1185,20 @@
                     "type": "string"
                 },
                 "username": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.UnitHistoricalRevenueValue": {
+            "type": "object",
+            "properties": {
+                "improvement_pct": {
+                    "type": "number"
+                },
+                "revenue": {
+                    "type": "number"
+                },
+                "time": {
                     "type": "string"
                 }
             }

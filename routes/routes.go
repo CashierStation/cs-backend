@@ -11,6 +11,7 @@ import (
 	m "csbackend/routes/metrics"
 	"csbackend/routes/oauth"
 
+	"csbackend/routes/api/analytic"
 	"csbackend/routes/api/booking"
 	"csbackend/routes/api/snack"
 	"csbackend/routes/api/unit"
@@ -41,8 +42,6 @@ func SetupRoutes(app *fiber.App, db *gorm.DB) {
 	apiGroup.Post("/snack/transaction", snack.CreateSnackTransaction)
 	apiGroup.Post("/snack/restock", snack.CreateSnackRestock)
 
-	// TODO: GET /snack/transaction and GET /snack/restock
-
 	apiGroup.Get("/unit_session", unitsession.GetUnitSessions)
 	apiGroup.Put("/unit_session/start/:unit_id", unitsession.StartUnitSessions)
 	apiGroup.Put("/unit_session/stop/:unit_id", unitsession.StopUnitSessions)
@@ -50,6 +49,8 @@ func SetupRoutes(app *fiber.App, db *gorm.DB) {
 	apiGroup.Get("/booking", booking.GetBookingList)
 	apiGroup.Post("/booking", booking.CreateBooking)
 	apiGroup.Put("/booking/:id", booking.UpdateBooking)
+
+	apiGroup.Get("/analytic/unit/revenue", analytic.GetRevenue)
 
 	oauth.Routes(app)
 	auth.Routes(app)

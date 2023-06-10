@@ -1,4 +1,17 @@
 definitions:
+  analytic.GetRevenueResponse:
+    properties:
+      avg:
+        type: number
+      history:
+        items:
+          $ref: '#/definitions/models.UnitHistoricalRevenueValue'
+        type: array
+      max:
+        type: number
+      min:
+        type: number
+    type: object
   booking.CreateBookingResponse:
     properties:
       customer_name:
@@ -58,6 +71,15 @@ definitions:
       session_token:
         type: string
       username:
+        type: string
+    type: object
+  models.UnitHistoricalRevenueValue:
+    properties:
+      improvement_pct:
+        type: number
+      revenue:
+        type: number
+      time:
         type: string
     type: object
   register.RegisterPostResponse:
@@ -277,6 +299,35 @@ info:
   title: CashierStation Backend Server API
   version: "1.0"
 paths:
+  /api/analytic/unit/revenue:
+    get:
+      consumes:
+      - application/x-www-form-urlencoded
+      description: Get unit revenue analytic
+      parameters:
+      - description: Aggregation
+        in: query
+        name: aggregation
+        type: string
+      - description: 'Start Time in RFC3339 format (ex: 2023-06-01T08:00:00Z)'
+        in: query
+        name: start_time
+        type: string
+      - description: 'End Time in RFC3339 format (ex: 2023-06-01T08:00:00Z)'
+        in: query
+        name: end_time
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/analytic.GetRevenueResponse'
+      security:
+      - Analytic: []
+      tags:
+      - api/analytic
   /api/booking:
     get:
       consumes:
