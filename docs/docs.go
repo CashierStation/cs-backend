@@ -35,6 +35,11 @@ const docTemplate = `{
                 ],
                 "parameters": [
                     {
+                        "enum": [
+                            "day",
+                            "week",
+                            "month"
+                        ],
                         "type": "string",
                         "description": "Aggregation",
                         "name": "aggregation",
@@ -44,13 +49,15 @@ const docTemplate = `{
                         "type": "string",
                         "description": "Start Time in RFC3339 format (ex: 2023-06-01T08:00:00Z)",
                         "name": "start_time",
-                        "in": "query"
+                        "in": "query",
+                        "required": true
                     },
                     {
                         "type": "string",
                         "description": "End Time in RFC3339 format (ex: 2023-06-01T08:00:00Z)",
                         "name": "end_time",
-                        "in": "query"
+                        "in": "query",
+                        "required": true
                     }
                 ],
                 "responses": {

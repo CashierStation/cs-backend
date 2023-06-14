@@ -43,7 +43,7 @@ type UnitHistoricalRevenue struct {
 	History  []UnitHistoricalRevenueValue `json:"history"`
 }
 
-func GetRevenue(tx *gorm.DB, rentalID string, startTime time.Time, endTime time.Time) (UnitHistoricalRevenue, error) {
+func GetRevenue(tx *gorm.DB, rentalID string, aggregation string, startTime time.Time, endTime time.Time) (UnitHistoricalRevenue, error) {
 	var qryResult string
 	qry := `
 		with raw_profit as (
@@ -77,7 +77,8 @@ func GetRevenue(tx *gorm.DB, rentalID string, startTime time.Time, endTime time.
 			from raw_profit, avg_profit
 		) select to_json(summary) from summary
 	`
-	result := tx.Raw(qry, "1 day", rentalID, startTime, endTime).Scan(&qryResult)
+	aggregation = "1 " + aggregation
+	result := tx.Raw(qry, aggregation, rentalID, startTime, endTime).Scan(&qryResult)
 	if result.Error != nil {
 		return UnitHistoricalRevenue{}, result.Error
 	}

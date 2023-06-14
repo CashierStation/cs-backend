@@ -306,16 +306,22 @@ paths:
       description: Get unit revenue analytic
       parameters:
       - description: Aggregation
+        enum:
+        - day
+        - week
+        - month
         in: query
         name: aggregation
         type: string
       - description: 'Start Time in RFC3339 format (ex: 2023-06-01T08:00:00Z)'
         in: query
         name: start_time
+        required: true
         type: string
       - description: 'End Time in RFC3339 format (ex: 2023-06-01T08:00:00Z)'
         in: query
         name: end_time
+        required: true
         type: string
       produces:
       - application/json
