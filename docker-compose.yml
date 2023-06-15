@@ -1,0 +1,52 @@
+version: '3.9'
+services:
+  postgres:
+    container_name: postgres
+    image: timescale/timescaledb:latest-pg15
+    volumes:
+      - pg-data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: 'postgres'
+      POSTGRES_PASSWORD: 'BtesZsRlA8D35Uv'
+      POSTGRES_DB: 'postgres'
+    ports:
+      - 5432:5432
+    restart: on-failure
+  app:
+    build: .
+    container_name: app
+    image: csbackend
+    ports:
+      - 8080:8080
+    depends_on:
+      - postgres
+    environment:
+      MODE: 'release'
+    restart: on-failure
+    secrets:
+      - .env
+  migration:
+    build: .
+    container_name: migration
+    image: csbackend
+    depends_on:
+      - postgres
+    environment:
+      MODE: 'release'
+    secrets:
+      - .env
+    command: "--migrate"
+  #integration:
+  #  build:
+  #    context: .
+  #    dockerfile: integration-test/Dockerfile
+  #  container_name: integration
+  #  image: integration
+  #  depends_on:
+  #    - app
+volumes:
+  pg-data:
+
+secrets:
+  .env:
+    file: .env
