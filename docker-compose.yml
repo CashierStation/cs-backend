@@ -15,7 +15,7 @@ services:
   app:
     build: .
     container_name: app
-    image: csbackend
+    image: dwiandhika/csbackend:latest
     ports:
       - 8080:8080
     depends_on:
@@ -28,7 +28,7 @@ services:
   migration:
     build: .
     container_name: migration
-    image: csbackend
+    image: dwiandhika/csbackend:latest
     depends_on:
       - postgres
     environment:
