@@ -3,6 +3,9 @@ on:
   push:
     tags:
       - 'v*'
+env:
+  DOCKER_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
+  DOCKER_PASSWORD: ${{ secrets.DOCKERHUB_TOKEN }}
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -10,15 +13,9 @@ jobs:
       -
         name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
-      -
-        name: Login to Docker Hub
-        uses: docker/login-action@v2
-        with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
-      -
-        name: Build and push
-        uses: docker/build-push-action@v4
-        with:
-          push: true
-          tags: dwiandhika/csbackend:latest
+      - name: Login to Docker Hub
+        run: docker login --username $DOCKER_USERNAME --password $DOCKER_PASSWORD
+      - name: Build and push Docker image
+        run: |
+          docker build -t dwiandhika/csbackend .
+          docker push dwiandhika/csbackend
