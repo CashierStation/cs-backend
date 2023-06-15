@@ -25,17 +25,17 @@ services:
     restart: on-failure
     secrets:
       - .env
-  migration:
-    build: .
-    container_name: migration
-    image: dwiandhika/csbackend:latest
-    depends_on:
-      - postgres
-    environment:
-      MODE: 'release'
-    secrets:
-      - .env
-    command: "--migrate"
+  #migration:
+  #  build: .
+  #  container_name: migration
+  #  image: dwiandhika/csbackend:latest
+  #  depends_on:
+  #    - postgres
+  #  environment:
+  #    MODE: 'release'
+  #  secrets:
+  #    - .env
+  #  command: "--migrate"
   #integration:
   #  build:
   #    context: .
