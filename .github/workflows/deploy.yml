@@ -1,8 +1,8 @@
 name: CashierStation Backend Deploy
 on:
   push:
-    tags:
-      - 'v*'
+    branches:
+      - main
 env:
   DOCKER_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
   DOCKER_PASSWORD: ${{ secrets.DOCKERHUB_TOKEN }}
