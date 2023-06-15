@@ -9,7 +9,7 @@ env:
   SSH_HOST: ${{ secrets.SSH_HOST }}
   SSH_PORT: 22
 jobs:
-  deploy:
+  build:
     runs-on: ubuntu-latest
     steps:
       -
@@ -28,7 +28,8 @@ jobs:
           push: true
           tags: dwiandhika/csbackend:latest
       
-      -
+  deploy:
+    runs-on: ubuntu-latest
         name: Pull image from machine
         run: |
           ssh -o StrictHostKeyChecking=no -p $SSH_PORT $SSH_USER@$SSH_HOST 'docker login --username ${{ secrets.DOCKERHUB_USERNAME }} --password ${{ secrets.DOCKERHUB_TOKEN }} && docker pull dwiandhika/csbackend:latest'
