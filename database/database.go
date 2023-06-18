@@ -25,6 +25,7 @@ func New() (*gorm.DB, error) {
 		dsn = os.Getenv("DSN_PROD")
 	} */
 	dsn := os.Getenv("DSN")
+	println(dsn)
 	//dsn := fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=%s sslmode=disable TimeZone=Asia/Jakarta", host, user, password, dbname, port)
 
 	newLogger := logger.New(
@@ -35,6 +36,7 @@ func New() (*gorm.DB, error) {
 			IgnoreRecordNotFoundError: true,                   // Ignore ErrRecordNotFound error for logger
 		},
 	)
+	println("created logger")
 
 	database, err := gorm.Open(
 		postgres.New(postgres.Config{
@@ -45,7 +47,10 @@ func New() (*gorm.DB, error) {
 		},
 	)
 
+	println("opened database")
+
 	if err != nil {
+		println(err.Error())
 		return nil, err
 	}
 

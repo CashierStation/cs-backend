@@ -1,7 +1,6 @@
 version: '3.9'
 services:
   postgres:
-    container_name: postgres
     image: timescale/timescaledb:latest-pg15
     volumes:
       - pg-data:/var/lib/postgresql/data
@@ -14,7 +13,6 @@ services:
     restart: on-failure
   app:
     build: .
-    container_name: app
     image: dwiandhika/csbackend:latest
     ports:
       - 8080:8080
@@ -25,6 +23,8 @@ services:
     restart: on-failure
     secrets:
       - .env
+    links:
+      - postgres
   #migration:
   #  build: .
   #  container_name: migration
