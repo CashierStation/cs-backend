@@ -9,8 +9,14 @@ services:
       POSTGRES_PASSWORD: 'BtesZsRlA8D35Uv'
       POSTGRES_DB: 'postgres'
     ports:
-      - 5432:5432
+      - 6432:6432
     restart: on-failure
+    hostname: postgres
+    networks:
+      - mynet
+    expose:
+      - 6432
+    command: -p 6432
   app:
     build: .
     image: dwiandhika/csbackend:latest
@@ -23,8 +29,8 @@ services:
     restart: on-failure
     secrets:
       - .env
-    links:
-      - postgres
+    networks:
+      - mynet
   #migration:
   #  build: .
   #  container_name: migration
@@ -50,3 +56,7 @@ volumes:
 secrets:
   .env:
     file: .env
+
+networks:
+  mynet:
+    name: my-shared-db-network
