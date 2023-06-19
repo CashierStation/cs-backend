@@ -94,9 +94,9 @@ func main() {
 
 	app.Use(logger.New())
 
-	jobs.StartJob(jobs.StartJobOptions{
-		App: app,
-	})
+	//jobs.StartJob(jobs.StartJobOptions{
+	//	App: app,
+	//})
 
 	mode := os.Getenv("MODE")
 	if mode != "release" {
