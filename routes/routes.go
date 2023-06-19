@@ -5,7 +5,7 @@ import (
 	"gorm.io/gorm"
 
 	"csbackend/authenticator"
-	"csbackend/routes/api/employee"
+	_ "csbackend/routes/api/employee"
 	"csbackend/routes/api/user"
 	"csbackend/routes/auth"
 	m "csbackend/routes/metrics"
