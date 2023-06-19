@@ -27,7 +27,7 @@ func SetupRoutes(app *fiber.App, db *gorm.DB) {
 	apiGroup.Use(authenticator.SessionMiddleware(db))
 	apiGroup.Get("/user", user.GET)
 
-	apiGroup.Get("/employee/list", employee.GetEmployeeList)
+	// apiGroup.Get("/employee/list", employee.GetEmployeeList) temp
 
 	apiGroup.Get("/unit", unit.GET)
 	apiGroup.Post("/unit", unit.POST)
