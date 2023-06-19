@@ -48,9 +48,21 @@ func New() (*gorm.DB, error) {
 		},
 	)
 
-	database.DB().SetMaxOpenConns(25)
-	database.DB().SetMaxIdleConns(25)
-	database.DB().SetConnMaxLifetime(1*time.Minute)
+	if err != nil {
+		println(err.Error())
+		return nil, err
+	}
+
+	sqlDB, err := database.DB()
+
+	if err != nil {
+		println(err.Error())
+		return nil, err
+	}
+
+	sqlDB.SetMaxOpenConns(25)
+	sqlDB.SetMaxIdleConns(25)
+	sqlDB.SetConnMaxLifetime(1*time.Minute)
 
 	println("opened database")
 
