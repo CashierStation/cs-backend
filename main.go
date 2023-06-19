@@ -74,13 +74,9 @@ func main() {
 	g.DB = database
 	g.Authenticator = auth
 
-	doJobs := util.IsFlagPassed("jobs")
-	if doJobs {
-		app := fiber.New(fiber.Config{
-			JSONEncoder: json.Marshal,
-		})
-	}
-	
+	app := fiber.New(fiber.Config{
+		JSONEncoder: json.Marshal,
+	})
 	port := util.GetPort()
 
 	routes.SetupRoutes(app, database)
@@ -99,9 +95,13 @@ func main() {
 
 	app.Use(logger.New())
 
-	jobs.StartJob(jobs.StartJobOptions{
-		App: app,
-	})
+	doJobs := util.IsFlagPassed("jobs")
+
+	if doJobs {
+		jobs.StartJob(jobs.StartJobOptions{
+			App: app,
+		})
+	}
 
 	mode := os.Getenv("MODE")
 	if mode != "release" {
