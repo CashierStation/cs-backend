@@ -27,6 +27,7 @@ import (
 
 func init() {
 	flag.Bool("migrate", false, "migrate database")
+	flag.Bool("worker", false, "run worker jobs")
 }
 
 // @title           CashierStation Backend Server API
@@ -73,9 +74,13 @@ func main() {
 	g.DB = database
 	g.Authenticator = auth
 
-	app := fiber.New(fiber.Config{
-		JSONEncoder: json.Marshal,
-	})
+	doJobs := util.IsFlagPassed("jobs")
+	if doJobs {
+		app := fiber.New(fiber.Config{
+			JSONEncoder: json.Marshal,
+		})
+	}
+	
 	port := util.GetPort()
 
 	routes.SetupRoutes(app, database)
@@ -94,9 +99,9 @@ func main() {
 
 	app.Use(logger.New())
 
-	//jobs.StartJob(jobs.StartJobOptions{
-	//	App: app,
-	//})
+	jobs.StartJob(jobs.StartJobOptions{
+		App: app,
+	})
 
 	mode := os.Getenv("MODE")
 	if mode != "release" {
