@@ -5,7 +5,7 @@ import (
 	"gorm.io/gorm"
 
 	"csbackend/authenticator"
-	_ "csbackend/routes/api/employee"
+	"csbackend/routes/api/employee"
 	"csbackend/routes/api/user"
 	"csbackend/routes/auth"
 	m "csbackend/routes/metrics"
@@ -27,7 +27,7 @@ func SetupRoutes(app *fiber.App, db *gorm.DB) {
 	apiGroup.Use(authenticator.SessionMiddleware(db))
 	apiGroup.Get("/user", user.GET)
 
-	// apiGroup.Get("/employee/list", employee.GetEmployeeList) temp
+	apiGroup.Get("/employee/list", employee.GetEmployeeList)
 
 	apiGroup.Get("/unit", unit.GET)
 	apiGroup.Post("/unit", unit.POST)
