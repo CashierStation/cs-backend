@@ -27,6 +27,7 @@ import (
 
 func init() {
 	flag.Bool("migrate", false, "migrate database")
+	flag.Bool("worker", false, "run worker jobs")
 }
 
 // @title           CashierStation Backend Server API
@@ -37,7 +38,7 @@ func init() {
 func main() {
 	flag.Parse()
 
-	err := godotenv.Load()
+	err := godotenv.Load("/run/secrets/.env")
 	if err != nil {
 		log.Println("Error loading .env file! Skipping...")
 	}
@@ -54,6 +55,8 @@ func main() {
 	if doMigration {
 		log.Println("Migrating database...")
 		db.Migrate(database)
+		log.Println("Migration done!")
+		os.Exit(0)
 	}
 
 	sqlDb, err := database.DB()
@@ -64,7 +67,7 @@ func main() {
 
 	auth, err := authenticator.New()
 	if err != nil {
-		panic("failed to initialize authenticator")
+		panic(err)
 	}
 
 	g.Session = session.New()
@@ -92,9 +95,13 @@ func main() {
 
 	app.Use(logger.New())
 
-	jobs.StartJob(jobs.StartJobOptions{
-		App: app,
-	})
+	doJobs := util.IsFlagPassed("jobs")
+
+	if doJobs {
+		jobs.StartJob(jobs.StartJobOptions{
+			App: app,
+		})
+	}
 
 	mode := os.Getenv("MODE")
 	if mode != "release" {
