@@ -38,9 +38,14 @@ func init() {
 func main() {
 	flag.Parse()
 
-	err := godotenv.Load("/run/secrets/.env")
+	err := godotenv.Load(".env")
 	if err != nil {
 		log.Println("Error loading .env file! Skipping...")
+	}
+
+	err = godotenv.Load("/run/secrets/.env")
+	if err != nil {
+		log.Println("Error loading secrets .env file! Skipping...")
 	}
 
 	log.Println("Connecting to database...")

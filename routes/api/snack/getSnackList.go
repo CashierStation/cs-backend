@@ -42,6 +42,8 @@ func GET(c *fiber.Ctx) error {
 		})
 	}
 
+	tx.Commit()
+
 	return c.JSON(GetSnackResponse{
 		Snacks: snackResponses,
 	})
