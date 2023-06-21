@@ -100,7 +100,7 @@ func main() {
 
 	app.Use(logger.New())
 
-	doJobs := util.IsFlagPassed("jobs")
+	doJobs := util.IsFlagPassed("worker")
 
 	if doJobs {
 		jobs.StartJob(jobs.StartJobOptions{

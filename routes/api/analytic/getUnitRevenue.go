@@ -4,9 +4,12 @@ import (
 	"csbackend/global"
 	"csbackend/lib"
 	"csbackend/models"
+	"errors"
+	"log"
 	"time"
 
 	"github.com/gofiber/fiber/v2"
+	"gorm.io/gorm"
 )
 
 type GetRevenueRequest struct {
@@ -60,8 +63,9 @@ func GetRevenue(c *fiber.Ctx) error {
 
 	// get revenue
 	revenue, err := models.GetRevenue(tx, user.RentalID, aggregation, req.StartTime, req.EndTime)
-	if err != nil {
+	if err != nil && !errors.Is(err, gorm.ErrRecordNotFound) {
 		tx.Rollback()
+		log.Println(err)
 		return c.Status(fiber.StatusInternalServerError).SendString("Error getting revenue")
 	}
 
