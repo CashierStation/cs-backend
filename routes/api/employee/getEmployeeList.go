@@ -55,12 +55,14 @@ func GetEmployeeList(c *fiber.Ctx) error {
 
 	userinfoString, err := global.Authenticator.GetUserinfo(rawReqQuery.AccessToken)
 	if err != nil {
+		log.Println(err)
 		return c.Status(fiber.StatusBadRequest).SendString("Error getting userinfo from access token")
 	}
 
 	var userInfo authenticator.UserInfo
 	err = json.Unmarshal([]byte(userinfoString), &userInfo)
 	if err != nil {
+		log.Println(err)
 		return c.Status(fiber.StatusBadRequest).SendString("Error unmarshalling userinfo")
 	}
 
@@ -69,6 +71,7 @@ func GetEmployeeList(c *fiber.Ctx) error {
 	employees, err := models.GetAllEmployeeInRental(tx, userInfo.Sub)
 	if err != nil {
 		tx.Rollback()
+		log.Println(err)
 		return c.Status(fiber.StatusInternalServerError).SendString("Error getting employees")
 	}
 
