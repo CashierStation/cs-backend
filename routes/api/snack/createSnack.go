@@ -52,7 +52,7 @@ func POST(c *fiber.Ctx) error {
 	// convert query to struct
 	err := c.QueryParser(&rawReqQuery)
 	if err != nil {
-		return c.Status(fiber.StatusBadRequest).SendString("Error parsing request query")
+		return lib.HTTPError(c, fiber.StatusBadRequest, "Error parsing request query", err)
 	}
 
 	// validate query
@@ -65,7 +65,7 @@ func POST(c *fiber.Ctx) error {
 	newSnack, err := models.CreateSnack(tx, user.RentalID, rawReqQuery.Name, rawReqQuery.Category, rawReqQuery.Price)
 	if err != nil {
 		tx.Rollback()
-		return c.Status(fiber.StatusInternalServerError).SendString("Error creating snack")
+		return lib.HTTPError(c, fiber.StatusInternalServerError, "Error creating snack", err)
 	}
 
 	tx.Commit()

@@ -2,6 +2,7 @@ package snack
 
 import (
 	"csbackend/global"
+	"csbackend/lib"
 	"csbackend/models"
 	"errors"
 	"strconv"
@@ -31,16 +32,16 @@ func DELETE(c *fiber.Ctx) error {
 	// get snack id from path
 	snackID, err := strconv.Atoi(c.Params("id"))
 	if err != nil {
-		return c.Status(fiber.StatusBadRequest).SendString("Error parsing snack id")
+		return lib.HTTPError(c, fiber.StatusBadRequest, "Error parsing snack id", err)
 	}
 
 	tx := global.DB.Begin()
 	snack, err := models.GetSnack(tx, user.RentalID, uint(snackID))
 	if err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
-			return c.Status(fiber.StatusNotFound).SendString("Snack not found")
+			return lib.HTTPError(c, fiber.StatusNotFound, "Snack not found", err)
 		}
-		return c.Status(fiber.StatusInternalServerError).SendString("Error getting snack")
+		return lib.HTTPError(c, fiber.StatusInternalServerError, "Error getting snack", err)
 	}
 
 	tx.Delete(&snack)

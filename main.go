@@ -8,7 +8,6 @@ import (
 	"os"
 
 	"github.com/gofiber/fiber/v2"
-	"github.com/gofiber/fiber/v2/middleware/logger"
 	"github.com/gofiber/fiber/v2/middleware/session"
 	"github.com/joho/godotenv"
 
@@ -16,6 +15,7 @@ import (
 	db "csbackend/database"
 	g "csbackend/global"
 	"csbackend/jobs"
+	"csbackend/lib"
 	"csbackend/routes"
 	"csbackend/util"
 
@@ -98,7 +98,8 @@ func main() {
 		OAuth2RedirectUrl: "http://localhost:8080/swagger/oauth2-redirect.html",
 	}))
 
-	app.Use(logger.New())
+	lib.InitRollbar()
+	defer lib.CloseRollbar()
 
 	doJobs := util.IsFlagPassed("worker")
 

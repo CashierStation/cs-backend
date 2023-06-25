@@ -49,7 +49,7 @@ func POST(c *fiber.Ctx) error {
 	// convert query to struct
 	err := c.QueryParser(&rawReqQuery)
 	if err != nil {
-		return c.Status(fiber.StatusBadRequest).SendString("Error parsing request query")
+		return lib.HTTPError(c, fiber.StatusBadRequest, "Error parsing request query", err)
 	}
 
 	// validate query
@@ -62,7 +62,7 @@ func POST(c *fiber.Ctx) error {
 	newUnit, err := models.CreateUnit(tx, rawReqQuery.Name, rawReqQuery.HourlyPrice, rawReqQuery.Category, user.RentalID)
 	if err != nil {
 		tx.Rollback()
-		return c.Status(fiber.StatusInternalServerError).SendString("Error creating unit")
+		return lib.HTTPError(c, fiber.StatusInternalServerError, "Error creating unit", err)
 	}
 
 	tx.Commit()

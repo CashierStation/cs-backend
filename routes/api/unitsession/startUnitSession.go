@@ -3,6 +3,7 @@ package unitsession
 import (
 	"csbackend/enum"
 	"csbackend/global"
+	"csbackend/lib"
 	"csbackend/models"
 	"strconv"
 	"time"
@@ -40,7 +41,7 @@ func StartUnitSessions(c *fiber.Ctx) error {
 	// get unit id from path
 	unitID, err := strconv.Atoi(c.Params("unit_id"))
 	if err != nil {
-		return c.Status(fiber.StatusBadRequest).SendString("Error parsing unit id")
+		return lib.HTTPError(c, fiber.StatusBadRequest, "Error parsing unit id", err)
 	}
 
 	tx := global.DB.Begin()
@@ -48,31 +49,31 @@ func StartUnitSessions(c *fiber.Ctx) error {
 	_, err = models.GetUnit(tx, uint(unitID), user.RentalID)
 	if err == gorm.ErrRecordNotFound {
 		tx.Rollback()
-		return c.Status(fiber.StatusBadRequest).SendString("Unit not found")
+		return lib.HTTPError(c, fiber.StatusBadRequest, "Unit not found", err)
 	}
 
 	if err != nil {
 		tx.Rollback()
-		return c.Status(fiber.StatusBadRequest).SendString("Error validating unit ownership")
+		return lib.HTTPError(c, fiber.StatusBadRequest, "Error validating unit ownership", err)
 	}
 
 	// check if unit session is already started
 	unitSession, err := models.GetLastUnitSession(tx, uint(unitID))
 	if err != nil && err != gorm.ErrRecordNotFound {
 		tx.Rollback()
-		return c.Status(fiber.StatusInternalServerError).SendString("Error validating unit session history")
+		return lib.HTTPError(c, fiber.StatusInternalServerError, "Error validating unit session history", err)
 	}
 
 	if err != gorm.ErrRecordNotFound && unitSession.FinishTime.Time.IsZero() {
 		tx.Rollback()
-		return c.Status(fiber.StatusBadRequest).SendString("Unit is still in use")
+		return lib.HTTPError(c, fiber.StatusBadRequest, "Unit is still in use", err)
 	}
 
 	// create unit session
 	unitSession, err = models.CreateUnitSession(tx, uint(unitID))
 	if err != nil {
 		tx.Rollback()
-		return c.Status(fiber.StatusInternalServerError).SendString("Error creating unit session")
+		return lib.HTTPError(c, fiber.StatusInternalServerError, "Error creating unit session", err)
 	}
 
 	tx.Commit()

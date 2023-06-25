@@ -52,7 +52,7 @@ func PUT(c *fiber.Ctx) error {
 	// convert query to struct
 	err := c.QueryParser(&rawReqQuery)
 	if err != nil {
-		return c.Status(fiber.StatusBadRequest).SendString("Error parsing request query")
+		return lib.HTTPError(c, fiber.StatusBadRequest, "Error parsing request query", err)
 	}
 
 	// validate query
@@ -64,16 +64,16 @@ func PUT(c *fiber.Ctx) error {
 	// get unit id from path
 	unitID, err := strconv.Atoi(c.Params("id"))
 	if err != nil {
-		return c.Status(fiber.StatusBadRequest).SendString("Error parsing unit id")
+		return lib.HTTPError(c, fiber.StatusBadRequest, "Error parsing unit id", err)
 	}
 
 	tx := global.DB.Begin()
 	unit, err := models.GetUnit(tx, uint(unitID), user.RentalID)
 	if err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
-			return c.Status(fiber.StatusNotFound).SendString("Unit not found")
+			return lib.HTTPError(c, fiber.StatusNotFound, "Unit not found", err)
 		}
-		return c.Status(fiber.StatusInternalServerError).SendString("Error getting unit")
+		return lib.HTTPError(c, fiber.StatusInternalServerError, "Error getting unit", err)
 	}
 
 	if rawReqQuery.Name != "" {

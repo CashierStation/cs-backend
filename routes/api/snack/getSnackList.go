@@ -2,6 +2,7 @@ package snack
 
 import (
 	"csbackend/global"
+	"csbackend/lib"
 	"csbackend/models"
 
 	"github.com/gofiber/fiber/v2"
@@ -27,7 +28,7 @@ func GET(c *fiber.Ctx) error {
 	tx := global.DB.Begin()
 	snacks, err := models.GetAllSnacks(tx, user.RentalID)
 	if err != nil {
-		return c.Status(fiber.StatusInternalServerError).SendString("Error getting snacks")
+		return lib.HTTPError(c, fiber.StatusInternalServerError, "Error getting snacks", err)
 	}
 
 	var snackResponses []SnackResponse = []SnackResponse{}

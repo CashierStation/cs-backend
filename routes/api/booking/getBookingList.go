@@ -56,7 +56,7 @@ func GetBookingList(c *fiber.Ctx) error {
 	// convert query to struct
 	err := c.QueryParser(&rawReqQuery)
 	if err != nil {
-		return c.Status(fiber.StatusBadRequest).SendString("Error parsing request query")
+		return lib.HTTPError(c, fiber.StatusBadRequest, "Error parsing request query", err)
 	}
 
 	// validate query
@@ -72,7 +72,7 @@ func GetBookingList(c *fiber.Ctx) error {
 		_, err = models.GetUnit(tx, rawReqQuery.UnitID, user.RentalID)
 		if err != nil {
 			tx.Rollback()
-			return c.Status(fiber.StatusBadRequest).SendString("Unit not found")
+			return lib.HTTPError(c, fiber.StatusBadRequest, "Unit not found", err)
 		}
 	}
 
@@ -80,7 +80,7 @@ func GetBookingList(c *fiber.Ctx) error {
 	booking, err := models.GetBookingList(tx, user.RentalID, rawReqQuery.CustomerName, rawReqQuery.UnitID, rawReqQuery.Status, rawReqQuery.UnitInUse, int(rawReqQuery.Offset), int(rawReqQuery.Limit))
 	if err != nil {
 		tx.Rollback()
-		return c.Status(fiber.StatusInternalServerError).SendString("Error creating booking")
+		return lib.HTTPError(c, fiber.StatusInternalServerError, "Error creating booking", err)
 	}
 
 	// commit transaction

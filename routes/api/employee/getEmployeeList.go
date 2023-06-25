@@ -44,7 +44,7 @@ func GetEmployeeList(c *fiber.Ctx) error {
 	// convert query to struct
 	err := c.QueryParser(&rawReqQuery)
 	if err != nil {
-		return c.Status(fiber.StatusBadRequest).SendString("Error parsing request query")
+		return lib.HTTPError(c, fiber.StatusBadRequest, "Error parsing request query", err)
 	}
 
 	// validate query
@@ -55,13 +55,13 @@ func GetEmployeeList(c *fiber.Ctx) error {
 
 	userinfoString, err := global.Authenticator.GetUserinfo(rawReqQuery.AccessToken)
 	if err != nil {
-		return c.Status(fiber.StatusBadRequest).SendString("Error getting userinfo from access token")
+		return lib.HTTPError(c, fiber.StatusBadRequest, "Error getting userinfo from access token", err)
 	}
 
 	var userInfo authenticator.UserInfo
 	err = json.Unmarshal([]byte(userinfoString), &userInfo)
 	if err != nil {
-		return c.Status(fiber.StatusBadRequest).SendString("Error unmarshalling userinfo")
+		return lib.HTTPError(c, fiber.StatusBadRequest, "Error unmarshalling userinfo", err)
 	}
 
 	tx := global.DB.Begin()
@@ -69,7 +69,7 @@ func GetEmployeeList(c *fiber.Ctx) error {
 	employees, err := models.GetAllEmployeeInRental(tx, userInfo.Sub)
 	if err != nil {
 		tx.Rollback()
-		return c.Status(fiber.StatusInternalServerError).SendString("Error getting employees")
+		return lib.HTTPError(c, fiber.StatusInternalServerError, "Error getting employees", err)
 	}
 
 	tx.Commit()

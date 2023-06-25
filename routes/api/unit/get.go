@@ -3,6 +3,7 @@ package unit
 import (
 	"csbackend/enum"
 	"csbackend/global"
+	"csbackend/lib"
 	"csbackend/models"
 	"time"
 
@@ -46,7 +47,7 @@ func GET(c *fiber.Ctx) error {
 	tx := global.DB.Begin()
 	units, err := models.GetAllUnits(tx, user.RentalID)
 	if err != nil {
-		return c.Status(fiber.StatusInternalServerError).SendString("Error getting units")
+		return lib.HTTPError(c, fiber.StatusInternalServerError, "Error getting units", err)
 	}
 
 	// Get all units
@@ -69,7 +70,7 @@ func GET(c *fiber.Ctx) error {
 	unitStatuses, err := models.GetLastUnitStatuses(tx, unitIds)
 	if err != nil {
 		println(err.Error())
-		return c.Status(fiber.StatusInternalServerError).SendString("Error getting unit sessions history")
+		return lib.HTTPError(c, fiber.StatusInternalServerError, "Error getting unit sessions history", err)
 	}
 
 	for _, unitStatus := range unitStatuses {

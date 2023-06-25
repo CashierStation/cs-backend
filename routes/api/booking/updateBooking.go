@@ -52,7 +52,7 @@ func UpdateBooking(c *fiber.Ctx) error {
 	err := c.QueryParser(&rawReqQuery)
 	if err != nil {
 		log.Println(err)
-		return c.Status(fiber.StatusBadRequest).SendString("Error parsing request query")
+		return lib.HTTPError(c, fiber.StatusBadRequest, "Error parsing request query", err)
 	}
 
 	// validate query
@@ -63,7 +63,7 @@ func UpdateBooking(c *fiber.Ctx) error {
 
 	bookingID, err := strconv.Atoi(c.Params("id"))
 	if err != nil {
-		return c.Status(fiber.StatusBadRequest).SendString("Error parsing unit id")
+		return lib.HTTPError(c, fiber.StatusBadRequest, "Error parsing unit id", err)
 	}
 
 	tx := global.DB.Begin()
@@ -72,7 +72,7 @@ func UpdateBooking(c *fiber.Ctx) error {
 	booking, err := models.GetBookingWithRentalID(tx, user.RentalID, uint(bookingID))
 	if err != nil {
 		tx.Rollback()
-		return c.Status(fiber.StatusBadRequest).SendString("Booking not found")
+		return lib.HTTPError(c, fiber.StatusBadRequest, "Booking not found", err)
 	}
 
 	// validate unit belongs to rental
@@ -80,19 +80,19 @@ func UpdateBooking(c *fiber.Ctx) error {
 		_, err = models.GetUnit(tx, rawReqQuery.UnitID, user.RentalID)
 		if err != nil {
 			tx.Rollback()
-			return c.Status(fiber.StatusBadRequest).SendString("Unit not found")
+			return lib.HTTPError(c, fiber.StatusBadRequest, "Unit not found", err)
 		}
 	}
 
 	if rawReqQuery.Time != nil && rawReqQuery.Time.Before(time.Now()) {
 		tx.Rollback()
-		return c.Status(fiber.StatusBadRequest).SendString("Booking time must be in the future")
+		return lib.HTTPError(c, fiber.StatusBadRequest, "Booking time must be in the future", err)
 	}
 
 	booking, err = models.UpdateBooking(tx, booking.ID, rawReqQuery.UnitID, rawReqQuery.CustomerName, rawReqQuery.Status, rawReqQuery.Time)
 	if err != nil {
 		tx.Rollback()
-		return c.Status(fiber.StatusInternalServerError).SendString("Error creating booking")
+		return lib.HTTPError(c, fiber.StatusInternalServerError, "Error creating booking", err)
 	}
 
 	tx.Commit()

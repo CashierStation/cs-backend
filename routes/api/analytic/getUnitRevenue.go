@@ -45,7 +45,7 @@ func GetRevenue(c *fiber.Ctx) error {
 	// convert query to struct
 	err := c.QueryParser(&req)
 	if err != nil {
-		return c.Status(fiber.StatusBadRequest).SendString("Error parsing request query")
+		return lib.HTTPError(c, fiber.StatusBadRequest, "Error parsing request query", err)
 	}
 
 	// validate request
@@ -66,7 +66,7 @@ func GetRevenue(c *fiber.Ctx) error {
 	if err != nil && !errors.Is(err, gorm.ErrRecordNotFound) {
 		tx.Rollback()
 		log.Println(err)
-		return c.Status(fiber.StatusInternalServerError).SendString("Error getting revenue")
+		return lib.HTTPError(c, fiber.StatusInternalServerError, "Error getting revenue", err)
 	}
 
 	tx.Commit()

@@ -45,7 +45,7 @@ func CreateSnackRestock(c *fiber.Ctx) error {
 	// convert query to struct
 	err := c.QueryParser(&rawReqQuery)
 	if err != nil {
-		return c.Status(fiber.StatusBadRequest).SendString("Error parsing request query")
+		return lib.HTTPError(c, fiber.StatusBadRequest, "Error parsing request query", err)
 	}
 
 	// validate query
@@ -60,7 +60,7 @@ func CreateSnackRestock(c *fiber.Ctx) error {
 	snack, err := models.GetSnack(tx, user.RentalID, rawReqQuery.SnackID)
 	if err != nil {
 		tx.Rollback()
-		return c.Status(fiber.StatusInternalServerError).SendString("Error getting snack, please check if snack_id is correct")
+		return lib.HTTPError(c, fiber.StatusInternalServerError, "Error getting snack, please check if snack_id is correct", err)
 	}
 
 	// create snack restock

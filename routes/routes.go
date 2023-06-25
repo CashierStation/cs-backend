@@ -2,6 +2,7 @@ package routes
 
 import (
 	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/fiber/v2/middleware/logger"
 	"gorm.io/gorm"
 
 	"csbackend/authenticator"
@@ -22,6 +23,9 @@ func SetupRoutes(app *fiber.App, db *gorm.DB) {
 	app.Get("/", func(c *fiber.Ctx) error {
 		return c.Redirect("/swagger/index.html", fiber.StatusTemporaryRedirect)
 	})
+
+	app.Use(logger.New())
+
 	//app.Get("/example", example.GET)
 
 	apiGroup := app.Group("/api")

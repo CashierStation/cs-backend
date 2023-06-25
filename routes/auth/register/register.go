@@ -50,7 +50,7 @@ func POST(c *fiber.Ctx) error {
 	// convert query to struct
 	err := c.QueryParser(&rawReqQuery)
 	if err != nil {
-		return c.Status(fiber.StatusBadRequest).SendString("Error parsing request query")
+		return lib.HTTPError(c, fiber.StatusBadRequest, "Error parsing request query", err)
 	}
 
 	// validate query
@@ -61,13 +61,13 @@ func POST(c *fiber.Ctx) error {
 
 	userinfoString, err := global.Authenticator.GetUserinfo(rawReqQuery.AccessToken)
 	if err != nil {
-		return c.Status(fiber.StatusBadRequest).SendString("Error getting userinfo from access token")
+		return lib.HTTPError(c, fiber.StatusBadRequest, "Error getting userinfo from access token", err)
 	}
 
 	var userInfo authenticator.UserInfo
 	err = json.Unmarshal([]byte(userinfoString), &userInfo)
 	if err != nil {
-		return c.Status(fiber.StatusBadRequest).SendString("Error unmarshalling userinfo")
+		return lib.HTTPError(c, fiber.StatusBadRequest, "Error unmarshalling userinfo", err)
 	}
 
 	tx := global.DB.Begin()
@@ -77,33 +77,33 @@ func POST(c *fiber.Ctx) error {
 	rental, err := models.GetOrCreateRental(tx, rentalId, userInfo.Email)
 	if err != nil {
 		tx.Rollback()
-		return c.Status(fiber.StatusBadRequest).SendString("Error getting rental")
+		return lib.HTTPError(c, fiber.StatusBadRequest, "Error getting rental", err)
 	}
 
 	// Check if user already exists
 	_, err = models.GetEmployeeInRental(tx, rentalId, rawReqQuery.Username)
 	if err == nil {
 		tx.Rollback()
-		return c.Status(fiber.StatusBadRequest).SendString("User already exists in that rental")
+		return lib.HTTPError(c, fiber.StatusBadRequest, "User already exists in that rental", err)
 	}
 
 	if !errors.Is(err, gorm.ErrRecordNotFound) {
 		tx.Rollback()
-		return c.Status(fiber.StatusBadRequest).SendString("Error getting user")
+		return lib.HTTPError(c, fiber.StatusBadRequest, "Error getting user", err)
 	}
 
 	// Hash password
 	hashedPasswordByte, err := bcrypt.GenerateFromPassword([]byte(rawReqQuery.Password), bcrypt.DefaultCost)
 	if err != nil {
 		tx.Rollback()
-		return c.Status(fiber.StatusBadRequest).SendString("Error hashing password")
+		return lib.HTTPError(c, fiber.StatusBadRequest, "Error hashing password", err)
 	}
 
 	// Check if rental already has at least one employee, which can be the owner
 	hasEmployee, err := models.RentalHasEmployee(tx, rentalId)
 	if err != nil {
 		tx.Rollback()
-		return c.Status(fiber.StatusBadRequest).SendString("Error checking if rental has employee")
+		return lib.HTTPError(c, fiber.StatusBadRequest, "Error checking if rental has employee", err)
 	}
 
 	selectedRole := string(enum.Karyawan)
@@ -123,21 +123,21 @@ func POST(c *fiber.Ctx) error {
 	employee, err := models.CreateEmployee(tx, uuid.String(), rawReqQuery.Username, string(hashedPasswordByte), role.ID, rental.ID)
 	if err != nil {
 		tx.Rollback()
-		return c.Status(fiber.StatusBadRequest).SendString("Error creating user")
+		return lib.HTTPError(c, fiber.StatusBadRequest, "Error creating user", err)
 	}
 
 	// Create session token as if the user logged in
 	sessionToken, err := global.Authenticator.GenerateRandomHex()
 	if err != nil {
 		tx.Rollback()
-		return c.Status(fiber.StatusBadRequest).SendString("Error generating session token")
+		return lib.HTTPError(c, fiber.StatusBadRequest, "Error generating session token", err)
 	}
 
 	// Upsert session
 	_, err = models.UpsertSession(tx, sessionToken, employee.ID)
 	if err != nil {
 		tx.Rollback()
-		return c.Status(fiber.StatusBadRequest).SendString("Error upserting session")
+		return lib.HTTPError(c, fiber.StatusBadRequest, "Error upserting session", err)
 	}
 
 	tx.Commit()

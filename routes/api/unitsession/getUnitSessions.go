@@ -68,7 +68,7 @@ func GetUnitSessions(c *fiber.Ctx) error {
 	// convert query to struct
 	err := c.QueryParser(&rawReqQuery)
 	if err != nil {
-		return c.Status(fiber.StatusBadRequest).SendString("Error parsing request query")
+		return lib.HTTPError(c, fiber.StatusBadRequest, "Error parsing request query", err)
 	}
 
 	// validate query
@@ -109,19 +109,19 @@ func GetUnitSessions(c *fiber.Ctx) error {
 		_, err := models.GetUnit(tx, unitID, user.RentalID)
 		if err == gorm.ErrRecordNotFound {
 			tx.Rollback()
-			return c.Status(fiber.StatusBadRequest).SendString("Unit not found")
+			return lib.HTTPError(c, fiber.StatusBadRequest, "Unit not found", err)
 		}
 
 		if err != nil {
 			tx.Rollback()
-			return c.Status(fiber.StatusBadRequest).SendString("Error getting unit")
+			return lib.HTTPError(c, fiber.StatusBadRequest, "Error getting unit", err)
 		}
 	}
 
 	unitSessions, err := models.GetUnitSessions(tx, unitID, offset, limit, order, sortBy, latest)
 	if err != nil {
 		tx.Rollback()
-		return c.Status(fiber.StatusInternalServerError).SendString("Error getting unit sessions")
+		return lib.HTTPError(c, fiber.StatusInternalServerError, "Error getting unit sessions", err)
 	}
 
 	tx.Commit()
