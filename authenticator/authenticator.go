@@ -9,9 +9,11 @@ import (
 	"errors"
 	"io"
 	"net/http"
+	"time"
 
 	"github.com/coreos/go-oidc/v3/oidc"
 	"github.com/gofiber/fiber/v2"
+	"github.com/muesli/cache2go"
 	"golang.org/x/oauth2"
 	"gorm.io/gorm"
 
@@ -112,11 +114,20 @@ func (a *Authenticator) VerifyRawIDToken(ctx context.Context, rawIDToken string)
 	return a.Verifier(oidcConfig).Verify(ctx, rawIDToken)
 }
 
+var accessTokenCache = cache2go.Cache("tokenCache")
+
 func (a *Authenticator) GetUserinfo(access_token string) (string, error) {
 	if access_token == "" {
 		return "", errors.New("access_token is empty")
 	}
 
+	// Check if access token is cached
+	accessTokenCacheItem, err := accessTokenCache.Value(access_token)
+	if err == nil {
+		return accessTokenCacheItem.Data().(string), nil
+	}
+
+	// If not cached, get userinfo from Auth0
 	url := "https://" + os.Getenv("AUTH0_DOMAIN") + "/userinfo"
 	req, err := http.Get(url + "?access_token=" + access_token)
 
@@ -134,6 +145,9 @@ func (a *Authenticator) GetUserinfo(access_token string) (string, error) {
 	if string(body) == "Unauthorized" {
 		return "", errors.New("Unauthorized")
 	}
+
+	// Cache access token
+	accessTokenCache.Add(access_token, time.Hour, string(body))
 
 	return string(body), nil
 }
