@@ -15,7 +15,7 @@ type StartJobOptions struct {
 // @Summary
 // @Schemes
 // @Description dev: http://localhost:8080/jobs
-// @Description prod: https://csbackend.fly.dev/jobs
+// @Description prod: http://csbackend.sivr.tech/jobs
 // @Tags jobs
 // @Accept x-www-form-urlencoded
 // @Produce json

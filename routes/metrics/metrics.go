@@ -12,7 +12,7 @@ import (
 // @Summary
 // @Schemes
 // @Description dev: http://localhost:8080/metrics
-// @Description prod: https://csbackend.fly.dev/metrics
+// @Description prod: http://csbackend.sivr.tech/metrics
 // @Tags metrics
 // @Accept x-www-form-urlencoded
 // @Produce json
@@ -28,7 +28,7 @@ func Routes(app *fiber.App) {
 // @Summary
 // @Schemes
 // @Description dev: http://localhost:8080/metrics
-// @Description prod: https://csbackend.fly.dev/metrics
+// @Description prod: http://csbackend.sivr.tech/metrics
 // @Tags metrics
 // @Accept x-www-form-urlencoded
 // @Produce json

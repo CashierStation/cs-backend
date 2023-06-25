@@ -900,7 +900,7 @@ const docTemplate = `{
         },
         "/auth/login": {
             "post": {
-                "description": "dev: http://localhost:8080/auth/login\nprod: https://csbackend.fly.dev/auth/login",
+                "description": "dev: http://localhost:8080/auth/login\nprod: http://csbackend.sivr.tech/auth/login",
                 "consumes": [
                     "application/x-www-form-urlencoded"
                 ],
@@ -950,7 +950,7 @@ const docTemplate = `{
         },
         "/auth/register": {
             "post": {
-                "description": "dev: http://localhost:8080/auth/register\nprod: https://csbackend.fly.dev/auth/register",
+                "description": "dev: http://localhost:8080/auth/register\nprod: http://csbackend.sivr.tech/auth/register",
                 "consumes": [
                     "application/x-www-form-urlencoded"
                 ],
@@ -1000,7 +1000,7 @@ const docTemplate = `{
         },
         "/jobs": {
             "get": {
-                "description": "dev: http://localhost:8080/jobs\nprod: https://csbackend.fly.dev/jobs",
+                "description": "dev: http://localhost:8080/jobs\nprod: http://csbackend.sivr.tech/jobs",
                 "consumes": [
                     "application/x-www-form-urlencoded"
                 ],
@@ -1015,7 +1015,7 @@ const docTemplate = `{
         },
         "/metrics": {
             "get": {
-                "description": "dev: http://localhost:8080/metrics\nprod: https://csbackend.fly.dev/metrics",
+                "description": "dev: http://localhost:8080/metrics\nprod: http://csbackend.sivr.tech/metrics",
                 "consumes": [
                     "application/x-www-form-urlencoded"
                 ],
@@ -1030,7 +1030,7 @@ const docTemplate = `{
         },
         "/metrics/db": {
             "get": {
-                "description": "dev: http://localhost:8080/metrics\nprod: https://csbackend.fly.dev/metrics",
+                "description": "dev: http://localhost:8080/metrics\nprod: http://csbackend.sivr.tech/metrics",
                 "consumes": [
                     "application/x-www-form-urlencoded"
                 ],
@@ -1061,7 +1061,7 @@ const docTemplate = `{
         },
         "/oauth/login": {
             "get": {
-                "description": "dev: http://localhost:8080/oauth/login\nprod: https://csbackend.fly.dev/oauth/login",
+                "description": "dev: http://localhost:8080/oauth/login\nprod: http://csbackend.sivr.tech/oauth/login",
                 "consumes": [
                     "application/x-www-form-urlencoded"
                 ],
@@ -1077,7 +1077,7 @@ const docTemplate = `{
         },
         "/oauth/logout": {
             "get": {
-                "description": "dev: http://localhost:8080/oauth/logout\nprod: https://csbackend.fly.dev/oauth/logout",
+                "description": "dev: http://localhost:8080/oauth/logout\nprod: http://csbackend.sivr.tech/oauth/logout",
                 "consumes": [
                     "application/x-www-form-urlencoded"
                 ],

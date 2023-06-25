@@ -30,7 +30,7 @@ type LoginPostResponse struct {
 // @Summary Login a new employee/owner account
 // @Schemes
 // @Description dev: http://localhost:8080/auth/login
-// @Description prod: https://csbackend.fly.dev/auth/login
+// @Description prod: http://csbackend.sivr.tech/auth/login
 // @Tags auth
 // @Accept x-www-form-urlencoded
 // @Param access_token query string true "Access token from Auth0"

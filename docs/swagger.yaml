@@ -866,7 +866,7 @@ paths:
       - application/x-www-form-urlencoded
       description: |-
         dev: http://localhost:8080/auth/login
-        prod: https://csbackend.fly.dev/auth/login
+        prod: http://csbackend.sivr.tech/auth/login
       parameters:
       - description: Access token from Auth0
         in: query
@@ -903,7 +903,7 @@ paths:
       - application/x-www-form-urlencoded
       description: |-
         dev: http://localhost:8080/auth/register
-        prod: https://csbackend.fly.dev/auth/register
+        prod: http://csbackend.sivr.tech/auth/register
       parameters:
       - description: Access token from Auth0
         in: query
@@ -940,7 +940,7 @@ paths:
       - application/x-www-form-urlencoded
       description: |-
         dev: http://localhost:8080/jobs
-        prod: https://csbackend.fly.dev/jobs
+        prod: http://csbackend.sivr.tech/jobs
       produces:
       - application/json
       responses: {}
@@ -952,7 +952,7 @@ paths:
       - application/x-www-form-urlencoded
       description: |-
         dev: http://localhost:8080/metrics
-        prod: https://csbackend.fly.dev/metrics
+        prod: http://csbackend.sivr.tech/metrics
       produces:
       - application/json
       responses: {}
@@ -964,7 +964,7 @@ paths:
       - application/x-www-form-urlencoded
       description: |-
         dev: http://localhost:8080/metrics
-        prod: https://csbackend.fly.dev/metrics
+        prod: http://csbackend.sivr.tech/metrics
       produces:
       - application/json
       responses: {}
@@ -987,7 +987,7 @@ paths:
       - application/x-www-form-urlencoded
       description: |-
         dev: http://localhost:8080/oauth/login
-        prod: https://csbackend.fly.dev/oauth/login
+        prod: http://csbackend.sivr.tech/oauth/login
       produces:
       - application/json
       responses: {}
@@ -1000,7 +1000,7 @@ paths:
       - application/x-www-form-urlencoded
       description: |-
         dev: http://localhost:8080/oauth/logout
-        prod: https://csbackend.fly.dev/oauth/logout
+        prod: http://csbackend.sivr.tech/oauth/logout
       produces:
       - application/json
       responses: {}

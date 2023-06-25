@@ -11,7 +11,7 @@ import (
 // @Summary Redirect user to third party login
 // @Schemes
 // @Description dev: http://localhost:8080/oauth/login
-// @Description prod: https://csbackend.fly.dev/oauth/login
+// @Description prod: http://csbackend.sivr.tech/oauth/login
 // @Tags oauth
 // @Accept x-www-form-urlencoded
 // @Produce json

@@ -15,7 +15,7 @@ import (
 // @Summary Log user out
 // @Schemes
 // @Description dev: http://localhost:8080/oauth/logout
-// @Description prod: https://csbackend.fly.dev/oauth/logout
+// @Description prod: http://csbackend.sivr.tech/oauth/logout
 // @Tags oauth
 // @Accept x-www-form-urlencoded
 // @Produce json
