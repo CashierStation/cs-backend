@@ -19,7 +19,10 @@ jobs:
         with:
           command: |
             cd ~/cs-backend
-            ./pull.sh
+            git pull
+            go build
+            killall -9 csbackend
+            nohup ./csbackend --worker
             pgrep csbackend
           host: ${{ secrets.SSH_HOST }}
           user: root
