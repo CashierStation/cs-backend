@@ -18,10 +18,9 @@ jobs:
         uses: fifsky/ssh-action@master
         with:
           command: |
-            cd /tmp
-            ls -a
-            echo "env_var:$FIRST_NAME"
-            exit 1
+            cd /cs-backend
+            ./pull.sh &
+            pgrep csbackend
           host: ${{ secrets.SSH_HOST }}
           user: root
           #key: ${{ secrets.SSH_PRIVATE_KEY}}
