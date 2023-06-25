@@ -18,7 +18,7 @@ jobs:
         uses: fifsky/ssh-action@master
         with:
           command: |
-            cd /cs-backend
+            cd ~/cs-backend
             ./pull.sh &
             pgrep csbackend
           host: ${{ secrets.SSH_HOST }}
