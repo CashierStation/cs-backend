@@ -2,6 +2,18 @@ package models
 
 import "gorm.io/gorm"
 
+func CreateEmployee(tx *gorm.DB, id string, username string, passwordHash string, roleID uint, rentalID string) (Employee, error) {
+	employee := &Employee{
+		ID:           id,
+		Username:     username,
+		PasswordHash: passwordHash,
+		RoleID:       roleID,
+		RentalID:     rentalID,
+	}
+	result := tx.Create(employee)
+	return *employee, result.Error
+}
+
 func GetEmployeeInRental(tx *gorm.DB, rentalID string, username string) (Employee, error) {
 	var employee Employee
 	result := tx.Joins("Rental").Joins("Role").Where("username = ? AND rental_id = ?", username, rentalID).First(&employee)

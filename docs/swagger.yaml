@@ -58,6 +58,13 @@ definitions:
       unit_id:
         type: integer
     type: object
+  changepassword.ChangePasswordResponse:
+    properties:
+      status:
+        type: string
+      username:
+        type: string
+    type: object
   enum.UnitStatus:
     enum:
     - idle
@@ -860,6 +867,50 @@ paths:
       - SessionToken: []
       tags:
       - api/user
+  /auth/change_password:
+    post:
+      consumes:
+      - application/x-www-form-urlencoded
+      description: |-
+        dev: http://localhost:8080/auth/change_password
+        prod: http://csbackend.sivr.tech/auth/change_password
+      parameters:
+      - description: Access token from Auth0
+        in: query
+        name: access_token
+        required: true
+        type: string
+      - description: Username
+        in: query
+        maxLength: 32
+        minLength: 3
+        name: username
+        required: true
+        type: string
+      - description: Password (Numeric)
+        in: query
+        maxLength: 32
+        minLength: 6
+        name: old_password
+        required: true
+        type: string
+      - description: Password (Numeric)
+        in: query
+        maxLength: 32
+        minLength: 6
+        name: new_password
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/changepassword.ChangePasswordResponse'
+      summary: Change password for employee/owner account
+      tags:
+      - auth
   /auth/login:
     post:
       consumes:

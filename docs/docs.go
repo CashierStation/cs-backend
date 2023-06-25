@@ -898,6 +898,65 @@ const docTemplate = `{
                 }
             }
         },
+        "/auth/change_password": {
+            "post": {
+                "description": "dev: http://localhost:8080/auth/change_password\nprod: http://csbackend.sivr.tech/auth/change_password",
+                "consumes": [
+                    "application/x-www-form-urlencoded"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "auth"
+                ],
+                "summary": "Change password for employee/owner account",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Access token from Auth0",
+                        "name": "access_token",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "maxLength": 32,
+                        "minLength": 3,
+                        "type": "string",
+                        "description": "Username",
+                        "name": "username",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "maxLength": 32,
+                        "minLength": 6,
+                        "type": "string",
+                        "description": "Password (Numeric)",
+                        "name": "old_password",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "maxLength": 32,
+                        "minLength": 6,
+                        "type": "string",
+                        "description": "Password (Numeric)",
+                        "name": "new_password",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/changepassword.ChangePasswordResponse"
+                        }
+                    }
+                }
+            }
+        },
         "/auth/login": {
             "post": {
                 "description": "dev: http://localhost:8080/auth/login\nprod: http://csbackend.sivr.tech/auth/login",
@@ -1181,6 +1240,17 @@ const docTemplate = `{
                 },
                 "unit_id": {
                     "type": "integer"
+                }
+            }
+        },
+        "changepassword.ChangePasswordResponse": {
+            "type": "object",
+            "properties": {
+                "status": {
+                    "type": "string"
+                },
+                "username": {
+                    "type": "string"
                 }
             }
         },

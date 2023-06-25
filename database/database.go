@@ -65,8 +65,6 @@ func New() (*gorm.DB, error) {
 	sqlDB.SetConnMaxLifetime(1000 * time.Second)
 	sqlDB.SetConnMaxIdleTime(10 * time.Second)
 
-	println("opened database")
-
 	if err != nil {
 		println(err.Error())
 		return nil, err
