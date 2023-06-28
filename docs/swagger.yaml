@@ -341,6 +341,41 @@ paths:
       - Analytic: []
       tags:
       - api/analytic
+  /api/analytic/unit/playtime:
+    get:
+      consumes:
+      - application/x-www-form-urlencoded
+      description: Get unit playtime analytic. Returns playtime in seconds
+      parameters:
+      - default: unit_id
+        description: group by
+        enum:
+        - unit_id
+        - unit_category
+        in: query
+        name: group_by
+        type: string
+      - description: 'Start Time in RFC3339 format (ex: 2023-06-01T08:00:00Z)'
+        in: query
+        name: start_time
+        required: true
+        type: string
+      - description: 'End Time in RFC3339 format (ex: 2023-06-01T08:00:00Z)'
+        in: query
+        name: end_time
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/analytic.GetRevenueResponse'
+      security:
+      - Analytic: []
+      tags:
+      - api/analytic
   /api/analytic/unit/revenue:
     get:
       consumes:

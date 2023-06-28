@@ -56,6 +56,7 @@ func SetupRoutes(app *fiber.App, db *gorm.DB) {
 
 	apiGroup.Get("/analytic/unit/revenue", analytic.GetRevenue)
 	apiGroup.Get("/analytic/snack/revenue", analytic.GetSnackRevenue)
+	apiGroup.Get("/analytic/unit/playtime", analytic.GetUnitPlaytime)
 
 	oauth.Routes(app)
 	auth.Routes(app)
