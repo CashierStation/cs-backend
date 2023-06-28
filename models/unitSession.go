@@ -20,7 +20,7 @@ func CreateUnitSession(tx *gorm.DB, unitID uint) (UnitSession, error) {
 	return *unitSession, result.Error
 }
 
-func GetUnitSessions(tx *gorm.DB, unitID uint, offset uint, limit uint, order string, sortBy string, latest bool) ([]UnitSession, error) {
+func GetUnitSessions(tx *gorm.DB, rentalID string, unitID uint, offset uint, limit uint, order string, sortBy string, latest bool) ([]UnitSession, error) {
 	var unitSessions []UnitSession
 	query := tx
 
@@ -42,6 +42,8 @@ func GetUnitSessions(tx *gorm.DB, unitID uint, offset uint, limit uint, order st
 		subQuery := tx.Model(&UnitSession{}).Select("unit_id, max(start_time) as start_time").Group("unit_id")
 		query = query.Where("(unit_id, start_time) in (?)", subQuery)
 	}
+
+	query = query.Joins("left join units on unit_sessions.unit_id = units.id").Where("units.rental_id = ?", rentalID)
 
 	result := query.Preload("SnackTransactions.Snack").Limit(int(limit)).Find(&unitSessions)
 	return unitSessions, result.Error
