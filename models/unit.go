@@ -30,20 +30,20 @@ func GetUnit(tx *gorm.DB, unitID uint, rentalID string) (Unit, error) {
 	return unit, result.Error
 }
 
-type UnitHistoricalRevenueValue struct {
+type HistoricalRevenueValue struct {
 	Time        string  `json:"time"`
 	Value       float64 `json:"revenue"`
 	Improvement float64 `json:"improvement_pct"`
 }
 
-type UnitHistoricalRevenue struct {
-	AvgValue float64                      `json:"avg"`
-	MaxValue float64                      `json:"max"`
-	MinValue float64                      `json:"min"`
-	History  []UnitHistoricalRevenueValue `json:"history"`
+type HistoricalRevenue struct {
+	AvgValue float64                  `json:"avg"`
+	MaxValue float64                  `json:"max"`
+	MinValue float64                  `json:"min"`
+	History  []HistoricalRevenueValue `json:"history"`
 }
 
-func GetRevenue(tx *gorm.DB, rentalID string, aggregation string, startTime time.Time, endTime time.Time) (UnitHistoricalRevenue, error) {
+func GetRevenue(tx *gorm.DB, rentalID string, aggregation string, startTime time.Time, endTime time.Time) (HistoricalRevenue, error) {
 	var qryResult string
 	qry := `
 		with raw_profit as (
@@ -80,13 +80,13 @@ func GetRevenue(tx *gorm.DB, rentalID string, aggregation string, startTime time
 	aggregation = "1 " + aggregation
 	result := tx.Raw(qry, aggregation, rentalID, startTime, endTime).Scan(&qryResult)
 	if result.Error != nil {
-		return UnitHistoricalRevenue{}, result.Error
+		return HistoricalRevenue{}, result.Error
 	}
 
-	var revenue UnitHistoricalRevenue
+	var revenue HistoricalRevenue
 	err := json.Unmarshal([]byte(qryResult), &revenue)
 	if err != nil {
-		return UnitHistoricalRevenue{}, err
+		return HistoricalRevenue{}, err
 	}
 
 	return revenue, nil

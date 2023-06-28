@@ -5,7 +5,7 @@ definitions:
         type: number
       history:
         items:
-          $ref: '#/definitions/models.UnitHistoricalRevenueValue'
+          $ref: '#/definitions/models.HistoricalRevenueValue'
         type: array
       max:
         type: number
@@ -80,7 +80,7 @@ definitions:
       username:
         type: string
     type: object
-  models.UnitHistoricalRevenueValue:
+  models.HistoricalRevenueValue:
     properties:
       improvement_pct:
         type: number
@@ -306,6 +306,41 @@ info:
   title: CashierStation Backend Server API
   version: "1.0"
 paths:
+  /api/analytic/snack/revenue:
+    get:
+      consumes:
+      - application/x-www-form-urlencoded
+      description: Get snack revenue analytic
+      parameters:
+      - description: Aggregation
+        enum:
+        - day
+        - week
+        - month
+        in: query
+        name: aggregation
+        type: string
+      - description: 'Start Time in RFC3339 format (ex: 2023-06-01T08:00:00Z)'
+        in: query
+        name: start_time
+        required: true
+        type: string
+      - description: 'End Time in RFC3339 format (ex: 2023-06-01T08:00:00Z)'
+        in: query
+        name: end_time
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/analytic.GetRevenueResponse'
+      security:
+      - Analytic: []
+      tags:
+      - api/analytic
   /api/analytic/unit/revenue:
     get:
       consumes:
