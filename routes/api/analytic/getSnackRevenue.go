@@ -12,15 +12,15 @@ import (
 	"gorm.io/gorm"
 )
 
-type GetRevenueRequest struct {
+type GetSnackRevenueRequest struct {
 	Aggregation string    `validate:"omitempty,oneof=day week month" query:"aggregation"`
 	StartTime   time.Time `validate:"required" query:"start_time"`
 	EndTime     time.Time `validate:"required" query:"end_time"`
 }
 
-var getRevenueValidator = lib.CreateValidator[GetRevenueRequest]
+var getSnackRevenueValidator = lib.CreateValidator[GetSnackRevenueRequest]
 
-type GetRevenueResponse struct {
+type GetSnackRevenueResponse struct {
 	*models.HistoricalRevenue
 }
 
@@ -28,7 +28,7 @@ type GetRevenueResponse struct {
 // Booking godoc
 // @Summary
 // @Schemes
-// @Description Get unit revenue analytic
+// @Description Get snack revenue analytic
 // @Tags api/analytic
 // @Accept x-www-form-urlencoded
 // @Produce json
@@ -36,11 +36,11 @@ type GetRevenueResponse struct {
 // @Param start_time query string true "Start Time in RFC3339 format (ex: 2023-06-01T08:00:00Z)"
 // @Param end_time query string true "End Time in RFC3339 format (ex: 2023-06-01T08:00:00Z)"
 // @Success 200 {object} analytic.GetRevenueResponse
-// @Router /api/analytic/unit/revenue [get]
-func GetRevenue(c *fiber.Ctx) error {
+// @Router /api/analytic/snack/revenue [get]
+func GetSnackRevenue(c *fiber.Ctx) error {
 	user := c.Locals("user").(models.Employee)
 
-	var req GetRevenueRequest
+	var req GetSnackRevenueRequest
 
 	// convert query to struct
 	err := c.QueryParser(&req)
@@ -49,7 +49,7 @@ func GetRevenue(c *fiber.Ctx) error {
 	}
 
 	// validate request
-	validationErrors := getRevenueValidator(req)
+	validationErrors := getSnackRevenueValidator(req)
 	if err != nil {
 		return c.Status(fiber.StatusBadRequest).JSON(validationErrors)
 	}
@@ -62,7 +62,7 @@ func GetRevenue(c *fiber.Ctx) error {
 	tx := global.DB.Begin()
 
 	// get revenue
-	revenue, err := models.GetRevenue(tx, user.RentalID, aggregation, req.StartTime, req.EndTime)
+	revenue, err := models.GetSnackRevenue(tx, user.RentalID, aggregation, req.StartTime, req.EndTime)
 	if err != nil && !errors.Is(err, gorm.ErrRecordNotFound) {
 		tx.Rollback()
 		log.Println(err)

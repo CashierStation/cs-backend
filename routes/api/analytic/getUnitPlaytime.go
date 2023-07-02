@@ -12,15 +12,15 @@ import (
 	"gorm.io/gorm"
 )
 
-type GetRevenueRequest struct {
-	Aggregation string    `validate:"omitempty,oneof=day week month" query:"aggregation"`
-	StartTime   time.Time `validate:"required" query:"start_time"`
-	EndTime     time.Time `validate:"required" query:"end_time"`
+type GetUnitPlaytimeRequest struct {
+	StartTime time.Time `validate:"required" query:"start_time"`
+	EndTime   time.Time `validate:"required" query:"end_time"`
+	GroupBy   string    `validate:"omitempty,oneof=unit_id unit_category" query:"group_by"`
 }
 
-var getRevenueValidator = lib.CreateValidator[GetRevenueRequest]
+var getUnitPlaytimeValidator = lib.CreateValidator[GetUnitPlaytimeRequest]
 
-type GetRevenueResponse struct {
+type GetUnitPlaytimeResponse struct {
 	*models.HistoricalRevenue
 }
 
@@ -28,19 +28,19 @@ type GetRevenueResponse struct {
 // Booking godoc
 // @Summary
 // @Schemes
-// @Description Get unit revenue analytic
+// @Description Get unit playtime analytic. Returns playtime in seconds
 // @Tags api/analytic
 // @Accept x-www-form-urlencoded
 // @Produce json
-// @Param aggregation query string false "Aggregation" Enums(day,week,month)
+// @Param group_by query string false "group by" default(unit_id) Enums(unit_id,unit_category)
 // @Param start_time query string true "Start Time in RFC3339 format (ex: 2023-06-01T08:00:00Z)"
 // @Param end_time query string true "End Time in RFC3339 format (ex: 2023-06-01T08:00:00Z)"
 // @Success 200 {object} analytic.GetRevenueResponse
-// @Router /api/analytic/unit/revenue [get]
-func GetRevenue(c *fiber.Ctx) error {
+// @Router /api/analytic/unit/playtime [get]
+func GetUnitPlaytime(c *fiber.Ctx) error {
 	user := c.Locals("user").(models.Employee)
 
-	var req GetRevenueRequest
+	var req GetUnitPlaytimeRequest
 
 	// convert query to struct
 	err := c.QueryParser(&req)
@@ -49,20 +49,20 @@ func GetRevenue(c *fiber.Ctx) error {
 	}
 
 	// validate request
-	validationErrors := getRevenueValidator(req)
+	validationErrors := getUnitPlaytimeValidator(req)
 	if err != nil {
 		return c.Status(fiber.StatusBadRequest).JSON(validationErrors)
 	}
 
-	aggregation := req.Aggregation
-	if aggregation == "" {
-		aggregation = "day"
+	groupBy := req.GroupBy
+	if groupBy == "" {
+		groupBy = "unit_id"
 	}
 
 	tx := global.DB.Begin()
 
 	// get revenue
-	revenue, err := models.GetRevenue(tx, user.RentalID, aggregation, req.StartTime, req.EndTime)
+	revenue, err := models.GetUnitPlaytime(tx, user.RentalID, groupBy, req.StartTime, req.EndTime)
 	if err != nil && !errors.Is(err, gorm.ErrRecordNotFound) {
 		tx.Rollback()
 		log.Println(err)

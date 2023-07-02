@@ -1,7 +1,9 @@
 package models
 
 import (
+	"encoding/json"
 	"errors"
+	"time"
 
 	"gorm.io/gorm"
 )
@@ -77,4 +79,53 @@ func CreateSnackRestock(tx *gorm.DB, rentalID string, snackID uint, quantity int
 
 	result = tx.Create(snackRestock)
 	return *snackRestock, result.Error
+}
+
+func GetSnackRevenue(tx *gorm.DB, rentalID string, aggregation string, startTime time.Time, endTime time.Time) (HistoricalRevenue, error) {
+	var qryResult string
+	qry := `
+		with raw_profit as (
+			select 
+				time_bucket(?, st.created_at) as time,
+				coalesce(sum(st.total)) as value
+			from snack_transactions st 
+			join snacks s on s.id = st.snack_id 
+			where s.rental_id = ? and st.created_at > ? and st.created_at <= ? 
+			group by 1 
+			order by 1
+		), avg_profit as (
+			select
+				case 
+					when avg(value) != 0 then avg(value)
+					else null
+				end as avg_val
+			from raw_profit		
+		), summary as (
+			select
+				avg(value),
+				max(value),
+				min(value),
+				json_agg(
+					json_build_object(
+						'time', time,
+						'revenue', value,
+						'improvement_pct', (value - avg_val) / avg_val * 100
+					) 
+				) as history
+			from raw_profit, avg_profit
+		) select to_json(summary) from summary
+	`
+	aggregation = "1 " + aggregation
+	result := tx.Raw(qry, aggregation, rentalID, startTime, endTime).Scan(&qryResult)
+	if result.Error != nil {
+		return HistoricalRevenue{}, result.Error
+	}
+
+	var revenue HistoricalRevenue
+	err := json.Unmarshal([]byte(qryResult), &revenue)
+	if err != nil {
+		return HistoricalRevenue{}, err
+	}
+
+	return revenue, nil
 }

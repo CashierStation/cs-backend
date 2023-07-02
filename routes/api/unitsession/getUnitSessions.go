@@ -77,6 +77,8 @@ func GetUnitSessions(c *fiber.Ctx) error {
 		return c.Status(fiber.StatusBadRequest).JSON(validationErrors)
 	}
 
+	rentalID := user.RentalID
+
 	// get query values
 	unitID := rawReqQuery.UnitID
 	offset := rawReqQuery.Offset
@@ -118,7 +120,7 @@ func GetUnitSessions(c *fiber.Ctx) error {
 		}
 	}
 
-	unitSessions, err := models.GetUnitSessions(tx, unitID, offset, limit, order, sortBy, latest)
+	unitSessions, err := models.GetUnitSessions(tx, rentalID, unitID, offset, limit, order, sortBy, latest)
 	if err != nil {
 		tx.Rollback()
 		return lib.HTTPError(c, fiber.StatusInternalServerError, "Error getting unit sessions", err)

@@ -16,6 +16,114 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
+        "/api/analytic/snack/revenue": {
+            "get": {
+                "security": [
+                    {
+                        "Analytic": []
+                    }
+                ],
+                "description": "Get snack revenue analytic",
+                "consumes": [
+                    "application/x-www-form-urlencoded"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "api/analytic"
+                ],
+                "parameters": [
+                    {
+                        "enum": [
+                            "day",
+                            "week",
+                            "month"
+                        ],
+                        "type": "string",
+                        "description": "Aggregation",
+                        "name": "aggregation",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Start Time in RFC3339 format (ex: 2023-06-01T08:00:00Z)",
+                        "name": "start_time",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "End Time in RFC3339 format (ex: 2023-06-01T08:00:00Z)",
+                        "name": "end_time",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/analytic.GetRevenueResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/analytic/unit/playtime": {
+            "get": {
+                "security": [
+                    {
+                        "Analytic": []
+                    }
+                ],
+                "description": "Get unit playtime analytic. Returns playtime in seconds",
+                "consumes": [
+                    "application/x-www-form-urlencoded"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "api/analytic"
+                ],
+                "parameters": [
+                    {
+                        "enum": [
+                            "unit_id",
+                            "unit_category"
+                        ],
+                        "type": "string",
+                        "default": "unit_id",
+                        "description": "group by",
+                        "name": "group_by",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Start Time in RFC3339 format (ex: 2023-06-01T08:00:00Z)",
+                        "name": "start_time",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "End Time in RFC3339 format (ex: 2023-06-01T08:00:00Z)",
+                        "name": "end_time",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/analytic.GetRevenueResponse"
+                        }
+                    }
+                }
+            }
+        },
         "/api/analytic/unit/revenue": {
             "get": {
                 "security": [
@@ -1161,7 +1269,7 @@ const docTemplate = `{
                 "history": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/models.UnitHistoricalRevenueValue"
+                        "$ref": "#/definitions/models.HistoricalRevenueValue"
                     }
                 },
                 "max": {
@@ -1276,7 +1384,7 @@ const docTemplate = `{
                 }
             }
         },
-        "models.UnitHistoricalRevenueValue": {
+        "models.HistoricalRevenueValue": {
             "type": "object",
             "properties": {
                 "improvement_pct": {
