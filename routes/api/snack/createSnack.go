@@ -62,7 +62,7 @@ func POST(c *fiber.Ctx) error {
 	}
 
 	tx := global.DB.Begin()
-	newSnack, err := models.CreateSnack(tx, user.RentalID, rawReqQuery.Name, rawReqQuery.Category, rawReqQuery.Price)
+	newSnack, err := models.CreateSnack(tx, user.RentalID, rawReqQuery.Name, rawReqQuery.Category, rawReqQuery.Price, rawReqQuery.Stock)
 	if err != nil {
 		tx.Rollback()
 		return lib.HTTPError(c, fiber.StatusInternalServerError, "Error creating snack", err)
