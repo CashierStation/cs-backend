@@ -338,7 +338,7 @@ paths:
           schema:
             $ref: '#/definitions/analytic.GetRevenueResponse'
       security:
-      - Analytic: []
+      - SessionToken: []
       tags:
       - api/analytic
   /api/analytic/unit/playtime:
@@ -373,7 +373,7 @@ paths:
           schema:
             $ref: '#/definitions/analytic.GetRevenueResponse'
       security:
-      - Analytic: []
+      - SessionToken: []
       tags:
       - api/analytic
   /api/analytic/unit/revenue:
@@ -408,7 +408,7 @@ paths:
           schema:
             $ref: '#/definitions/analytic.GetRevenueResponse'
       security:
-      - Analytic: []
+      - SessionToken: []
       tags:
       - api/analytic
   /api/booking:

@@ -24,7 +24,7 @@ type GetRevenueResponse struct {
 	*models.HistoricalRevenue
 }
 
-// @Security Analytic
+// @Security SessionToken
 // Booking godoc
 // @Summary
 // @Schemes

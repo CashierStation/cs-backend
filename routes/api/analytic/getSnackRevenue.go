@@ -24,7 +24,7 @@ type GetSnackRevenueResponse struct {
 	*models.HistoricalRevenue
 }
 
-// @Security Analytic
+// @Security SessionToken
 // Booking godoc
 // @Summary
 // @Schemes

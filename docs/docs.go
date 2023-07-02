@@ -20,7 +20,7 @@ const docTemplate = `{
             "get": {
                 "security": [
                     {
-                        "Analytic": []
+                        "SessionToken": []
                     }
                 ],
                 "description": "Get snack revenue analytic",
@@ -74,7 +74,7 @@ const docTemplate = `{
             "get": {
                 "security": [
                     {
-                        "Analytic": []
+                        "SessionToken": []
                     }
                 ],
                 "description": "Get unit playtime analytic. Returns playtime in seconds",
@@ -128,7 +128,7 @@ const docTemplate = `{
             "get": {
                 "security": [
                     {
-                        "Analytic": []
+                        "SessionToken": []
                     }
                 ],
                 "description": "Get unit revenue analytic",
