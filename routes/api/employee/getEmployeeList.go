@@ -31,7 +31,7 @@ type GetEmployeeListResponse struct {
 // Employee godoc
 // @Summary
 // @Schemes
-// @Description Get list of employees from access token
+// @Description Get list of employees from access token. Doesn't need session_token
 // @Tags api/employee
 // @Accept x-www-form-urlencoded
 // @Produce json

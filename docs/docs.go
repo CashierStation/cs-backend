@@ -370,7 +370,7 @@ const docTemplate = `{
                         "SessionToken": []
                     }
                 ],
-                "description": "Get list of employees from access token",
+                "description": "Get list of employees from access token. Doesn't need session_token",
                 "consumes": [
                     "application/x-www-form-urlencoded"
                 ],

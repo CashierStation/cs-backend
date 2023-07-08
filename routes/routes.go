@@ -29,10 +29,10 @@ func SetupRoutes(app *fiber.App, db *gorm.DB) {
 	//app.Get("/example", example.GET)
 
 	apiGroup := app.Group("/api")
+	apiGroup.Get("/employee/list", employee.GetEmployeeList) // no session token needed
+
 	apiGroup.Use(authenticator.SessionMiddleware(db))
 	apiGroup.Get("/user", user.GET)
-
-	apiGroup.Get("/employee/list", employee.GetEmployeeList)
 
 	apiGroup.Get("/unit", unit.GET)
 	apiGroup.Post("/unit", unit.POST)

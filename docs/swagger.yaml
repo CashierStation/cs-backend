@@ -535,7 +535,7 @@ paths:
     get:
       consumes:
       - application/x-www-form-urlencoded
-      description: Get list of employees from access token
+      description: Get list of employees from access token. Doesn't need session_token
       parameters:
       - description: Access token from Auth0
         in: query
