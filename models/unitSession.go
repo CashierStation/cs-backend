@@ -17,6 +17,10 @@ func CreateUnitSession(tx *gorm.DB, unitID uint) (UnitSession, error) {
 		Tarif:             0,
 	}
 	result := tx.Create(unitSession)
+
+	// get unit session with unit
+	tx.Joins("Unit").First(&unitSession, unitSession.ID)
+
 	return *unitSession, result.Error
 }
 
@@ -51,7 +55,7 @@ func GetUnitSessions(tx *gorm.DB, rentalID string, unitID uint, offset uint, lim
 
 func GetLastUnitSession(tx *gorm.DB, unitID uint) (UnitSession, error) {
 	var unitSession UnitSession
-	result := tx.Order("start_time desc").Where("unit_id = ?", unitID).First(&unitSession)
+	result := tx.Order("start_time desc").Joins("Unit").Where("unit_id = ?", unitID).First(&unitSession)
 	return unitSession, result.Error
 }
 
@@ -121,7 +125,7 @@ func GetLastUnitStatuses(tx *gorm.DB, unitIDs []uint) ([]unitStatus, error) {
 func StopUnitSession(tx *gorm.DB, unitSessionID uint) (UnitSession, error) {
 	var unitSession UnitSession
 
-	result := tx.Where("id = ?", unitSessionID).First(&unitSession)
+	result := tx.Joins("Unit").Where("unit_sessions.id = ?", unitSessionID).First(&unitSession)
 	if result.Error != nil {
 		return unitSession, result.Error
 	}
