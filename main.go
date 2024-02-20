@@ -15,7 +15,6 @@ import (
 	db "csbackend/database"
 	g "csbackend/global"
 	"csbackend/jobs"
-	"csbackend/lib"
 	"csbackend/routes"
 	"csbackend/util"
 
@@ -98,8 +97,9 @@ func main() {
 		OAuth2RedirectUrl: "http://localhost:8080/swagger/oauth2-redirect.html",
 	}))
 
-	lib.InitRollbar()
-	defer lib.CloseRollbar()
+	// used to log errors on deployed backend.
+	// lib.InitRollbar()
+	// defer lib.CloseRollbar()
 
 	doJobs := util.IsFlagPassed("worker")
 
