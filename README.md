@@ -48,7 +48,7 @@ Backend Repository for Playstation Rental Cashier App called CashierStation. The
     ./build_prod.sh
     ```
 
--   ### Build the project for production
+-   ### Deploy the project for production
     The deployment is automated by GitHub Workflows. However, if you havent set it up, run this command on your vm/host server. 
     ```
     ./deploy.sh
